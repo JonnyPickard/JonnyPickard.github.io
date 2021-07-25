@@ -129,6 +129,7 @@ const links = [
 const IndexPage = () => {
   return (
     <main style={pageStyles}>
+      <img src={"/doge.jpeg"}></img>
       <h1>Random Test</h1>
     </main>
   );
