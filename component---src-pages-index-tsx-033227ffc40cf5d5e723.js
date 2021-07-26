@@ -1,0 +1,2 @@
+(self.webpackChunkjonnypickard_github_io=self.webpackChunkjonnypickard_github_io||[]).push([[691],{3835:function(e,n,t){"use strict";t.r(n),t.d(n,{default:function(){return a}});var r=t(7294),u=function(){return r.createElement("nav",null)},l=[{text:"Test",url:"/blog/test"}],a=function(){return r.createElement(r.Fragment,null,r.createElement(u,null),r.createElement("main",null,l.map((function(e){return r.createElement("a",{href:e.url},e.text)}))))}}}]);
+//# sourceMappingURL=component---src-pages-index-tsx-033227ffc40cf5d5e723.js.map
