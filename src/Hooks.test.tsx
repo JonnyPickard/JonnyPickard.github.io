@@ -1,14 +1,14 @@
 import React from "react";
 
 import { render, screen } from "@testing-library/react";
-import { UseState, USE_STATE_TITLE } from "./UseState";
+import { Hooks, HOOKS_TITLE } from "./Hooks";
 
-test("should render UseState", () => {
-  render(<UseState />);
+test("should render Hooks", () => {
+  render(<Hooks />);
 
   const heading = screen.getByRole("heading", {
     level: 1,
-    name: USE_STATE_TITLE,
+    name: HOOKS_TITLE,
   });
 
   expect(heading).toBeInTheDocument();
