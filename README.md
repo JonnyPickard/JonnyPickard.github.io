@@ -1,9 +1,7 @@
-# React Hooks Refresher
+# React Examples
 
 ## About
 
-Refresher on react hooks + tests.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Storybook monorepo to show off various React examples.
 
 ## Hooks
