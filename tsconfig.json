@@ -17,5 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "config/jest/setupTests.ts"]
+  "include": ["src", "config/jest/setupTests.ts", "react-app-env.d.ts"]
 }
