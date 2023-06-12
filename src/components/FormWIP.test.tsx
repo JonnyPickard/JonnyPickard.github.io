@@ -1,10 +1,10 @@
 import React from "react";
 
 import { render, screen } from "@testing-library/react";
-import { Hooks, HOOKS_TITLE } from "./Hooks";
+import { FormWIP, HOOKS_TITLE } from "./FormWIP";
 
 test("should render Hooks", () => {
-  render(<Hooks />);
+  render(<FormWIP />);
 
   const heading = screen.getByRole("heading", {
     level: 1,
