@@ -2,6 +2,12 @@
   "name": "react-examples",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "test": "node scripts/test.js",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o docs-build -s ./src/components/assets",
+    "start": "npm run storybook"
+  },
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -61,12 +67,6 @@
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
     "workbox-webpack-plugin": "^6.4.1"
-  },
-  "scripts": {
-    "test": "node scripts/test.js",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "start": "npm run storybook"
   },
   "eslintConfig": {
     "extends": [
