@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o docs-build -s ./src/assets && touch ./docs-build/.nojekyll"
+    "build": "storybook build -o docs-build -s ./src/assets && touch ./docs-build/.nojekyll",
+    "deploy": "npm run build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true"
   },
   "dependencies": {
     "react": "^18.2.0",
