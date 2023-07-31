@@ -8,4 +8,4 @@ I've decided that the best way to show off a portfolio of examples is by using a
 
 As I've been in full-time employment for a considerable amount of time, the examples currently visible on my Github are fairly dated.
 
-My thoughts are that, by compartmentalising using a component library, I will be able to gradually chip away at a portfolio, providing a more accurate representation of the work I'm capable of.
+My thoughts are that, by compartmentalizing using a component library, I will be able to gradually chip away at a portfolio, providing a more accurate representation of the work I'm capable of.
