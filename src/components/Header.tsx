@@ -1,9 +1,8 @@
-import React from "react";
+// import React from "react";
 
 import { Button } from "./Button";
+import youtube from "../assets/youtube.svg";
 import "./header.css";
-
-const TEST_HEADING = "Acme";
 
 type User = {
   name: string;
@@ -25,6 +24,7 @@ export const Header = ({
   <header>
     <div className="storybook-header">
       <div>
+        <img src={youtube} />
         <svg
           width="32"
           height="32"
@@ -46,7 +46,7 @@ export const Header = ({
             />
           </g>
         </svg>
-        <h1>{TEST_HEADING}</h1>
+        <h1>Acme</h1>
       </div>
       <div>
         {user ? (
