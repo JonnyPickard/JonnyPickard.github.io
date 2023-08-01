@@ -1,7 +1,7 @@
-name: Build and Deploy
+name: Build & Deploy to GH Pages 🚀
 on:
   push:
-    # paths: ["src/**"] # Trigger the action only when files change in the folders defined here
+    paths: ["src/**"]
     branches:
       - main
 jobs:
