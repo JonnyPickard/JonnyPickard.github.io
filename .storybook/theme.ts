@@ -1,13 +1,15 @@
 import "../src/styles/global.css";
+import logo from "../src/assets/logo.svg";
 
 import { create } from "@storybook/theming/create";
 
 // https://storybook.js.org/docs/react/configure/theming
 export default create({
+  brandImage: logo,
+  brandUrl: "https://github.com/JonnyPickard/JonnyPickard.github.io",
   base: "dark",
-  // Text colors
   textColor: "#eeeeee",
-
-  // UI
+  fontBase: "'Roboto Mono', monospace",
+  fontCode: "monospace",
   appContentBg: "#1A202C",
 });
