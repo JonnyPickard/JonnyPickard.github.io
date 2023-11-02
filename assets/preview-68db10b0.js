@@ -1,2 +1,0 @@
-import{c as o}from"./chunk-H6ZRF7XV-146ce0bc.js";import"./index-d475d2ea.js";const e=""+new URL("logo-d21d3edc.svg",import.meta.url).href,t=o({brandImage:e,brandUrl:"https://github.com/JonnyPickard/JonnyPickard.github.io",base:"dark",textColor:"#eeeeee",fontBase:"'Roboto Mono', monospace",fontCode:"monospace",appContentBg:"#1A202C"}),n={parameters:{docs:{theme:t},actions:{argTypesRegex:"^on[A-Z].*"},controls:{matchers:{color:/(background|color)$/i,date:/Date$/}}}};export{n as default};
-//# sourceMappingURL=preview-68db10b0.js.map
