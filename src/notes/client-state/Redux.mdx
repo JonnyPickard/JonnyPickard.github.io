@@ -20,8 +20,11 @@ Nov 4, 2023
 - [Reducers](#reducers)
 - [Selectors](#selectors)
 - [Slice](#slice)
+- [Middleware](#middleware)
 - [Async Thunk](#async-thunk)
 - [Store Normalization](#store-normalization)
+- [When To Use Redux](#when-to-use-redux)
+- [RTK Query](#rtk-query)
 
 ## Overview
 
@@ -169,12 +172,127 @@ export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 export default counterSlice.reducer;
 ```
 
+## [Middleware](https://redux.js.org/understanding/thinking-in-redux/glossary#middleware)
+
+Redux Middleware is higher order function that composes a dispatch function to return a new dispatch function.
+
+```ts
+type Middleware = ({ dispatch: Dispatch; getState: () => State }) => (next: Dispatch) => Dispatch;
+```
+
+It basically intercepts an action getting sent to the store and adds extra functionality
+
+It's mainly used for writing logic that has side effects such as logging, routing and asynchronous api calls.
+
+Middleware is composable using function composition: a technique in which you combine two or more functions to produce a new function.
+The idea is to take the output of one function and use it as the input for another.
+
+```ts
+// 1. slice(bread)
+// 2. toast(slicedBread)
+// 3. spreadButter(slicedToast)
+// 4. addJam(butteredToast)
+
+const makeSandwich = (bread) => addJam(spreadButter(toast(sliceBread(bread))));
+
+makeSandwich("Sourdough Loaf");
+```
+
+## [Redux Thunk Middleware](https://redux.js.org/usage/writing-logic-thunks)
+
+The word "thunk" is a programming term that means "a piece of code that does some delayed work".
+
+Redux Thunk is middleware for redux that allows you to dispatch functions instead of actions.
+
+A thunk function may contain any arbitrary logic, sync or async, and can call dispatch or getState at any time.
+
+```ts
+const thunkFunction = (dispatch, getState) => {
+  // logic here that can dispatch actions or read state
+};
+
+store.dispatch(thunkFunction);
+```
+
+For consistency with dispatching normal action objects, we typically write these as thunk action creators, which return the thunk function.
+These action creators can take arguments that can be used inside the thunk.
+
+```ts
+const depositFunds = (amount) => {
+  return (dispatch, getState) => {
+    const balanceBefore = getState().balance;
+    dispatch(incrementByAmount(amount));
+    const balanceAfter = getState().balance;
+  };
+};
+
+store.dispatch(depositFunds(10));
+```
+
 ## Async Thunk
 
-A function that accepts a redux action type string and a callback function that should return a promise.
+[Using Async Thunk](https://redux.js.org/usage/writing-logic-thunks#using-createasyncthunk)
+
+Because writing async logic with thunks can be tedious \(you have to write logic to handle pending/ fulfilled/ rejected states\)
+Redux toolkit has a special thunk api for handling async logic: `createAsyncThunk`.
+
+`createAsyncThunk` is a function that accepts a Redux action type string and a callback function that should return a promise.
+
+The Async Thunk api will then automatically generate & dispatch actions based on the promise status returned by the callback function.
+
+```ts
+// todosSlice.js
+
+export const saveNewTodo = createAsyncThunk(
+  "todos/saveNewTodo",
+  async (text) => {
+    const initialTodo = { text };
+    const response = await client.post("/fakeApi/todos", { todo: initialTodo });
+    return response.todo;
+  }
+);
+
+const todosSlice = createSlice({
+  name: "todos",
+  initialState,
+  reducers: {
+    // omit reducer cases
+  },
+  // The extraReducers allows you to respond to an action in your slice reducer but does not create an action creator function.
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveNewTodo.pending, (state, action) => {
+        state.status = "saving";
+      })
+      .addCase(saveNewTodo.fulfilled, (state, action) => {
+        state.todos = [...state.todos, action.payload.newTodo];
+        state.status = "save successful";
+      });
+  },
+});
+```
+
+```ts
+// NewTodoForm.js
+
+const handleSubmit = async () => {
+  await dispatch(saveNewTodo(todoText));
+};
+```
+
+`saveNewTodo.pending` & `saveNewTodo.fulfilled` actions are automatically dispatched and are therefor able to be caught by the
+todosSlice reducers.
 
 > 🚧 WIP
 
-## Store Normalization
+## [Store Normalization](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape#designing-a-normalized-state)
+
+> 🚧 WIP
+
+## [When To Use Redux](https://redux.js.org/faq/general#when-should-i-use-redux)
+
+> 🚧 WIP
+
+## [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
 
 > 🚧 WIP
