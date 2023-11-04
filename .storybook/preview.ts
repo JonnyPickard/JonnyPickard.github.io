@@ -3,6 +3,12 @@ import theme from "./theme";
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        includeNames: true,
+        order: ["Introduction", "Notes", ["Overiew"]],
+      },
+    },
     docs: {
       theme,
     },

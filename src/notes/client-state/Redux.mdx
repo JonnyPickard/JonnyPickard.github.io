@@ -1,0 +1,180 @@
+import { Source, Meta } from "@storybook/blocks";
+
+<Meta name="Notes/Client State/Redux" title="Notes/Client State/Redux" />
+
+# Redux
+
+Nov 4, 2023
+
+<hr />
+
+- [Redux](https://redux.js.org/introduction/getting-started)
+- [Redux Core Concepts](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow)
+- [Redux Toolkit](https://redux-toolkit.js.org/introduction/getting-started)
+
+## Table of contents
+
+- [Overview](#overview)
+- [One-Way Data Flow](#one-way-data-flow)
+- [Actions](#actions)
+- [Reducers](#reducers)
+- [Selectors](#selectors)
+- [Slice](#slice)
+- [Async Thunk](#async-thunk)
+- [Store Normalization](#store-normalization)
+
+## Overview
+
+Redux is a library for managing client application state using a global store with a variation of a pub/ sub pattern.
+
+The store is intended to be a single source of truth: a singular place where any bit of data exists only once, as well as the only place
+where state can be updated or read from.
+
+View components are only allowed to dispatch events \(what occurred in the UI\) and are not permitted to update state directly.
+
+## One-Way Data Flow
+
+One-way data flow is a fundamental concept of redux in which data always flows in a unidirectional cycle like so:
+
+<p align="center">
+  <a href="https://github.com/JonnyPickard/JonnyPickard.github.io">
+    <img
+      src="./src/assets/diagrams/ReduxDataFlowDiagram.gif"
+      alt="Redux Data Flow"
+      width="320px"
+    />
+  </a>
+</p>
+
+Using the above diagram:
+
+1. The view component \(UI\) subscribes to the store enabling it to:
+
+- Request the data it requires \(bank balance: $0\).
+  - When the bank balance changes the view component recieves the new balance then rerenders.
+- Dispatch events back to the store.
+
+2. The user deposits $10 using the UI:
+
+- Ah action is constructed \(An object containing event data\).
+
+```ts
+const depositAction = {
+  type: "bank/deposit",
+  payload: 10,
+};
+```
+
+3. The action is then dispatched back to the store which decides how to update it's state.
+
+- `Current bank balance: $0` + `$10` = `New bank balance: $10`
+
+4. The UI will recieve the updated bank balance of `$10` and rerender accordingly.
+
+## Actions
+
+An `Action` is a javascript object that has a type field.
+
+- Action object can have other fields containing additional information about what happened.
+- The additional data by convention is put in a field called `payload`.
+
+```js
+const addTodoAction = {
+  type: "todos/todoAdded",
+  payload: "Buy milk",
+};
+```
+
+## Reducers
+
+A `Reducer` is a function that receives the current `state` and an `action` object, then decides
+how to update state if necessary.
+
+- The store registers the reducer functions on initialisation/ configuration.
+
+```js
+const store = configureStore({ reducer: counterReducer });
+```
+
+- They must only calculate the `new state` value based on the `current state` + `action`
+- They are not allow to modify existing state. They must make `immutable updates` by copying the existing state.
+- They must not do any `async logic` or cause `side effects`.
+
+## Selectors
+
+A function used to extract specific pieces of data from the store.
+
+They are:
+
+- Reusable: a single way to access same piece of derived data across different locations in the view.
+- Maintainable: they decouple components from the store structure allowing for easier testing.
+
+Basic example:
+
+```ts
+import React from "react";
+import { useSelector } from "react-redux";
+
+export const TodoListItem = (props) => {
+  const todo = useSelector((state) => state.todos[props.id]);
+  return <div>{todo.text}</div>;
+};
+```
+
+However, it makes more sense to define selectors as reusable functions in case:
+
+- Multiple components need to access the same piece of state.
+- If you change the store structure, you then only need to modify the selector.
+
+Because of this, it's often a good idea to define reusable selectors directly inside slice files, rather than always defining them inside of a component.
+
+### Optimizing Selectors with Memoization
+
+[Derving Data W/ Selectors](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization)
+
+> 🚧 WIP
+
+## Slice
+
+A function that accepts an initial state, an object of reducer functions, and a "slice name",
+and `automatically generates action creators and action types` that correspond to the reducers and state.
+
+```typescript
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+interface CounterState {
+  value: number;
+}
+
+const initialState = { value: 0 } as CounterState;
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    increment(state) {
+      state.value++;
+    },
+    decrement(state) {
+      state.value--;
+    },
+    incrementByAmount(state, action: PayloadAction<number>) {
+      state.value += action.payload;
+    },
+  },
+});
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
+```
+
+## Async Thunk
+
+A function that accepts a redux action type string and a callback function that should return a promise.
+
+> 🚧 WIP
+
+## Store Normalization
+
+> 🚧 WIP
