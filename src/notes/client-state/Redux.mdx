@@ -4,7 +4,7 @@ import { Source, Meta } from "@storybook/blocks";
 
 # Redux
 
-Nov 4, 2023
+Nov 5, 2023
 
 <hr />
 
@@ -22,9 +22,9 @@ Nov 4, 2023
   - [Optimizing Selectors with Memoization](#optimizing-selectors-with-memoization)
 - [Slice](#slice)
 - [Middleware](#middleware)
-- [Async Thunk](#async-thunk)
+  - [Redux Thunk Middleware](#redux-thunk-middleware)
+  - [Async Thunk](#async-thunk)
 - [Store Normalization](#store-normalization)
-- [When To Use Redux](#when-to-use-redux)
 - [RTK Query](#rtk-query)
 
 ## Overview
@@ -35,6 +35,14 @@ The store is intended to be a single source of truth: a singular place where any
 where state can be updated or read from.
 
 View components are only allowed to dispatch events \(what occurred in the UI\) and are not permitted to update state directly.
+
+Redux is most useful in cases where:
+
+- You have large amounts of application state that are needed in many places in the app.
+- The app state is updated frequently.
+- The logic to update that state may be complex.
+- The app has a medium or large-sized codebase, and might be worked on by many people.
+- You need to see how that state is being updated over time.
 
 ## One-Way Data Flow
 
@@ -131,6 +139,8 @@ However, it makes more sense to define selectors as reusable functions in case:
 - If you change the store structure, you then only need to modify the selector.
 
 Because of this, it's often a good idea to define reusable selectors directly inside slice files, rather than always defining them inside of a component.
+
+<br />
 
 ### Optimizing Selectors with Memoization
 
@@ -235,11 +245,21 @@ Redux Middleware is higher order function that composes a dispatch function to r
 type Middleware = ({ dispatch: Dispatch; getState: () => State }) => (next: Dispatch) => Dispatch;
 ```
 
-It basically intercepts an action getting sent to the store and adds extra functionality
+<p align="center">
+  <a href="https://github.com/JonnyPickard/JonnyPickard.github.io">
+    <img
+      src="./src/assets/diagrams/ReduxAsyncDataFlowDiagram.gif"
+      alt="Redux Data Flow Async"
+      width="320px"
+    />
+  </a>
+</p>
+
+> Example middleware that makes an api request.
 
 It's mainly used for writing logic that has side effects such as logging, routing and asynchronous api calls.
 
-Middleware is composable using function composition: a technique in which you combine two or more functions to produce a new function.
+Middleware is composable using [function composition](https://redux.js.org/api/compose): a technique in which you combine two or more functions to produce a new function.
 The idea is to take the output of one function and use it as the input for another.
 
 ```ts
@@ -253,7 +273,7 @@ const makeSandwich = (bread) => addJam(spreadButter(toast(sliceBread(bread))));
 makeSandwich("Sourdough Loaf");
 ```
 
-## [Redux Thunk Middleware](https://redux.js.org/usage/writing-logic-thunks)
+### [Redux Thunk Middleware](https://redux.js.org/usage/writing-logic-thunks)
 
 The word "thunk" is a programming term that means "a piece of code that does some delayed work".
 
@@ -284,7 +304,7 @@ const depositFunds = (amount) => {
 store.dispatch(depositFunds(10));
 ```
 
-## Async Thunk
+### Async Thunk
 
 [Using Async Thunk](https://redux.js.org/usage/writing-logic-thunks#using-createasyncthunk)
 
@@ -338,16 +358,100 @@ const handleSubmit = async () => {
 `saveNewTodo.pending` & `saveNewTodo.fulfilled` actions are automatically dispatched and are therefor able to be caught by the
 todosSlice reducers.
 
-> 🚧 WIP
-
 ## [Store Normalization](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape#designing-a-normalized-state)
 
-> 🚧 WIP
+When dealing with data that is relational or nested the resulting structure can end up rather complex & repeated in places.
 
-## [When To Use Redux](https://redux.js.org/faq/general#when-should-i-use-redux)
+This presents various issues:
 
-> 🚧 WIP
+- When there is duplicate data across the store it becomes harder to make sure it's updated appropriately.
+- Nested data means the corresponding reducer logic has to be more nested/ complicated and quickly becomes significantly more complicated to maintain.
+- Since immutable data updates require all ancestors in the state tree to be copied and updated as well,
+  and new object references will cause connected UI components to re-render, an update to a deeply nested data object could force totally unrelated UI components to re-render even if the data they're displaying hasn't actually changed.
+
+```ts
+// 1. Unnormalized state
+
+const blogPosts = [
+  {
+    id: "post1",
+    author: { username: "user1", name: "User 1" },
+    body: "......",
+    comments: [
+      {
+        id: "comment1",
+        author: { username: "user2", name: "User 2" },
+        comment: ".....",
+      },
+      {
+        id: "comment2",
+        author: { username: "user3", name: "User 3" },
+        comment: ".....",
+      },
+    ],
+  },
+];
+```
+
+The basic concepts of normalizing data are:
+
+- Each type of data gets its own "table" in the state.
+- Each "data table" should store the individual items in an object, with the IDs of the items as keys and the items themselves as the values.
+- Any references to individual items should be done by storing the item's ID.
+- Arrays of IDs should be used to indicate ordering.
+
+Here is an example of how you could normalize the `blogPosts` state shape:
+
+```ts
+// 2. After Normalization
+
+{
+  posts: {
+    byId: {
+      post1: {
+        id: "post1",
+        author: "user1",
+        body: "......",
+        comments: ["comment1", "comment2"],
+      },
+    },
+    allIds: ["post1"],
+  },
+  comments: {
+    byId: {
+      comment1: {
+        id: "comment1",
+        author: "user2",
+        comment: ".....",
+      },
+      comment2: {
+        id: "comment2",
+        author: "user3",
+        comment: ".....",
+      },
+    },
+    allIds: ["comment1", "comment2"],
+  },
+  users: {
+    byId: {
+      user1: {
+        username: "user1",
+        name: "User 1",
+      },
+      user2: {
+        username: "user2",
+        name: "User 2",
+      },
+      user3: {
+        username: "user3",
+        name: "User 3",
+      },
+    },
+    allIds: ["user1", "user2", "user3"],
+  },
+};
+```
 
 ## [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
 
-> 🚧 WIP
+> 🚧 I think it's worth covering this in a separate post as theres a lot of in depth knowledge/ features.
