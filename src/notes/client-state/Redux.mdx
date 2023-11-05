@@ -19,6 +19,7 @@ Nov 4, 2023
 - [Actions](#actions)
 - [Reducers](#reducers)
 - [Selectors](#selectors)
+  - [Optimizing Selectors with Memoization](#optimizing-selectors-with-memoization)
 - [Slice](#slice)
 - [Middleware](#middleware)
 - [Async Thunk](#async-thunk)
@@ -133,9 +134,63 @@ Because of this, it's often a good idea to define reusable selectors directly in
 
 ### Optimizing Selectors with Memoization
 
-[Derving Data W/ Selectors](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization)
+[Optimizing Selectors with Memoization](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization)
 
-> 🚧 WIP
+#### Context
+
+1. Selectors used with `useSelector` or `mapState` will be re-run after every dispatched action.
+2. `useSelector` and `mapState` use the `===` reference equality check on the selectors return values to determine if the component
+   needs to rerender.
+
+```ts
+// Example 1. Forever rerendering.
+function TodoList() {
+  const completedTodos = useSelector((state) =>
+    state.todos.map((todo) => todo.completed)
+  );
+}
+```
+
+> Example 1. As the map function always returns a new array the reference equality check `===` will fail & the component will therefor rerender on each dispatched action!
+
+```ts
+// Example 2. Expensive filtering.
+function ExampleComplexComponent() {
+  const data = useSelector((state) => {
+    const initialData = state.data;
+    const filteredData = expensiveFiltering(initialData);
+
+    return filteredData;
+  });
+}
+```
+
+> Example 2. This expensive logic will be rerun after every dispatched action when, theoretically, it would ever need to rerun if state.data changes.
+
+#### Solution
+
+We can use a form of caching called `Memoization` to decide whether the function needs to be rerun.
+`Memoization` works by storing the inputs and results of a function when it is first called.
+If the function inputs are the same on subsequent calls it will skip the function call and return the cached return value.
+If the function inputs change it will rerun the function and store the new inputs and return values to enable memoizing subsequent calls
+
+The most common pattern for memoizing selectors is using a library called [Reselect](https://github.com/reduxjs/reselect).
+
+Reselect exports a [createSelector](https://github.com/reduxjs/reselect#createselectorinputselectors--inputselectors-resultfunc-selectoroptions) API, which generates memoized selector functions.
+
+If the selector created with `createSelector` is called again with the same arguments, the previously cached result is returned instead of recalculating a new result.
+
+```ts
+// Create selector accepts one or more `input` selectors.
+// and an output selector which recieves the results of the input selectors and returns a derived value.
+// An output selector should always contain some transformation logic!
+const selectUsersOver30 = createSelector(
+  // Input selector
+  (state) => state.usersList,
+  // Output selector
+  (usersList) => usersList.filter((user) => user.age > 30)
+);
+```
 
 ## Slice
 
