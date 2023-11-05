@@ -1,4 +1,6 @@
 import { Source, Meta } from "@storybook/blocks";
+import ReduxDataFlow from "../../assets/diagrams/ReduxDataFlowDiagram.gif";
+import ReduxDataFlowAsync from "../../assets/diagrams/ReduxAsyncDataFlowDiagram.gif";
 
 <Meta name="Notes/Client State/Redux" title="Notes/Client State/Redux" />
 
@@ -49,13 +51,7 @@ Redux is most useful in cases where:
 One-way data flow is a fundamental concept of redux in which data always flows in a unidirectional cycle like so:
 
 <p align="center">
-  <a href="https://github.com/JonnyPickard/JonnyPickard.github.io">
-    <img
-      src="./src/assets/diagrams/ReduxDataFlowDiagram.gif"
-      alt="Redux Data Flow"
-      width="320px"
-    />
-  </a>
+  <img src={ReduxDataFlow} alt="Redux Data Flow" width="320px" />
 </p>
 
 Using the above diagram:
@@ -246,13 +242,7 @@ type Middleware = ({ dispatch: Dispatch; getState: () => State }) => (next: Disp
 ```
 
 <p align="center">
-  <a href="https://github.com/JonnyPickard/JonnyPickard.github.io">
-    <img
-      src="./src/assets/diagrams/ReduxAsyncDataFlowDiagram.gif"
-      alt="Redux Data Flow Async"
-      width="320px"
-    />
-  </a>
+  <img src={ReduxDataFlowAsync} alt="Redux Data Flow Async" width="320px" />
 </p>
 
 > Example middleware that makes an api request.
