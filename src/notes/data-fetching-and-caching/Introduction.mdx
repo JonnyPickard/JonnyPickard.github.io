@@ -12,4 +12,82 @@ import LinkTo from "@storybook/addon-links/react";
 
 <hr />
 
-Over the last couple years, the React community has come to realize that "data fetching and caching" is really a different set of concerns than "state management". While you can use a state management library like Redux to cache data, the use cases are different enough that it's worth using tools that are purpose-built for the data fetching use case.
+Over the last couple years, the React community has come to realize that "data fetching and caching" is really a different set of concerns than "state management".
+While you can use a state management library like Redux to cache data,
+the use cases are different enough that it's worth using tools that are purpose-built for the data fetching use case.
+
+The most popular data fetching & caching clients/ tools, at the time of writing, can be found in the table below.
+
+<table>
+  <thead>
+    <tr>
+      <th>Clients</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a
+          href="https://tanstack.com/query/v3/docs/react/overview"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"React Query"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://swr.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"SWR"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://redux-toolkit.js.org/rtk-query/overview"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"Redux Tool Kit (RTK) Query"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://www.apollographql.com/docs/react/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"Apollo Client*"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://relay.dev/" target="_blank" rel="noopener noreferrer">
+          {"Relay*"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://formidable.com/open-source/urql/docs/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"URQL*"}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+> \* Intended to be with GraphQL
