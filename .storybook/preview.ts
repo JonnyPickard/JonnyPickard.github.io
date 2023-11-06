@@ -6,7 +6,11 @@ const preview: Preview = {
     options: {
       storySort: {
         includeNames: true,
-        order: ["Introduction", "Notes", ["Overiew"]],
+        method: "configure",
+        order: [
+          "Introduction",
+          ["Notes", "Data Fetching & Caching", ["Introduction", "*"]],
+        ],
       },
     },
     docs: {

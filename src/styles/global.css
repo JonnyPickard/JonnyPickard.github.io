@@ -1,1 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+:root {
+  --grayscale-black: #000000;
+  --grayscale-almostBlack: #111111;
+  --grayscale-tintedBlack: #222222;
+  --grayscale-lightBlack: #333333;
+  --grayscale-paleBlack: #444444;
+  --grayscale-darkGray: #555555;
+  --grayscale-shadedGray: #666666;
+  --grayscale-mediumGray: #777777;
+  --grayscale-tintedGray: #888888;
+  --grayscale-lightGray: #999999;
+  --grayscale-paleGray: #aaaaaa;
+  --grayscale-silver: #bbbbbb;
+  --grayscale-darkWhite: #cccccc;
+  --grayscale-shadedWhite: #dddddd;
+  --grayscale-almostWhite: #eeeeee;
+  --grayscale-white: #ffffff;
+}
+
+time {
+  font-family: 'Roboto Mono', monospace;
+  color: var(--grayscale-shadedWhite);
+}
