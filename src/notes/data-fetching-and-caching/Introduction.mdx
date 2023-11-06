@@ -90,4 +90,55 @@ The most popular data fetching & caching clients/ tools, at the time of writing,
   </tbody>
 </table>
 
-> \* Intended to be with GraphQL
+> \* Intended to be used with GraphQL
+
+<br />
+
+## Global State Vs Server state
+
+Typically in complex React apps there has been a pattern of storing most of the required state
+in a global state store e.g. using Redux.
+
+- This avoids drilling props down multiple levels.
+- Allows us to acess data across our application without duplicating it.
+- Allows comunication between isolated components and hooks that otherwise wouldnt be able to.
+
+As this is a useful solution, there has classically also been the pattern of adding state from the server \(i.e. from api requests\) to the store.
+
+```ts
+const globalState = {
+  // Client owned state
+  theme: "dark",
+  alerts: [],
+  menuState: "open",
+  // State from the server
+  todos: [...],
+  books: [...],
+  pcGames: [...]
+};
+```
+
+> More info: [Talk by Tanner Listener, the Creator of React Query](https://www.youtube.com/watch?v=seU46c6Jz7E&t=3s)
+
+<br />
+
+### Client State
+
+- Non-persistent \(lasts for a session\).
+- Synchronous and immediately available.
+- Client-owned.
+
+Therefor client state tends to be reliably up to date with what we want to render in the view.
+
+### Server State
+
+- Persisted remotely \(hosted on a server somewhere\).
+- Single source of truth location is out of our control or even potentially unknown.
+- Asynchronous \(accessible via asynchronous api's\)
+- Shared ownership. State can be changed at any time by other owners.
+
+Therefor very few guarantees can be made around or server state always being up to date in our apps.
+And, commonly in the view we end up relying on a snapshot of server state from a specific moment in time \(when we last fetched data\).
+
+Because of the complexity and unreliablity of server state a huge variety of tools have been developed for the client to deal with all the various quirks.
+This can quickly cause client side state management solutions to become wildy complex and hard to understand or maintain.
