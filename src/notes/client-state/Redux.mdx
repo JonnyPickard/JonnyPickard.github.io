@@ -6,7 +6,7 @@ import ReduxDataFlowAsync from "../../assets/diagrams/ReduxAsyncDataFlowDiagram.
 
 # Redux
 
-Nov 5, 2023
+<time dateTime="2023-09-05">Nov 5, 2023</time>
 
 <hr />
 
@@ -14,7 +14,7 @@ Nov 5, 2023
 - [Redux Core Concepts](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow)
 - [Redux Toolkit](https://redux-toolkit.js.org/introduction/getting-started)
 
-## Table of contents
+## Table of Contents
 
 - [Overview](#overview)
 - [One-Way Data Flow](#one-way-data-flow)
@@ -152,7 +152,7 @@ Because of this, it's often a good idea to define reusable selectors directly in
 // Example 1. Forever rerendering.
 function TodoList() {
   const completedTodos = useSelector((state) =>
-    state.todos.map((todo) => todo.completed)
+    state.todos.map((todo) => todo.completed),
   );
 }
 ```
@@ -194,7 +194,7 @@ const selectUsersOver30 = createSelector(
   // Input selector
   (state) => state.usersList,
   // Output selector
-  (usersList) => usersList.filter((user) => user.age > 30)
+  (usersList) => usersList.filter((user) => user.age > 30),
 );
 ```
 
@@ -314,7 +314,7 @@ export const saveNewTodo = createAsyncThunk(
     const initialTodo = { text };
     const response = await client.post("/fakeApi/todos", { todo: initialTodo });
     return response.todo;
-  }
+  },
 );
 
 const todosSlice = createSlice({
@@ -444,4 +444,4 @@ Here is an example of how you could normalize the `blogPosts` state shape:
 
 ## [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
 
-> 🚧 I think it's worth covering this in a separate post as theres a lot of in depth knowledge/ features.
+> 🚧 I think it's worth covering this in a separate post as there's a lot of in-depth knowledge/ features.

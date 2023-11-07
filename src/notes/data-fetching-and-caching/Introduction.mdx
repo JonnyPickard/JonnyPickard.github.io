@@ -1,0 +1,146 @@
+import { Meta } from "@storybook/blocks";
+import LinkTo from "@storybook/addon-links/react";
+
+<Meta
+  name="Notes/Data Fetching & Caching/Introduction"
+  title="Notes/Data Fetching & Caching/Introduction"
+/>
+
+# Data Fetching & Caching
+
+<time dateTime="2023-09-06">Nov 6, 2023</time>
+
+<hr />
+
+Over the last couple years, the React community has come to realize that "data fetching and caching" is really a different set of concerns than "state management".
+While you can use a state management library like Redux to cache data,
+the use cases are different enough that it's worth using tools that are purpose-built for the data fetching use case.
+
+The most popular data fetching & caching clients/ tools, at the time of writing, can be found in the table below.
+
+<table>
+  <thead>
+    <tr>
+      <th>Clients</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a
+          href="https://tanstack.com/query/v3/docs/react/overview"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"React Query"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://swr.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"SWR"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://redux-toolkit.js.org/rtk-query/overview"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"Redux Tool Kit (RTK) Query"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://www.apollographql.com/docs/react/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"Apollo Client*"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://relay.dev/" target="_blank" rel="noopener noreferrer">
+          {"Relay*"}
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a
+          href="https://formidable.com/open-source/urql/docs/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {"URQL*"}
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+> \* Intended to be used with GraphQL
+
+<br />
+
+## Global State Vs Server state
+
+Typically in complex React apps there has been a pattern of storing most of the required state
+in a global state store e.g. using Redux.
+
+- This avoids drilling props down multiple levels.
+- Allows us to acess data across our application without duplicating it.
+- Allows comunication between isolated components and hooks that otherwise wouldnt be able to.
+
+As this is a useful solution, there has classically also been the pattern of adding state from the server \(i.e. from api requests\) to the store.
+
+```ts
+const globalState = {
+  // Client owned state
+  theme: "dark",
+  alerts: [],
+  menuState: "open",
+  // State from the server
+  todos: [...],
+  books: [...],
+  pcGames: [...]
+};
+```
+
+> More info: [Talk by Tanner Listener, the Creator of React Query](https://www.youtube.com/watch?v=seU46c6Jz7E&t=3s)
+
+<br />
+
+### Splitting Client & Server State
+
+#### Client State
+
+- Non-persistent \(lasts for a session\).
+- Synchronous and immediately available.
+- Client-owned.
+
+Therefor client state tends to be reliably up to date with what we want to render in the view.
+
+#### Server State
+
+- Persisted remotely \(hosted on a server somewhere\).
+- Single source of truth location is out of our control or even potentially unknown.
+- Asynchronous \(accessible via asynchronous api's\)
+- Shared ownership. State can be changed at any time by other owners.
+
+Therefor very few guarantees can be made around or server state always being up to date in our apps.
+And, commonly in the view we end up relying on a snapshot of server state from a specific moment in time \(when we last fetched data\).
+
+Because of the complexity and unreliablity of server state a huge variety of tools have been developed for the client to deal with all the various quirks.
+This can quickly cause client side state management solutions to become wildy complex and hard to understand or maintain.
