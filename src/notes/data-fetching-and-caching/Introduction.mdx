@@ -122,7 +122,9 @@ const globalState = {
 
 <br />
 
-### Client State
+### Splitting Client & Server State
+
+#### Client State
 
 - Non-persistent \(lasts for a session\).
 - Synchronous and immediately available.
@@ -130,7 +132,7 @@ const globalState = {
 
 Therefor client state tends to be reliably up to date with what we want to render in the view.
 
-### Server State
+#### Server State
 
 - Persisted remotely \(hosted on a server somewhere\).
 - Single source of truth location is out of our control or even potentially unknown.
