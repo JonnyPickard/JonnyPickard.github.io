@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "dev": "npm run storybook",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@react-three/drei": "^9.93.0",
+    "@react-three/fiber": "^8.15.14",
+    "@types/three": "^0.160.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "three": "^0.160.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.1.1",
