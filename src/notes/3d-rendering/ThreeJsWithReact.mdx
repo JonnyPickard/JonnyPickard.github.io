@@ -31,6 +31,12 @@ Having spent a lot of time lately learning UE 5 & Blender I wanted to try some w
 
 As I mainly work with React I chose to use the [@react-three/fiber][2] renderer for ThreeJs as well as the associated abstraction/ helper function library [@react-three/drei][3]. Finally I used [@react-three/gltfjsx][8] to convert my model into a JSX component.
 
+```bash
+# convert gltf to jsx
+
+npx gltfjsx src/assets/3DModels/UnrealSimpleMannequin.glb -t -r ./src/assets
+```
+
 ## Animating a 3D Avatar
 
 While reasearching React-based 3D tooling I cam across this great article: [Render youself in 3D using React & ThreeJs][4] by Nourdine Labib which I immediately had to try.
