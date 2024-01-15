@@ -17,7 +17,7 @@ export const Scene = () => {
       <ambientLight intensity={0.1} />
       <directionalLight intensity={0.4} />
       <Suspense fallback={null}>
-        <Model position={[0.025, -0.9, 1]} />
+        <Model position={[0, -0.4, -0.4]} />
       </Suspense>
       <OrbitControls />
     </Canvas>
