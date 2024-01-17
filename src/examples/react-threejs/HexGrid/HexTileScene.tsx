@@ -14,20 +14,20 @@ export const HexTileScene = () => {
     <MotionCanvas
       dpr={[1, 2]}
       shadows
-      camera={{ position: [10, 10, 0] }}
       style={{
         backgroundColor: "#111a21",
         width: "100vw",
         height: "100vh",
       }}
     >
+      <motion.gridHelper args={[20, 40, "#6f6f6f", "#9d4b4b"]} />
       <motion.ambientLight intensity={1.25} />
       <motion.ambientLight intensity={0.1} />
       <motion.directionalLight position={[0, 10, 12.25]} intensity={0.6} />
       <Suspense fallback={null}>
-        <HexTileModel position={[0, 0, 0]} rotation={[0, 0, 85]} />
+        <HexTileModel position={[0, 0, 0]} rotation={[0, 0, 0]} />
       </Suspense>
-      <LayoutCamera position={[0, 0, 5]} />
+      <LayoutCamera position={[10, 10, 0]} />
       <OrbitControls />
     </MotionCanvas>
   );
