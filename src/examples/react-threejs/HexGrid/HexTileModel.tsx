@@ -13,7 +13,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Model(props: JSX.IntrinsicElements["group"]) {
+export function HexTileModel(props: JSX.IntrinsicElements["group"]) {
   // eslint-disable-next-line
   // @ts-ignore
   const { nodes } = useGLTF("/3d-models/HexTile.glb") as GLTFResult;
