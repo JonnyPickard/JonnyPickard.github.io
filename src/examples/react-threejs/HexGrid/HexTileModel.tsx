@@ -24,7 +24,13 @@ export function HexTileModel(props: JSX.IntrinsicElements["group"]) {
         geometry={nodes.Cylinder.geometry}
         material={nodes.Cylinder.material}
         rotation={[0, Math.PI / 2, 0]}
-      />
+      >
+        <meshStandardMaterial
+          attach="material"
+          color={"teal"}
+          roughness={0.4}
+        />
+      </mesh>
     </group>
   );
 }
