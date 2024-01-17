@@ -1,5 +1,10 @@
-import { Suspense, useMemo } from "react";
-import { OrbitControls, GizmoHelper, GizmoViewport } from "@react-three/drei";
+import { Suspense, useMemo, useRef } from "react";
+import {
+  OrbitControls,
+  GizmoHelper,
+  GizmoViewport,
+  Stats,
+} from "@react-three/drei";
 import { HexTileModel } from "./HexTileModel";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
 import { extend } from "@react-three/fiber";
@@ -37,15 +42,13 @@ export const HexTileScene = () => {
         height: "100vh",
       }}
     >
-      <GizmoHelper
-        alignment="top-right" // widget alignment within scene
-        margin={[80, 80]} // widget margins (X, Y)
-      >
+      <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}
-          labelColor="black"
+          labelColor="white"
         />
       </GizmoHelper>
+      <motion.axesHelper args={[5]} />
       <motion.gridHelper args={[20, 40, "#6f6f6f", "#9d4b4b"]} />
       <motion.ambientLight intensity={1.25} />
       <motion.ambientLight intensity={0.1} />
@@ -55,6 +58,7 @@ export const HexTileScene = () => {
       </Suspense>
       <LayoutCamera position={[10, 10, 0]} />
       <OrbitControls makeDefault />
+      <Stats />
     </MotionCanvas>
   );
 };
