@@ -3,7 +3,7 @@ import { OrbitControls } from "@react-three/drei";
 import { HexTileModel } from "./HexTileModel";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
 import { extend } from "@react-three/fiber";
-import { useMotionValue, useTransform } from "framer-motion";
+// import { useMotionValue, useTransform } from "framer-motion";
 import * as THREE from "three";
 
 export const HexTileScene = () => {
