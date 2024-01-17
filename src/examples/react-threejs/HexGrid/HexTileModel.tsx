@@ -18,6 +18,11 @@ export function HexTileModel(props: JSX.IntrinsicElements["group"]) {
   // @ts-ignore
   const { nodes } = useGLTF("/3d-models/HexTile.glb") as GLTFResult;
 
+  // nodes.Cylinder.geometry.boundingSphere.radius
+  // 0.7348821301486452
+
+  console.log(nodes.Cylinder.geometry);
+
   return (
     <group {...props} dispose={null}>
       <mesh
