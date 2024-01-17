@@ -10,4 +10,5 @@ document.head.appendChild(link);
 
 addons.setConfig({
   theme: yourTheme,
+  showPanel: false,
 });

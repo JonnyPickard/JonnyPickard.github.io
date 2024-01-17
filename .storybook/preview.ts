@@ -3,7 +3,6 @@ import theme from "./theme";
 
 const preview: Preview = {
   parameters: {
-    showPanel: false,
     options: {
       storySort: {
         includeNames: true,
