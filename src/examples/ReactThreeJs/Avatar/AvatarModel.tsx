@@ -30,7 +30,7 @@ interface GLTFAction extends THREE.AnimationClip {
   name: ActionName;
 }
 
-export function Model(props: JSX.IntrinsicElements["group"]) {
+export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
   const { nodes, materials, animations } = useGLTF(
     "/3d-models/UnrealSimpleMannequin.glb",

@@ -1,7 +1,11 @@
 <p align="center">
-  <a href="https://github.com/JonnyPickard/JonnyPickard.github.io">
-    <img src="./src/assets/logo-text.svg" alt="Storybook" width="320px" />
+  <a title="Github Repository" href="https://github.com/JonnyPickard/JonnyPickard.github.io">
+    <img src="./src/assets/logo-text.svg" alt="Github" width="320px" />
   </a>
+</p>
+
+<p align="center">
+  <a title="View Storybook Site" href="https://jonnypickard.github.io/" target="_blank"><img src="./src/assets/storybook-badge.svg" width="140px;" alt="View Storybook Site">
 </p>
 
 ## About

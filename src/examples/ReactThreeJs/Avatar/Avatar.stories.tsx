@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Scene } from "./Scene";
+import { AvatarScene } from "./AvatarScene";
 
 const meta = {
-  title: "Examples/ReactThreeJs/FlairAnimation",
-  component: Scene,
+  title: "Examples/ReactThreeJs/Avatar",
+  component: AvatarScene,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
-} satisfies Meta<typeof Scene>;
+} satisfies Meta<typeof AvatarScene>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
