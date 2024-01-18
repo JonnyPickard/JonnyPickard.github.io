@@ -5,8 +5,9 @@ Command: npx gltfjsx@6.2.16 src/assets/3d-models/HexTile.glb -t -r ./src/assets
 
 import { useRef } from "react";
 import * as THREE from "three";
-import { useGLTF, useHelper } from "@react-three/drei";
+import { useGLTF, useHelper, Text } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { isOffset } from "honeycomb-grid";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -14,15 +15,44 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function HexTileModel(props: JSX.IntrinsicElements["group"]) {
+interface HexTileModelProps {
+  isOffset: boolean;
+  /* Column */
+  q: number;
+  /* Row */
+  r: number;
+  hideTile?: boolean;
+  showSphere?: boolean;
+}
+
+export function HexTileModel({
+  position,
+  q,
+  r,
+  isOffset,
+  hideTile = false,
+  showSphere = false,
+  ...props
+}: JSX.IntrinsicElements["mesh"] & HexTileModelProps) {
   // eslint-disable-next-line
   // @ts-ignore
   const { nodes } = useGLTF("/3d-models/HexTile.glb") as GLTFResult;
 
-  console.log(nodes.Cylinder.geometry);
+  // Size is calculated as the diameter of the outer circle
+  // that can be drawn around the hex
+  // See https://www.redblobgames.com/grids/hexagons/#basics
+  const hardcodedTileSize = 0.5553572773933411;
+
+  const size = nodes.Cylinder.geometry.boundingBox
+    ? nodes.Cylinder.geometry.boundingBox.max.z
+    : hardcodedTileSize;
+
+  // NOTE: bounding sphere appears to be larger than the mesh?
+  // Not having much luck googling why that would be
+  // console.log(nodes.Cylinder.geometry.boundingSphere);
   // isSphere: true
   // center: {x: 0, y: 0, z: 0}
-  // 0.7348821301486452
+  // radius: 0.7348821301486452
 
   // console.log(nodes.Cylinder.geometry.boundingBox.max);
   // const boundingBox = {
@@ -35,22 +65,42 @@ export function HexTileModel(props: JSX.IntrinsicElements["group"]) {
 
   // eslint-disable-next-line
   // @ts-ignore
-  useHelper(tileMeshRef, THREE.BoxHelper, "cyan");
+  // useHelper(tileMeshRef, THREE.BoxHelper, "cyan");
+
+  // Make text flat with tiles
+  const textRotate = new THREE.Euler(-(Math.PI / 2), 0, 0);
 
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        ref={tileMeshRef}
-        geometry={nodes.Cylinder.geometry}
-        material={nodes.Cylinder.material}
-        rotation={[0, Math.PI / 2, 0]}
+    <group position={position}>
+      <Text
+        letterSpacing={0.17}
+        fontSize={0.22}
+        rotation={textRotate}
+        position={[0, 0.02, 0]}
       >
-        <meshStandardMaterial
-          attach="material"
-          color={"teal"}
-          roughness={0.4}
-        />
-      </mesh>
+        [{q}, {r}]
+      </Text>
+      {!hideTile && showSphere && (
+        <mesh>
+          <sphereGeometry args={[size, 24, 24]} />
+          <meshStandardMaterial transparent wireframe />
+        </mesh>
+      )}
+      {!hideTile && (
+        <mesh
+          {...props}
+          ref={tileMeshRef}
+          dispose={null}
+          geometry={nodes.Cylinder.geometry}
+          material={nodes.Cylinder.material}
+        >
+          <meshStandardMaterial
+            attach="material"
+            color={isOffset ? "#186cb1" : "#9d0d8c"}
+            roughness={0.4}
+          />
+        </mesh>
+      )}
     </group>
   );
 }
