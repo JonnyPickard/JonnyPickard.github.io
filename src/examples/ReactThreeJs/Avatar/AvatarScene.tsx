@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Model } from "./Model";
+import { AvatarModel } from "./AvatarModel";
 
-export const Scene = () => {
+export const AvatarScene = () => {
   return (
     <Canvas
       camera={{ position: [2, 0, 12.25], fov: 15 }}
@@ -17,7 +17,7 @@ export const Scene = () => {
       <ambientLight intensity={0.1} />
       <directionalLight intensity={0.4} />
       <Suspense fallback={null}>
-        <Model position={[0, -0.4, -0.4]} />
+        <AvatarModel position={[0, -0.4, -0.4]} />
       </Suspense>
       <OrbitControls />
     </Canvas>
