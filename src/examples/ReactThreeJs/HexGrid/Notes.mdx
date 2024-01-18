@@ -1,0 +1,45 @@
+# HexGrid Working Notes
+
+- [Honeycomb Hex Grid Library][2]
+- [Hex Geometry][3]
+
+## Overview
+
+An attempt at using [ThreeJs][1] + [Honeycomb][2] to render a hex grid.
+
+This is a learning exercise as I wanted to experiment with some hex grid coordinate systems as well as
+pathing/ grid traversal algorithms.
+
+## Mapping my Hex Mesh Geometry To A Honeycomb Custom Hex
+
+[Custom Hexes](https://abbekeultjes.nl/honeycomb/guide/custom-hexes.html#custom-hexes)
+
+- My hex tile mesh has `POINTY Top` geometry (In 3JS `Y` is used as `UP`).
+- Bounding box Z = the dimension of the outer circumfrence of the hex.
+- Dimension of the outer circumfrence of the hex is used to represent a `Size` number value.
+- The width and height are defined in terms of the diameters of the two circles.
+  - Flat Top Variant
+    - Width = `2 x Size`
+    - Height = `√3 x Size`
+  - Pointy Top Variant
+    - Width = `√3 x Size`
+    - Height = `2 x Size`
+
+```tsx
+const CustomHex = defineHex({
+  // Uses the outer circle diameter to make x/ y
+  // nodes.Cylinder.geometry.boundingBox.max.z
+  dimensions: 0.5553572773933411;
+  // FLAT = flat top, POINTY = pointy top
+  orientation: Orientation.POINTY,
+  // Z is uneccessary as the hex tile grid should represent a 2d plane
+  origin: { x: 0, y: 0 },
+});
+
+// hex is an instance
+const hex = new CustomHex();
+```
+
+[1]: https://threejs.org/ "ThreeJs"
+[2]: https://abbekeultjes.nl/honeycomb/guide/getting-started.html "Honeycomb"
+[3]: https://www.redblobgames.com/grids/hexagons/#basics "Hex Geometry"

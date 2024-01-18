@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { AvatarScene } from "./AvatarScene";
 
 const meta = {
-  title: "Examples/ReactThreeJs/FlairAnimation",
+  title: "Examples/ReactThreeJs/Avatar",
   component: AvatarScene,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
