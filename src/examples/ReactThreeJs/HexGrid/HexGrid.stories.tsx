@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { HexTileScene } from "./HexTileScene";
+import { HexGridScene } from "./HexGridScene";
 
 const meta = {
   title: "Examples/ReactThreeJs/HexGrid",
-  component: HexTileScene,
+  component: HexGridScene,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof HexTileScene>;
+} satisfies Meta<typeof HexGridScene>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
