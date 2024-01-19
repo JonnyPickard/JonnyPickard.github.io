@@ -118,8 +118,6 @@ export function HexTileModel({
             attach="material"
             color={pickTileColor()}
             roughness={0.4}
-            transparent
-            // opacity={0.5}
           />
           {isPlayerTile && (
             <>
