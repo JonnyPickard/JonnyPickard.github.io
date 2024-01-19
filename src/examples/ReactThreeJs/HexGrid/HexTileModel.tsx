@@ -5,9 +5,9 @@ Command: npx gltfjsx@6.2.16 src/assets/3d-models/HexTile.glb -t -r ./src/assets
 
 import { useRef } from "react";
 import * as THREE from "three";
-import { useGLTF, useHelper, Text } from "@react-three/drei";
+import { useGLTF, Text, Outlines, Edges } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { isOffset } from "honeycomb-grid";
+import { TILE_COLORS } from ".";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -17,21 +17,27 @@ type GLTFResult = GLTF & {
 
 interface HexTileModelProps {
   isOffset: boolean;
-  /* Column */
-  q: number;
-  /* Row */
-  r: number;
+  /* Offset coords - Column */
+  col: number;
+  /* Offset coords - Row */
+  row: number;
+  isHoveredTile?: boolean;
+  isPlayerTile?: boolean;
+  isDestinationTile?: boolean;
   hideTile?: boolean;
   showSphere?: boolean;
 }
 
 export function HexTileModel({
   position,
-  q,
-  r,
+  col,
+  row,
   isOffset,
   hideTile = false,
   showSphere = false,
+  isHoveredTile,
+  isPlayerTile,
+  isDestinationTile,
   ...props
 }: JSX.IntrinsicElements["mesh"] & HexTileModelProps) {
   // eslint-disable-next-line
@@ -63,12 +69,26 @@ export function HexTileModel({
 
   const tileMeshRef = useRef(null);
 
+  // import { useHelper } from "@react-three/drei";
   // eslint-disable-next-line
   // @ts-ignore
   // useHelper(tileMeshRef, THREE.BoxHelper, "cyan");
 
   // Make text flat with tiles
   const textRotate = new THREE.Euler(-(Math.PI / 2), 0, 0);
+
+  const pickTileColor = () => {
+    // Should maybe make custom mesh hex outline for this?
+    if (isHoveredTile) {
+      return TILE_COLORS.HOVERED;
+    }
+
+    if (isOffset) {
+      return TILE_COLORS.OFFSET_ROW;
+    }
+
+    return TILE_COLORS.ROW;
+  };
 
   return (
     <group position={position}>
@@ -78,7 +98,7 @@ export function HexTileModel({
         rotation={textRotate}
         position={[0, 0.02, 0]}
       >
-        [{q}, {r}]
+        [{col}, {row}]
       </Text>
       {!hideTile && showSphere && (
         <mesh>
@@ -96,9 +116,46 @@ export function HexTileModel({
         >
           <meshStandardMaterial
             attach="material"
-            color={isOffset ? "#186cb1" : "#9d0d8c"}
+            color={pickTileColor()}
             roughness={0.4}
           />
+          {isPlayerTile && (
+            <>
+              <Outlines
+                scale={[0.8, 0.01, 0.8]}
+                color={TILE_COLORS.PLAYER}
+                position={[0, 0.04, 0]}
+              />
+              <Text
+                color="black"
+                letterSpacing={0.17}
+                fontSize={0.22}
+                rotation={textRotate}
+                position={[0, 0.04, 0]}
+              >
+                [{col}, {row}]
+              </Text>
+            </>
+          )}
+          {isDestinationTile && (
+            <>
+              <Outlines
+                scale={[0.8, 0.01, 0.8]}
+                color={TILE_COLORS.DESTINATION}
+                position={[0, 0.04, 0]}
+              ></Outlines>
+              <Text
+                color="black"
+                letterSpacing={0.17}
+                fontSize={0.22}
+                rotation={textRotate}
+                position={[0, 0.04, 0]}
+              >
+                [{col}, {row}]
+              </Text>
+            </>
+          )}
+          {isHoveredTile && <Edges scale={1.1} color={TILE_COLORS.HOVERED} />}
         </mesh>
       )}
     </group>
