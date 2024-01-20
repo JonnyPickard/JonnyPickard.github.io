@@ -1,6 +1,6 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { HexTileModel, defineCustomHex } from ".";
+import { HexTileModel, defineCustomHex, setTerrainTiles } from ".";
 import { useState, useEffect } from "react";
 import {
   Grid,
@@ -9,9 +9,6 @@ import {
   hexToPoint,
   hexToOffset,
   OffsetCoordinates,
-  line,
-  Direction,
-  concat,
 } from "honeycomb-grid";
 
 type OffsetCoordinatesState = OffsetCoordinates | { col: null; row: null };
@@ -64,52 +61,35 @@ export const HexGridManager = () => {
     row: 5,
   });
 
-  // 1. Create a hex class:
-  const Hex = defineCustomHex({
-    // Hardcoded for now but this comes from:
-    // console.log(nodes.HexTile.geometry.boundingBox.max);
-    // const boundingBox = {
-    //   z: 0.9937889575958252,
-    // };
-    dimensions: hardcodedTileSize,
-    // origin: "topLeft", // default
-    // NOTE: This seems to be about the grid offset?
-    // but should really work out how to calc the hexs vs grid
-    // Probably due to different unit sizes for the grid/ my mesh?
-    origin: { x: 8, y: 6 },
-    orientation: Orientation.POINTY,
-    // offset every other row by 1/2 hex
-    // offset: -1, // default (odd-r)
-    // offset: 1, // (even-r)
-  });
+  const [grid, setGrid] = useState([]);
 
-  // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
-  const grid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
+  // Only run on first render to prevent expensive grid recalculations
+  useEffect(() => {
+    // 1. Create a hex class:
+    const Hex = defineCustomHex({
+      // Hardcoded for now but this comes from:
+      // console.log(nodes.HexTile.geometry.boundingBox.max);
+      // const boundingBox = {
+      //   z: 0.9937889575958252,
+      // };
+      dimensions: hardcodedTileSize,
+      // origin: "topLeft", // default
+      // NOTE: This seems to be about the grid offset?
+      // but should really work out how to calc the hexs vs grid
+      // Probably due to different unit sizes for the grid/ my mesh?
+      origin: { x: 8, y: 6 },
+      orientation: Orientation.POINTY,
+      // offset every other row by 1/2 hex
+      // offset: -1, // default (odd-r)
+      // offset: 1, // (even-r)
+    });
 
-  // ------------------------------------------
-  // TODO: Abstract this block into custom map/ maze function
-  // Used for generating terrain tiles
-  const squareOutlineTraverser = concat([
-    line({ start: { col: 4, row: 5 }, direction: Direction.E, length: 4 }),
-    line({ direction: Direction.S, length: 3 }),
-    line({ direction: Direction.W, length: 3 }),
-    line({ direction: Direction.N, length: 3 }),
-  ]);
+    // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
+    const hexGrid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
 
-  // Note: Typing isn't working with a custom hex class
-  // eslint-disable-next-line
-  // @ts-ignore
-  const traversedGrid = grid.traverse(squareOutlineTraverser).filter((hex) => {
-    return Boolean(hexToOffset(hex).col % 2);
-  });
-
-  const gridWithTerrain = traversedGrid.map((tile) => {
-    tile.isTraversable = false;
-    return tile;
-  });
-
-  grid.setHexes(gridWithTerrain);
-  // ------------------------------------------
+    setTerrainTiles(hexGrid, 6);
+    setGrid(hexGrid);
+  }, []);
 
   // 3. Iterate over the grid to render each hex:
   return [...grid].map((hex) => {
