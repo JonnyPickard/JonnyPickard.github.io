@@ -1,9 +1,8 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { HexTileModel } from "./HexTileModel";
-import { useState } from "react";
+import { HexTileModel, defineCustomHex } from ".";
+import { useState, useEffect } from "react";
 import {
-  defineHex,
   Grid,
   rectangle,
   Orientation,
@@ -61,7 +60,7 @@ export const HexGridManager = () => {
   });
 
   // 1. Create a hex class:
-  const Hex = defineHex({
+  const Hex = defineCustomHex({
     // Hardcoded for now but this comes from:
     // console.log(nodes.Cylinder.geometry.boundingBox.max);
     // const boundingBox = {
