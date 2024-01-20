@@ -5,4 +5,5 @@ export enum TILE_COLORS {
   PLAYER = "#00bb9f",
   ORIGIN = "#3564ff",
   DESTINATION = "#ff44c8",
+  TERRAIN = "#f00",
 }

@@ -11,7 +11,7 @@ import { TILE_COLORS } from ".";
 
 type GLTFResult = GLTF & {
   nodes: {
-    Cylinder: THREE.Mesh;
+    HexTile: THREE.Mesh;
   };
 };
 
@@ -24,6 +24,7 @@ interface HexTileModelProps {
   isHoveredTile?: boolean;
   isPlayerTile?: boolean;
   isDestinationTile?: boolean;
+  isTerrainTile?: boolean;
   hideTile?: boolean;
   showSphere?: boolean;
 }
@@ -38,6 +39,7 @@ export function HexTileModel({
   isHoveredTile,
   isPlayerTile,
   isDestinationTile,
+  isTerrainTile,
   ...props
 }: JSX.IntrinsicElements["mesh"] & HexTileModelProps) {
   // eslint-disable-next-line
@@ -47,20 +49,20 @@ export function HexTileModel({
   // Size is calculated as the diameter of the outer circle
   // that can be drawn around the hex
   // See https://www.redblobgames.com/grids/hexagons/#basics
-  const hardcodedTileSize = 0.5553572773933411;
+  const hardcodedTileSize = 0.9937889575958252;
 
-  const size = nodes.Cylinder.geometry.boundingBox
-    ? nodes.Cylinder.geometry.boundingBox.max.z
+  const size = nodes.HexTile.geometry.boundingBox
+    ? nodes.HexTile.geometry.boundingBox.max.z
     : hardcodedTileSize;
 
   // NOTE: bounding sphere appears to be larger than the mesh?
   // Not having much luck googling why that would be
-  // console.log(nodes.Cylinder.geometry.boundingSphere);
+  // console.log(nodes.HexTile.geometry.boundingSphere);
   // isSphere: true
   // center: {x: 0, y: 0, z: 0}
   // radius: 0.7348821301486452
 
-  // console.log(nodes.Cylinder.geometry.boundingBox.max);
+  // console.log(nodes.HexTile.geometry.boundingBox.max);
   // const boundingBox = {
   //   x: 0.48095351457595825,
   //   y: 0.017713172361254692,
@@ -83,6 +85,10 @@ export function HexTileModel({
       return TILE_COLORS.HOVERED;
     }
 
+    if (isTerrainTile) {
+      return TILE_COLORS.TERRAIN;
+    }
+
     if (isOffset) {
       return TILE_COLORS.OFFSET_ROW;
     }
@@ -96,7 +102,7 @@ export function HexTileModel({
         letterSpacing={0.17}
         fontSize={0.22}
         rotation={textRotate}
-        position={[0, 0.02, 0]}
+        position={[0, 0.028, 0]}
       >
         [{col}, {row}]
       </Text>
@@ -111,8 +117,8 @@ export function HexTileModel({
           {...props}
           ref={tileMeshRef}
           dispose={null}
-          geometry={nodes.Cylinder.geometry}
-          material={nodes.Cylinder.material}
+          geometry={nodes.HexTile.geometry}
+          material={nodes.HexTile.material}
         >
           <meshStandardMaterial
             attach="material"

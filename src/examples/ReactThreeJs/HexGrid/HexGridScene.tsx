@@ -42,7 +42,7 @@ export const HexGridScene = () => {
       <Suspense fallback={null}>
         <HexGridManager />
       </Suspense>
-      <LayoutCamera position={[0, 20, 0]} />
+      <LayoutCamera position={[0, 30, 0]} />
       <OrbitControls makeDefault />
       <Stats />
     </MotionCanvas>

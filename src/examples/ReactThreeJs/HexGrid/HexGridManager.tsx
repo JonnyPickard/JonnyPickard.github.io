@@ -9,6 +9,9 @@ import {
   hexToPoint,
   hexToOffset,
   OffsetCoordinates,
+  line,
+  Direction,
+  concat,
 } from "honeycomb-grid";
 
 type OffsetCoordinatesState = OffsetCoordinates | { col: null; row: null };
@@ -29,6 +32,8 @@ const isActiveTile = (
 
   return tile.col === col && tile.row === row;
 };
+
+const hardcodedTileSize = 0.9937889575958252;
 
 export const HexGridManager = () => {
   /* 
@@ -62,16 +67,16 @@ export const HexGridManager = () => {
   // 1. Create a hex class:
   const Hex = defineCustomHex({
     // Hardcoded for now but this comes from:
-    // console.log(nodes.Cylinder.geometry.boundingBox.max);
+    // console.log(nodes.HexTile.geometry.boundingBox.max);
     // const boundingBox = {
-    //   z: 0.5553572773933411,
+    //   z: 0.9937889575958252,
     // };
-    dimensions: 0.553572773933411,
+    dimensions: hardcodedTileSize,
     // origin: "topLeft", // default
     // NOTE: This seems to be about the grid offset?
     // but should really work out how to calc the hexs vs grid
     // Probably due to different unit sizes for the grid/ my mesh?
-    origin: { x: 4.3, y: 3.6 },
+    origin: { x: 8, y: 6 },
     orientation: Orientation.POINTY,
     // offset every other row by 1/2 hex
     // offset: -1, // default (odd-r)
@@ -81,6 +86,31 @@ export const HexGridManager = () => {
   // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
   const grid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
 
+  // ------------------------------------------
+  // TODO: Abstract this block into custom map/ maze function
+  // Used for generating terrain tiles
+  const squareOutlineTraverser = concat([
+    line({ start: { col: 4, row: 5 }, direction: Direction.E, length: 4 }),
+    line({ direction: Direction.S, length: 3 }),
+    line({ direction: Direction.W, length: 3 }),
+    line({ direction: Direction.N, length: 3 }),
+  ]);
+
+  // Note: Typing isn't working with a custom hex class
+  // eslint-disable-next-line
+  // @ts-ignore
+  const traversedGrid = grid.traverse(squareOutlineTraverser).filter((hex) => {
+    return Boolean(hexToOffset(hex).col % 2);
+  });
+
+  const gridWithTerrain = traversedGrid.map((tile) => {
+    tile.isTraversable = false;
+    return tile;
+  });
+
+  grid.setHexes(gridWithTerrain);
+  // ------------------------------------------
+
   // 3. Iterate over the grid to render each hex:
   return [...grid].map((hex) => {
     // Internally honeycomb uses Axial coordinates
@@ -88,6 +118,8 @@ export const HexGridManager = () => {
     // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
     const { x, y } = hexToPoint(hex);
     const { col, row } = hexToOffset(hex);
+
+    const isTerrainTile = hex.isTraversable === false;
 
     // Is an offset row
     const isOffset = Boolean(row % 2);
@@ -111,6 +143,7 @@ export const HexGridManager = () => {
         isHoveredTile={isHoveredTile}
         isPlayerTile={isPlayerTile}
         isDestinationTile={isDestinationTile}
+        isTerrainTile={isTerrainTile}
         hideTile={hideTile}
         onPointerOver={(e) => {
           e.stopPropagation;
