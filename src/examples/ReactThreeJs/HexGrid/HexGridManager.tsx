@@ -1,6 +1,6 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { HexTileModel, defineCustomHex, setTerrainTiles } from ".";
+import { defineCustomHex, setTerrainTiles } from ".";
 import { useState, useEffect } from "react";
 import {
   Hex,
@@ -11,6 +11,7 @@ import {
   hexToOffset,
   OffsetCoordinates,
 } from "honeycomb-grid";
+import { HexTileBase, HexTileGrass } from "./Models";
 
 type OffsetCoordinatesState = OffsetCoordinates | { col: null; row: null };
 
@@ -115,27 +116,28 @@ export const HexGridManager = () => {
     const isDestinationTile = isActiveTile(destinationTile, { col, row });
 
     return (
-      <HexTileModel
-        key={`${col}-${row}`}
-        col={col}
-        row={row}
-        position={[x, 0, y]}
-        isOffset={isOffset}
-        isHoveredTile={isHoveredTile}
-        isPlayerTile={isPlayerTile}
-        isDestinationTile={isDestinationTile}
-        isTerrainTile={isTerrainTile}
-        hideTile={hideTile}
-        onPointerOver={(e) => {
-          e.stopPropagation;
-          setHoveredTile({ col, row });
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation;
-          setDestinationTile(hoveredTile);
-          setOriginTile(playerTile);
-        }}
-      />
+      <HexTileGrass key={`${col}-${row}`} position={[x, 0, y]} />
+      // <HexTileBase
+      // key={`${col}-${row}`}
+      // position={[x, 0, y]}
+      //   col={col}
+      //   row={row}
+      //   isOffset={isOffset}
+      //   isHoveredTile={isHoveredTile}
+      //   isPlayerTile={isPlayerTile}
+      //   isDestinationTile={isDestinationTile}
+      //   isTerrainTile={isTerrainTile}
+      //   hideTile={hideTile}
+      //   onPointerOver={(e) => {
+      //     e.stopPropagation;
+      //     setHoveredTile({ col, row });
+      //   }}
+      //   onPointerDown={(e) => {
+      //     e.stopPropagation;
+      //     setDestinationTile(hoveredTile);
+      //     setOriginTile(playerTile);
+      //   }}
+      // />
     );
   });
 };
