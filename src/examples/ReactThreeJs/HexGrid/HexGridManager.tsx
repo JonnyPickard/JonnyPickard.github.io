@@ -3,6 +3,7 @@
 import { HexTileModel, defineCustomHex, setTerrainTiles } from ".";
 import { useState, useEffect } from "react";
 import {
+  Hex,
   Grid,
   rectangle,
   Orientation,
@@ -61,7 +62,7 @@ export const HexGridManager = () => {
     row: 5,
   });
 
-  const [grid, setGrid] = useState([]);
+  const [grid, setGrid] = useState<Grid<Hex>>();
 
   // Only run on first render to prevent expensive grid recalculations
   useEffect(() => {
@@ -92,7 +93,7 @@ export const HexGridManager = () => {
   }, []);
 
   // 3. Iterate over the grid to render each hex:
-  return [...grid].map((hex) => {
+  return grid?.toArray().map((hex) => {
     // Internally honeycomb uses Axial coordinates
     // But these seem confusing to look at in a rectangle
     // https://www.redblobgames.com/grids/hexagons/#coordinates-offset

@@ -1,4 +1,7 @@
-import { defineHex, HexOptions } from "honeycomb-grid";
+import { defineHex, HexOptions, Hex } from "honeycomb-grid";
+
+// Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties
+// This seemed like the easiest solution as the hc-grid library works in a slightly unusual way for performance reasons
 
 // Reference to the original defineHex function: https://github.com/flauwekeul/honeycomb/blob/master/src/hex/functions/defineHex.ts
 
@@ -71,4 +74,4 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
     set allowsRangedShooting(canShootAcross: boolean) {
       this._allowsRangedShooting = canShootAcross;
     }
-  };
+  } as typeof Hex;
