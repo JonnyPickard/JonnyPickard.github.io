@@ -27,6 +27,7 @@ export function OverlayText({ col, row, color = "white" }: OverlayTextProps) {
       position={[0, 0.04, 0]}
     >
       [{col}, {row}]
+      <meshLambertMaterial emissive={"white"} emissiveIntensity={10} />
     </Text>
   );
 }

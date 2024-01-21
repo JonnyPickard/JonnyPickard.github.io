@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { TILE_COLORS } from ".";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -31,8 +32,14 @@ export function OverlayHighlightOutline(
         geometry={nodes.HexSelectedOutline.geometry}
         material={nodes.HexSelectedOutline.material}
         position={[0, 0.049, 0]}
-        rotation={[0, Math.PI / 2, 0]}
-      />
+      >
+        <meshLambertMaterial
+          color={TILE_COLORS.HOVERED}
+          toneMapped={false}
+          emissiveIntensity={0.6}
+          emissive={TILE_COLORS.HOVERED_EMISSIVE_LIGHT}
+        />
+      </mesh>
     </group>
   );
 }

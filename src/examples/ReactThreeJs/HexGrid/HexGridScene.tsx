@@ -34,12 +34,12 @@ export const HexGridScene = () => {
           labelColor="black"
         />
       </GizmoHelper>
-      <motion.axesHelper args={[3]} />
+      {/* <motion.axesHelper args={[3]} /> */}
       {/* <motion.gridHelper
         position={[0, 0.2, 0]}
         args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
       /> */}
-      <motion.ambientLight intensity={3.25} position={[0, 30, 10]} castShadow />
+      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} castShadow />
       <motion.directionalLight
         castShadow
         visible

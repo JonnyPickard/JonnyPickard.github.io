@@ -11,7 +11,7 @@ import {
   hexToOffset,
   OffsetCoordinates,
 } from "honeycomb-grid";
-import { HexTileBase, HexTileGrass } from "./Models";
+import { HexTileBase } from "./Models";
 
 type OffsetCoordinatesState = OffsetCoordinates | { col: null; row: null };
 
@@ -31,8 +31,6 @@ const isActiveTile = (
 
   return tile.col === col && tile.row === row;
 };
-
-const hardcodedTileSize = 0.9937889575958252;
 
 export const HexGridManager = () => {
   /* 
@@ -67,13 +65,19 @@ export const HexGridManager = () => {
 
   // Only run on first render to prevent expensive grid recalculations
   useEffect(() => {
+    // Size is calculated as the diameter of the outer circle
+    // that can be drawn around the hex
+    // See https://www.redblobgames.com/grids/hexagons/#basics
+    const hardcodedTileSize = 0.9937889575958252;
+    // nodes.HexTile.geometry.boundingBox.max
+    // const boundingBox = {
+    //   "x": 0.8642922043800354,
+    //   "y": 0.026939410716295242,
+    //   "z": 0.9937889575958252
+    // }
+
     // 1. Create a hex class:
     const Hex = defineCustomHex({
-      // Hardcoded for now but this comes from:
-      // console.log(nodes.HexTile.geometry.boundingBox.max);
-      // const boundingBox = {
-      //   z: 0.9937889575958252,
-      // };
       dimensions: hardcodedTileSize,
       // origin: "topLeft", // default
       // NOTE: This seems to be about the grid offset?
@@ -116,28 +120,27 @@ export const HexGridManager = () => {
     const isDestinationTile = isActiveTile(destinationTile, { col, row });
 
     return (
-      <HexTileGrass key={`${col}-${row}`} position={[x, 0, y]} />
-      // <HexTileBase
-      // key={`${col}-${row}`}
-      // position={[x, 0, y]}
-      //   col={col}
-      //   row={row}
-      //   isOffset={isOffset}
-      //   isHoveredTile={isHoveredTile}
-      //   isPlayerTile={isPlayerTile}
-      //   isDestinationTile={isDestinationTile}
-      //   isTerrainTile={isTerrainTile}
-      //   hideTile={hideTile}
-      //   onPointerOver={(e) => {
-      //     e.stopPropagation;
-      //     setHoveredTile({ col, row });
-      //   }}
-      //   onPointerDown={(e) => {
-      //     e.stopPropagation;
-      //     setDestinationTile(hoveredTile);
-      //     setOriginTile(playerTile);
-      //   }}
-      // />
+      <HexTileBase
+        key={`${col}-${row}`}
+        position={[x, 0, y]}
+        col={col}
+        row={row}
+        isOffset={isOffset}
+        isHoveredTile={isHoveredTile}
+        isPlayerTile={isPlayerTile}
+        isDestinationTile={isDestinationTile}
+        isTerrainTile={isTerrainTile}
+        hideTile={hideTile}
+        onPointerOver={(e) => {
+          e.stopPropagation;
+          setHoveredTile({ col, row });
+        }}
+        onPointerDown={(e) => {
+          e.stopPropagation;
+          setDestinationTile(hoveredTile);
+          setOriginTile(playerTile);
+        }}
+      />
     );
   });
 };
