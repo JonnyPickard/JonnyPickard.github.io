@@ -24,7 +24,9 @@ interface OverlayHighlightOutlineProps {}
 export function OverlayHighlightOutline(
   props: JSX.IntrinsicElements["group"] & OverlayHighlightOutlineProps,
 ) {
-  const { nodes } = useGLTF("/3d-models/HexTilleOutline.glb") as GLTFResult;
+  const { nodes } = useGLTF(
+    "/3d-models/HexTilleHighlightOutline.glb",
+  ) as GLTFResult;
 
   return (
     <group {...props} dispose={null}>
@@ -44,4 +46,4 @@ export function OverlayHighlightOutline(
   );
 }
 
-useGLTF.preload("/3d-models/HexTilleOutline.glb");
+useGLTF.preload("/3d-models/HexTilleHighlightOutline.glb");

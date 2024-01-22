@@ -1,23 +1,10 @@
-import { useRef } from "react";
-import * as THREE from "three";
-import { useGLTF, Text, Outlines, Edges } from "@react-three/drei";
-import { GLTF } from "three-stdlib";
 import {
-  TILE_COLORS,
   HexTileGrass,
   HexMountainModel,
   OverlayHighlightOutline,
+  OverlayHighlight,
   OverlayText,
 } from ".";
-
-type GLTFResult = GLTF & {
-  nodes: {
-    HexTile: THREE.Mesh;
-  };
-  materials: {
-    [material: string]: THREE.MeshStandardMaterial;
-  };
-};
 
 interface HexTileBaseProps {
   isOffset: boolean;
@@ -54,6 +41,7 @@ export function HexTileBase({
       {showCoordinates && <OverlayText col={col} row={row} />}
       {isHoveredTile && <OverlayHighlightOutline />}
       {isTerrainTile && <HexMountainModel />}
+      {isPlayerTile && <OverlayHighlight />}
     </group>
   );
 }
