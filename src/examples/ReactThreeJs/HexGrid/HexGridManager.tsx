@@ -12,24 +12,13 @@ import {
   OffsetCoordinates,
 } from "honeycomb-grid";
 import { HexTileBase } from "./Models";
+import { isTile } from "./utils/isTile";
 
-type OffsetCoordinatesState = OffsetCoordinates | { col: null; row: null };
+type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
 
-/**
- * isActiveTile
- * Check whether the tile used by the player === the tile the grid manager loop is processing
- *
- * @param {OffsetCoordinatesState} tile the tile being interacted with by the player
- * @param {OffsetCoordinates} currentPositionInLoop the tile being processed by the grid manager
- * @return {*}
- */
-const isActiveTile = (
-  tile: OffsetCoordinatesState,
-  currentPositionInLoop: OffsetCoordinates,
-) => {
-  const { col, row } = currentPositionInLoop;
-
-  return tile.col === col && tile.row === row;
+const DEFAULT_PLAYER_TILE: OffsetCoordinates = {
+  col: 4,
+  row: 5,
 };
 
 export const HexGridManager = () => {
@@ -37,7 +26,7 @@ export const HexGridManager = () => {
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
   */
-  const [hoveredTile, setHoveredTile] = useState<OffsetCoordinatesState>({
+  const [hoveredTile, setHoveredTile] = useState<NullableOffsetCoordinates>({
     col: null,
     row: null,
   });
@@ -45,21 +34,20 @@ export const HexGridManager = () => {
     When a destination tile is set for traversal
     Origin tile set as the starting point 
   */
-  const [originTile, setOriginTile] = useState<OffsetCoordinatesState>({
+  const [originTile, setOriginTile] = useState<NullableOffsetCoordinates>({
     col: null,
     row: null,
   });
   /* Tile that the player clicks to move to */
   const [destinationTile, setDestinationTile] =
-    useState<OffsetCoordinatesState>({
+    useState<NullableOffsetCoordinates>({
       col: null,
       row: null,
     });
+
   /* Defaulting to a reletively central point to begin with*/
-  const [playerTile, setPlayerTile] = useState<OffsetCoordinatesState>({
-    col: 4,
-    row: 5,
-  });
+  const [playerTile, setPlayerTile] =
+    useState<OffsetCoordinates>(DEFAULT_PLAYER_TILE);
 
   const [grid, setGrid] = useState<Grid<Hex>>();
 
@@ -93,7 +81,7 @@ export const HexGridManager = () => {
     // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
     const hexGrid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
 
-    setTerrainTiles(hexGrid, 6);
+    setTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
     setGrid(hexGrid);
   }, []);
 
@@ -115,9 +103,9 @@ export const HexGridManager = () => {
     // const hideTile = Boolean(q % 2 && isOffset);
     const hideTile = false;
 
-    const isHoveredTile = isActiveTile(hoveredTile, { col, row });
-    const isPlayerTile = isActiveTile(playerTile, { col, row });
-    const isDestinationTile = isActiveTile(destinationTile, { col, row });
+    const isHoveredTile = isTile(hoveredTile, { col, row });
+    const isPlayerTile = isTile(playerTile, { col, row });
+    const isDestinationTile = isTile(destinationTile, { col, row });
 
     return (
       <HexTileBase

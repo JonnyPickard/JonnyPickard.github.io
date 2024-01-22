@@ -1,4 +1,5 @@
-import { Grid, Hex } from "honeycomb-grid";
+import { Grid, Hex, OffsetCoordinates, hexToOffset } from "honeycomb-grid";
+import { isTile } from "./utils/isTile";
 
 // Note: for full procedural generation you would need to run a graph search on the grid nodes
 // and make sure there are no closed off areas that could trap players.
@@ -10,7 +11,11 @@ import { Grid, Hex } from "honeycomb-grid";
  * @param amount - The number of terrain tiles to set in the grid.
  * @returns The modified hexagonal grid with the specified terrain tiles.
  */
-export const setTerrainTiles = (grid: Grid<Hex>, amount: number): Grid<Hex> => {
+export const setTerrainTiles = (
+  grid: Grid<Hex>,
+  amount: number,
+  playerTile: OffsetCoordinates,
+): Grid<Hex> => {
   /**
    * Checks if the requested amount of terrain tiles exceeds the grid size.
    * Displays a warning and returns the original grid if the condition is true.
@@ -39,6 +44,10 @@ export const setTerrainTiles = (grid: Grid<Hex>, amount: number): Grid<Hex> => {
   // Iterate through unique indexes, update tile properties, and add to terrainTiles array.
   tileUniqueIndexes.forEach((uniqueIndex) => {
     const tile = gridAsArray[uniqueIndex];
+    // Don't put untraversable tiles under the player start location
+    if (isTile(hexToOffset(tile), playerTile)) {
+      return;
+    }
     tile.isTraversable = false;
     terrainTiles.push(tile);
   });
