@@ -6,6 +6,7 @@ import {
   GizmoHelper,
   GizmoViewport,
   Stats,
+  SoftShadows,
 } from "@react-three/drei";
 import { HexGridManager } from "./HexGridManager";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
@@ -26,23 +27,29 @@ export const HexGridScene = () => {
         height: "100vh",
       }}
     >
+      <SoftShadows size={50} focus={20} />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}
           labelColor="black"
         />
       </GizmoHelper>
-      <motion.axesHelper args={[3]} />
+      {/* <motion.axesHelper args={[3]} /> */}
       {/* <motion.gridHelper
         position={[0, 0.2, 0]}
         args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
       /> */}
-      <motion.ambientLight intensity={1.25} />
-      <motion.directionalLight position={[0, 10, 12.25]} intensity={0.6} />
+      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
+      <motion.directionalLight
+        castShadow
+        visible
+        position={[5, 5, 40]}
+        intensity={1.6}
+      />
       <Suspense fallback={null}>
         <HexGridManager />
       </Suspense>
-      <LayoutCamera position={[0, 20, 0]} />
+      <LayoutCamera position={[0, 30, 0]} />
       <OrbitControls makeDefault />
       <Stats />
     </MotionCanvas>
