@@ -8,6 +8,8 @@ interface OverlayTextProps {
   col: number;
   row: number;
   color?: string;
+  isTerrainTile?: boolean;
+  isHoveredTile?: boolean;
 }
 
 /**
@@ -17,17 +19,30 @@ interface OverlayTextProps {
  * @param {OverlayTextProps} { col, row, color = "white" }
  * @return {*}
  */
-export function OverlayText({ col, row, color = "white" }: OverlayTextProps) {
+export function OverlayText({
+  col,
+  row,
+  color = "white",
+  isTerrainTile = false,
+  isHoveredTile = false,
+}: OverlayTextProps) {
+  const textVerticalPosition = isTerrainTile ? 0.4 : 0.1;
+  const fontSize = isHoveredTile ? 0.24 : 0.22;
+  const fontGlowStrength = isHoveredTile ? 20 : 5;
+
   return (
     <Text
       color={color}
       letterSpacing={0.17}
-      fontSize={0.22}
+      fontSize={fontSize}
       rotation={textRotation}
-      position={[0, 0.1, 0]}
+      position={[0, textVerticalPosition, 0]}
     >
       [{col}, {row}]
-      <meshLambertMaterial emissive={"white"} emissiveIntensity={10} />
+      <meshLambertMaterial
+        emissive={"white"}
+        emissiveIntensity={fontGlowStrength}
+      />
     </Text>
   );
 }

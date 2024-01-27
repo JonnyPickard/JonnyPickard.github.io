@@ -6,6 +6,9 @@ import {
   OverlayText,
 } from ".";
 
+import { useMemo } from "react";
+import { calculateRotation } from "../utils";
+
 interface HexTileProps {
   isOffset: boolean;
   /* Offset coords - Column */
@@ -40,13 +43,27 @@ export function HexTile({
   isTerrainTile,
   ...props
 }: JSX.IntrinsicElements["group"] & HexTileProps) {
+  const rotation = useMemo(
+    () => calculateRotation(textureSeed, rotationSeed),
+    [textureSeed, rotationSeed],
+  );
   return (
     <group {...props} position={position}>
-      <HexTileGrass rotationSeed={rotationSeed} textureSeed={textureSeed} />
-      {showCoordinates && <OverlayText col={col} row={row} />}
+      <HexTileGrass textureSeed={textureSeed} rotation={rotation} />
+      {showCoordinates && (
+        <OverlayText
+          col={col}
+          row={row}
+          isTerrainTile={isTerrainTile}
+          isHoveredTile={isHoveredTile}
+        />
+      )}
       {isHoveredTile && <OverlayHighlightOutline />}
-      {isTerrainTile && <HexMountainModel />}
+      {isTerrainTile && <HexMountainModel rotation={rotation} />}
       {isPlayerTile && <OverlayHighlight />}
+      {isPlayerTile && !isHoveredTile && (
+        <OverlayHighlightOutline isPlayerTile={isPlayerTile} />
+      )}
     </group>
   );
 }

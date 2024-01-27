@@ -12,6 +12,7 @@ type GLTFResult = GLTF & {
 };
 
 export function HexMountainModel(props: JSX.IntrinsicElements["mesh"]) {
+  // TODO: Terrain model variations
   const { nodes, materials } = useGLTF(
     "/3d-models/hex-grid/HexMountainModel.glb",
   ) as GLTFResult;
@@ -21,7 +22,7 @@ export function HexMountainModel(props: JSX.IntrinsicElements["mesh"]) {
       dispose={null}
       geometry={nodes.Mountain.geometry}
       material={materials["Mountain Mat"]}
-      position={[-0.164, -0.01, -0.064]}
+      scale={0.8}
     />
   );
 }

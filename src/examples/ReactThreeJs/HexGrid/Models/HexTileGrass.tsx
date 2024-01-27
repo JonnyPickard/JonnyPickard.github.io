@@ -1,10 +1,6 @@
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { calculateRotation } from "../utils";
-import { useMemo } from "react";
-
-THREE.MathUtils.degToRad(60);
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -25,26 +21,21 @@ const modelPaths = [
 ];
 
 export function HexTileGrass(
-  props: JSX.IntrinsicElements["group"] & {
+  props: JSX.IntrinsicElements["mesh"] & {
     textureSeed: number;
-    rotationSeed: number;
+    rotation: THREE.Euler;
   },
 ) {
   const models = useGLTF(modelPaths) as GLTFResult[];
   const { nodes, materials } = models[props.textureSeed];
-  const rotation = useMemo(
-    () => calculateRotation(props.textureSeed, props.rotationSeed),
-    [props.textureSeed, props.rotationSeed],
-  );
 
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        geometry={nodes.HexTileGrass002.geometry}
-        material={materials.GrassDisplacement_Mat}
-        rotation={rotation}
-      />
-    </group>
+    <mesh
+      {...props}
+      dispose={null}
+      geometry={nodes.HexTileGrass002.geometry}
+      material={materials.GrassDisplacement_Mat}
+    />
   );
 }
 
