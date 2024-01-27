@@ -4,5 +4,6 @@ declare module "honeycomb-grid" {
   export interface Hex {
     isTraversable: boolean;
     allowsRangedShooting: boolean;
+    randomSeeds: number[];
   }
 }

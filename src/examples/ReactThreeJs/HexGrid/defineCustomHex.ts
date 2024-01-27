@@ -1,4 +1,5 @@
 import { defineHex, HexOptions, Hex } from "honeycomb-grid";
+import { getRandomInt, getRandomItemIndex } from "./utils";
 
 // Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties
 // This seemed like the easiest solution as the hc-grid library works in a slightly unusual way for performance reasons
@@ -31,6 +32,17 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
      */
     private _allowsRangedShooting: boolean = true;
 
+    /**
+     * Seed values used to initialize random properties of the HexTile.
+     *
+     * @remarks
+     * This seed is utilized to generate random values for certain properties of the HexTile,
+     * providing a basis for variety within the game environment.
+     *
+     * @defaultValue A random integer between 0 and 5, inclusive.
+     */
+    private _randomSeeds = [getRandomInt(6), getRandomInt(6)];
+
     // Uncomment the following block if you decide to implement visibility blocking
     // /**
     //  * Indicates whether the tile allows visibility through it.
@@ -38,6 +50,15 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
     //  * @defaultValue `true`
     //  */
     // private allowsVisibilityThrough: boolean = true;
+
+    /**
+     * Gets the randomly generated int seed values of the HexTile.
+     *
+     * @returns {number[]} The current seed values.
+     */
+    get randomSeeds() {
+      return this._randomSeeds;
+    }
 
     /**
      * Gets the current traversability status of the tile.

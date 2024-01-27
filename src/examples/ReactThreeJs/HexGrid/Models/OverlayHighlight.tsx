@@ -13,7 +13,9 @@ type GLTFResult = GLTF & {
 };
 
 export function OverlayHighlight(props: JSX.IntrinsicElements["mesh"]) {
-  const { nodes } = useGLTF("/3d-models/HexTileHighlight.glb") as GLTFResult;
+  const { nodes } = useGLTF(
+    "/3d-models/hex-grid/HexTileHighlight.glb",
+  ) as GLTFResult;
   return (
     <mesh
       {...props}
@@ -34,4 +36,4 @@ export function OverlayHighlight(props: JSX.IntrinsicElements["mesh"]) {
   );
 }
 
-useGLTF.preload("/3d-models/HexTileHighlight.glb");
+useGLTF.preload("/3d-models/hex-grid/HexTileHighlight.glb");

@@ -1,5 +1,7 @@
 import { Grid, Hex, OffsetCoordinates, hexToOffset } from "honeycomb-grid";
-import { isTile } from "./utils/isTile";
+import { isTile, getRandomItemIndex } from "./utils";
+
+// TODO: getRandomItemIndex
 
 // Note: for full procedural generation you would need to run a graph search on the grid nodes
 // and make sure there are no closed off areas that could trap players.

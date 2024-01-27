@@ -13,7 +13,7 @@ type GLTFResult = GLTF & {
 
 export function HexMountainModel(props: JSX.IntrinsicElements["mesh"]) {
   const { nodes, materials } = useGLTF(
-    "/3d-models/HexMountainModel.glb",
+    "/3d-models/hex-grid/HexMountainModel.glb",
   ) as GLTFResult;
   return (
     <mesh
@@ -26,4 +26,4 @@ export function HexMountainModel(props: JSX.IntrinsicElements["mesh"]) {
   );
 }
 
-useGLTF.preload("/3d-models/HexMountainModel.glb");
+useGLTF.preload("/3d-models/hex-grid/HexMountainModel.glb");

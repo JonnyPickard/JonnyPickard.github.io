@@ -39,12 +39,12 @@ export const HexGridScene = () => {
         position={[0, 0.2, 0]}
         args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
       /> */}
-      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} castShadow />
+      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
       <motion.directionalLight
         castShadow
         visible
         position={[5, 5, 40]}
-        intensity={6.6}
+        intensity={1.6}
       />
       <Suspense fallback={null}>
         <HexGridManager />

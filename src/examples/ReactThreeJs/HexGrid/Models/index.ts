@@ -1,6 +1,6 @@
 export * from "./constants";
 export * from "./HexMountainModel";
-export * from "./HexTileBase";
+export * from "./HexTile";
 export * from "./HexTileGrass";
 export * from "./OverlayHighlight";
 export * from "./OverlayHighlightOutline";

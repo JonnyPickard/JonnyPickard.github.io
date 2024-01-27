@@ -24,7 +24,7 @@ export function OverlayText({ col, row, color = "white" }: OverlayTextProps) {
       letterSpacing={0.17}
       fontSize={0.22}
       rotation={textRotation}
-      position={[0, 0.04, 0]}
+      position={[0, 0.1, 0]}
     >
       [{col}, {row}]
       <meshLambertMaterial emissive={"white"} emissiveIntensity={10} />

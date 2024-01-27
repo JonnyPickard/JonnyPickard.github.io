@@ -11,8 +11,8 @@ import {
   hexToOffset,
   OffsetCoordinates,
 } from "honeycomb-grid";
-import { HexTileBase } from "./Models";
-import { isTile } from "./utils/isTile";
+import { HexTile } from "./Models";
+import { isTile } from "./utils";
 
 type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
 
@@ -107,8 +107,10 @@ export const HexGridManager = () => {
     const isPlayerTile = isTile(playerTile, { col, row });
     const isDestinationTile = isTile(destinationTile, { col, row });
 
+    const [textureSeed, rotationSeed] = hex.randomSeeds;
+
     return (
-      <HexTileBase
+      <HexTile
         key={`${col}-${row}`}
         position={[x, 0, y]}
         col={col}
@@ -118,6 +120,8 @@ export const HexGridManager = () => {
         isPlayerTile={isPlayerTile}
         isDestinationTile={isDestinationTile}
         isTerrainTile={isTerrainTile}
+        textureSeed={textureSeed}
+        rotationSeed={rotationSeed}
         hideTile={hideTile}
         onPointerOver={(e) => {
           e.stopPropagation;

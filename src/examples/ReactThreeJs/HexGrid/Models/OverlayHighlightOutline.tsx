@@ -25,7 +25,7 @@ export function OverlayHighlightOutline(
   props: JSX.IntrinsicElements["group"] & OverlayHighlightOutlineProps,
 ) {
   const { nodes } = useGLTF(
-    "/3d-models/HexTilleHighlightOutline.glb",
+    "/3d-models/hex-grid/HexTilleHighlightOutline.glb",
   ) as GLTFResult;
 
   return (
@@ -46,4 +46,4 @@ export function OverlayHighlightOutline(
   );
 }
 
-useGLTF.preload("/3d-models/HexTilleHighlightOutline.glb");
+useGLTF.preload("/3d-models/hex-grid/HexTilleHighlightOutline.glb");
