@@ -4,6 +4,7 @@ import {
   OverlayHighlightOutline,
   OverlayHighlight,
   OverlayText,
+  PlayerArcher,
 } from ".";
 
 import { useMemo } from "react";
@@ -61,6 +62,7 @@ export function HexTile({
       {isHoveredTile && <OverlayHighlightOutline />}
       {isTerrainTile && <HexMountainModel rotation={rotation} />}
       {isPlayerTile && <OverlayHighlight />}
+      {isPlayerTile && <PlayerArcher />}
       {isPlayerTile && !isHoveredTile && (
         <OverlayHighlightOutline isPlayerTile={isPlayerTile} />
       )}

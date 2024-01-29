@@ -6,3 +6,5 @@ export * from "./OverlayHighlight";
 export * from "./OverlayHighlightOutline";
 export * from "./OverlaySphere";
 export * from "./OverlayText";
+export * from "./PlayerArcher";
+export * from "./PlayerArcherScene";
