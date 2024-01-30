@@ -27,7 +27,19 @@ export const HexGridScene = () => {
         height: "100vh",
       }}
     >
+      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
+      <motion.directionalLight
+        castShadow
+        visible
+        position={[5, 5, 40]}
+        intensity={1.6}
+      />
       <SoftShadows size={50} focus={20} />
+      <Suspense fallback={null}>
+        <HexGridManager />
+      </Suspense>
+      <LayoutCamera position={[0, 10, 10]} />
+      <OrbitControls makeDefault />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}
@@ -39,18 +51,6 @@ export const HexGridScene = () => {
         position={[0, 0.2, 0]}
         args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
       /> */}
-      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
-      <motion.directionalLight
-        castShadow
-        visible
-        position={[5, 5, 40]}
-        intensity={1.6}
-      />
-      <Suspense fallback={null}>
-        <HexGridManager />
-      </Suspense>
-      <LayoutCamera position={[0, 30, 0]} />
-      <OrbitControls makeDefault />
       <Stats />
     </MotionCanvas>
   );
