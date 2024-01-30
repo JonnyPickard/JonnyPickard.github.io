@@ -1,3 +1,4 @@
+// TODO: Optimisation probably should used instanced mesh for repeating tiles
 import {
   HexTileGrass,
   HexMountainModel,

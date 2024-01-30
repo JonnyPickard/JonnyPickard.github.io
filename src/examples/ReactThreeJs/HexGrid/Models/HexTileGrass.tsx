@@ -11,6 +11,7 @@ type GLTFResult = GLTF & {
   };
 };
 
+// TODO: This really should be done with material variants as this is a lot of unnecessary overhead
 const modelPaths = [
   "/3d-models/hex-grid/HexTileGrass_UsingDisplacement0.glb",
   "/3d-models/hex-grid/HexTileGrass_UsingDisplacement1.glb",
