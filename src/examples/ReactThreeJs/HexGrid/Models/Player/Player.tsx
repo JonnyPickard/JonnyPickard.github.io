@@ -14,7 +14,12 @@ type GLTFResult = GLTF & {
   animations: GLTFAction[];
 };
 
-type ActionName = "Standing Idle" | "Standing Run Forward" | "T-Pose";
+type ActionName =
+  | "Standing Idle"
+  | "Standing Run Forward"
+  | "Standing Turn Left"
+  | "Standing Turn Right"
+  | "T-Pose";
 interface GLTFAction extends THREE.AnimationClip {
   name: ActionName;
 }
