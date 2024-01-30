@@ -26,7 +26,7 @@ export function OverlayText({
   isTerrainTile = false,
   isHoveredTile = false,
 }: OverlayTextProps) {
-  const textVerticalPosition = isTerrainTile ? 0.4 : 0.1;
+  const textVerticalPosition = isTerrainTile ? 0.8 : 0.1;
   const fontSize = isHoveredTile ? 0.24 : 0.22;
   const fontGlowStrength = isHoveredTile ? 20 : 5;
 

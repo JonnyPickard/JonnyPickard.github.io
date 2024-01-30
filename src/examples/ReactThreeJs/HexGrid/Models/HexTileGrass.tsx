@@ -34,6 +34,7 @@ export function HexTileGrass(
     <mesh
       {...props}
       dispose={null}
+      receiveShadow
       geometry={nodes.HexTileGrass002.geometry}
       material={materials.GrassDisplacement_Mat}
     />

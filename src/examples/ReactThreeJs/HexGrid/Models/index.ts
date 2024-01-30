@@ -7,3 +7,4 @@ export * from "./OverlayHighlightOutline";
 export * from "./OverlaySphere";
 export * from "./OverlayText";
 export * from "./Player";
+export * from "./Terrain";
