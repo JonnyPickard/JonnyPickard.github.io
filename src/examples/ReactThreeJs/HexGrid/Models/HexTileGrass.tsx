@@ -4,41 +4,31 @@ import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
   nodes: {
-    HexTileGrass002: THREE.Mesh;
+    HexGrass: THREE.Mesh;
   };
   materials: {
-    GrassDisplacement_Mat: THREE.MeshStandardMaterial;
+    M_HexGrass: THREE.MeshStandardMaterial;
   };
 };
-
-// TODO: This really should be done with material variants as this is a lot of unnecessary overhead
-const modelPaths = [
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement0.glb",
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement1.glb",
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement2.glb",
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement3.glb",
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement4.glb",
-  "/3d-models/hex-grid/HexTileGrass_UsingDisplacement5.glb",
-];
-
 export function HexTileGrass(
   props: JSX.IntrinsicElements["mesh"] & {
     textureSeed: number;
     rotation: THREE.Euler;
   },
 ) {
-  const models = useGLTF(modelPaths) as GLTFResult[];
-  const { nodes, materials } = models[props.textureSeed];
+  const { nodes, materials } = useGLTF(
+    "/3d-models/hex-grid/HexGrass.glb",
+  ) as GLTFResult;
 
   return (
     <mesh
       {...props}
       dispose={null}
       receiveShadow
-      geometry={nodes.HexTileGrass002.geometry}
-      material={materials.GrassDisplacement_Mat}
+      geometry={nodes.HexGrass.geometry}
+      material={materials.M_HexGrass}
     />
   );
 }
 
-useGLTF.preload(modelPaths);
+useGLTF.preload("/3d-models/hex-grid/HexGrass.glb");
