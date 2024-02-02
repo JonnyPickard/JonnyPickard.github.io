@@ -10,12 +10,7 @@ type GLTFResult = GLTF & {
     M_HexGrass: THREE.MeshStandardMaterial;
   };
 };
-export function HexTileGrass(
-  props: JSX.IntrinsicElements["mesh"] & {
-    textureSeed: number;
-    rotation: THREE.Euler;
-  },
-) {
+export function HexTileGrass(props: JSX.IntrinsicElements["mesh"]) {
   const { nodes, materials } = useGLTF(
     "/3d-models/hex-grid/HexGrass.glb",
   ) as GLTFResult;

@@ -41,6 +41,7 @@ export function Player(props: JSX.IntrinsicElements["group"]) {
         <group name="Armature" rotation={[Math.PI / 2, 0, 0]} scale={0.01}>
           <primitive object={nodes.mixamorigHips} />
           <skinnedMesh
+            castShadow
             name="Mesh"
             geometry={nodes.Mesh.geometry}
             material={materials.SpacePirate_M}

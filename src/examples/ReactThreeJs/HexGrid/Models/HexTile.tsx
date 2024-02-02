@@ -1,7 +1,6 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
 import {
   HexTileGrass,
-  HexMountainModel,
   OverlayHighlightOutline,
   OverlayHighlight,
   OverlayText,
@@ -52,7 +51,7 @@ export function HexTile({
   );
   return (
     <group {...props} position={position}>
-      <HexTileGrass textureSeed={textureSeed} rotation={rotation} />
+      <HexTileGrass rotation={rotation} />
       {showCoordinates && (
         <OverlayText
           col={col}

@@ -18,9 +18,16 @@ export function Terrain(props: JSX.IntrinsicElements["group"]) {
     "/3d-models/hex-grid/Boulder.glb",
   ) as GLTFResult;
   return (
-    <group {...props} dispose={null} castShadow receiveShadow>
-      <mesh geometry={nodes.Icosphere.geometry} material={materials.Boulder} />
+    <group {...props} dispose={null}>
       <mesh
+        castShadow
+        receiveShadow
+        geometry={nodes.Icosphere.geometry}
+        material={materials.Boulder}
+      />
+      <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.Icosphere_1.geometry}
         material={materials["Boulder 2"]}
       />
