@@ -6,7 +6,8 @@ import {
   GizmoHelper,
   GizmoViewport,
   Stats,
-  SoftShadows,
+  Environment,
+  Sky,
 } from "@react-three/drei";
 import { HexGridManager } from "./HexGridManager";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
@@ -19,7 +20,6 @@ export const HexGridScene = () => {
 
   return (
     <MotionCanvas
-      dpr={[1, 2]}
       shadows
       style={{
         backgroundColor: "#111a21",
@@ -27,7 +27,41 @@ export const HexGridScene = () => {
         height: "100vh",
       }}
     >
-      <SoftShadows size={50} focus={20} />
+      {/* Cool front facing light */}
+      <motion.ambientLight
+        intensity={2}
+        position={[0, 5, 10]}
+        color={"#fdfefe"}
+      />
+      {/* Shadow casting sun type light */}
+      <motion.directionalLight
+        color={"#ffecad"}
+        /* Trying to position inline with sun */
+        position={[10, 15, -10]}
+        intensity={2}
+        shadow-mapSize-height={1024}
+        shadow-mapSize-width={1024}
+        castShadow
+      />
+      {/* Sun/ Atmosphere shader */}
+      <Sky
+        sunPosition={[10, 0.02, -10]}
+        distance={3000}
+        turbidity={8}
+        rayleigh={8}
+        mieCoefficient={0.0}
+        mieDirectionalG={0.8}
+        inclination={0.49}
+        azimuth={0.25}
+      />
+      <Environment preset="forest" />
+
+      <Suspense fallback={null}>
+        <HexGridManager />
+      </Suspense>
+
+      <LayoutCamera position={[0, 6, 10]} />
+      <OrbitControls makeDefault />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}
@@ -39,19 +73,8 @@ export const HexGridScene = () => {
         position={[0, 0.2, 0]}
         args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
       /> */}
-      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
-      <motion.directionalLight
-        castShadow
-        visible
-        position={[5, 5, 40]}
-        intensity={1.6}
-      />
-      <Suspense fallback={null}>
-        <HexGridManager />
-      </Suspense>
-      <LayoutCamera position={[0, 30, 0]} />
-      <OrbitControls makeDefault />
       <Stats />
     </MotionCanvas>
   );
 };
+//

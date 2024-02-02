@@ -1,9 +1,11 @@
+// TODO: Optimisation probably should used instanced mesh for repeating tiles
 import {
   HexTileGrass,
-  HexMountainModel,
   OverlayHighlightOutline,
   OverlayHighlight,
   OverlayText,
+  Player,
+  Terrain,
 } from ".";
 
 import { useMemo } from "react";
@@ -49,7 +51,7 @@ export function HexTile({
   );
   return (
     <group {...props} position={position}>
-      <HexTileGrass textureSeed={textureSeed} rotation={rotation} />
+      <HexTileGrass rotation={rotation} />
       {showCoordinates && (
         <OverlayText
           col={col}
@@ -59,8 +61,9 @@ export function HexTile({
         />
       )}
       {isHoveredTile && <OverlayHighlightOutline />}
-      {isTerrainTile && <HexMountainModel rotation={rotation} />}
+      {isTerrainTile && <Terrain rotation={rotation} />}
       {isPlayerTile && <OverlayHighlight />}
+      {isPlayerTile && <Player />}
       {isPlayerTile && !isHoveredTile && (
         <OverlayHighlightOutline isPlayerTile={isPlayerTile} />
       )}
