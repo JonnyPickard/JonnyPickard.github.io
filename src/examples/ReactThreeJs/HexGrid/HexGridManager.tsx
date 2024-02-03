@@ -1,6 +1,7 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { defineCustomHex, setTerrainTiles } from ".";
+import { defineCustomHex } from ".";
+
 import { useState, useEffect } from "react";
 import {
   Hex,
@@ -12,7 +13,7 @@ import {
   OffsetCoordinates,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
-import { isTile } from "./utils";
+import { isTile, generateTerrainTiles } from "./utils";
 
 type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
 
@@ -56,53 +57,36 @@ export const HexGridManager = () => {
     // Size is calculated as the diameter of the outer circle
     // that can be drawn around the hex
     // See https://www.redblobgames.com/grids/hexagons/#basics
+    // Mesh size calculated using geometry.boundingBox.max.z
+    // It would be better to reference the mesh vs this:
     const hardcodedTileSize = 0.9937889575958252;
-    // nodes.HexTile.geometry.boundingBox.max
-    // const boundingBox = {
-    //   "x": 0.8642922043800354,
-    //   "y": 0.026939410716295242,
-    //   "z": 0.9937889575958252
-    // }
 
     // 1. Create a hex class:
     const Hex = defineCustomHex({
       dimensions: hardcodedTileSize,
-      // origin: "topLeft", // default
-      // NOTE: This seems to be about the grid offset?
-      // but should really work out how to calc the hexs vs grid
-      // Probably due to different unit sizes for the grid/ my mesh?
       origin: { x: 8, y: 6 },
       orientation: Orientation.POINTY,
-      // offset every other row by 1/2 hex
-      // offset: -1, // default (odd-r)
-      // offset: 1, // (even-r)
     });
 
     // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
     const hexGrid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
 
-    setTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
+    const terrainTiles = generateTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
+    hexGrid.setHexes(terrainTiles);
+
     setGrid(hexGrid);
   }, []);
 
   // 3. Iterate over the grid to render each hex:
   return grid?.toArray().map((hex) => {
-    // Internally honeycomb uses Axial coordinates
-    // But these seem confusing to look at in a rectangle
-    // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
     const { x, y } = hexToPoint(hex);
     const { col, row } = hexToOffset(hex);
 
-    const isTerrainTile = hex.isTraversable === false;
-
-    // Will use as a prop to Hide 3/4's of the tiles
-    // To make understanding the 3D geometry easier
-    // const hideTile = Boolean(q % 2 && isOffset);
-    const hideTile = false;
-
-    const isHoveredTile = isTile(hoveredTile, { col, row });
-    const isPlayerTile = isTile(playerTile, { col, row });
     const isDestinationTile = isTile(destinationTile, { col, row });
+    const isHoveredTile = isTile(hoveredTile, { col, row });
+    const isOriginTile = isTile(originTile, { col, row });
+    const isPlayerTile = isTile(playerTile, { col, row });
+    const isTerrainTile = hex.isTraversable === false;
 
     const [textureSeed, rotationSeed] = hex.randomSeeds;
 
@@ -111,13 +95,13 @@ export const HexGridManager = () => {
         hex={hex}
         key={`${col}-${row}`}
         position={[x, 0, y]}
-        isHoveredTile={isHoveredTile}
-        isPlayerTile={isPlayerTile}
         isDestinationTile={isDestinationTile}
+        isHoveredTile={isHoveredTile}
+        isOriginTile={isOriginTile}
+        isPlayerTile={isPlayerTile}
         isTerrainTile={isTerrainTile}
         textureSeed={textureSeed}
         rotationSeed={rotationSeed}
-        hideTile={hideTile}
         onPointerOver={(e) => {
           e.stopPropagation;
           setHoveredTile({ col, row });

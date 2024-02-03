@@ -1,35 +1,33 @@
 import { Grid, Hex, OffsetCoordinates, hexToOffset } from "honeycomb-grid";
-import { isTile, getRandomItemIndex } from "./utils";
-
-// TODO: getRandomItemIndex
+import { isTile } from ".";
 
 // Note: for full procedural generation you would need to run a graph search on the grid nodes
 // and make sure there are no closed off areas that could trap players.
 
 /**
- * Sets a specified number of terrain tiles in a hexagonal grid.
+ * generates a specified number of terrain tiles in a hexagonal grid.
  *
  * @param grid - The hexagonal grid to modify.
- * @param amount - The number of terrain tiles to set in the grid.
+ * @param amount - The number of terrain tiles to generate in the grid.
  * @returns The modified hexagonal grid with the specified terrain tiles.
  */
-export const setTerrainTiles = (
+export const generateTerrainTiles = (
   grid: Grid<Hex>,
   amount: number,
   playerTile: OffsetCoordinates,
-): Grid<Hex> => {
+) => {
   /**
    * Checks if the requested amount of terrain tiles exceeds the grid size.
    * Displays a warning and returns the original grid if the condition is true.
    */
   if (amount > grid.size) {
     console.warn(
-      "[setTerrainTiles]: You have attempted to set more terrain tiles than the tiles that exist in the grid",
+      "[generateTerrainTiles]: You have attempted to generate more terrain tiles than the tiles that exist in the grid",
     );
-    return grid;
+    return [];
   }
 
-  // Set to store unique indexes for selecting random tiles.
+  // generate to store unique indexes for selecting random tiles.
   const tileUniqueIndexes = new Set<number>();
 
   // Generate unique indexes until reaching the specified amount.
@@ -55,5 +53,5 @@ export const setTerrainTiles = (
   });
 
   // Update the grid with the modified terrain tiles and return the result.
-  return grid.setHexes(terrainTiles);
+  return terrainTiles;
 };

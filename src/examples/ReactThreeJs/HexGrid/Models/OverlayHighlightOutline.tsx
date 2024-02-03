@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { TILE_COLORS } from ".";
-import { useCallback } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -14,9 +13,7 @@ type GLTFResult = GLTF & {
 };
 
 interface OverlayHighlightOutlineProps {
-  isHoveredTile?: boolean;
-  isPlayerTile?: boolean;
-  isDestinationTile?: boolean;
+  tileOverlayColor: TILE_COLORS;
 }
 
 /**
@@ -27,27 +24,12 @@ interface OverlayHighlightOutlineProps {
  * @return {*}
  */
 export function OverlayHighlightOutline({
-  isHoveredTile,
-  isPlayerTile,
-  isDestinationTile,
+  tileOverlayColor,
   ...props
 }: JSX.IntrinsicElements["mesh"] & OverlayHighlightOutlineProps) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTilleHighlightOutline.glb",
   ) as GLTFResult;
-
-  // TODO: Might be worth having a tile state prop vs manualing passing these all through
-  const pickTileOutlineColor = useCallback(() => {
-    if (isHoveredTile) {
-      return TILE_COLORS.HOVERED;
-    } else if (isPlayerTile) {
-      return TILE_COLORS.PLAYER;
-    } else if (isDestinationTile) {
-      return TILE_COLORS.DESTINATION;
-    } else {
-      return TILE_COLORS.HOVERED;
-    }
-  }, [isHoveredTile, isPlayerTile, isDestinationTile]);
 
   return (
     <mesh
@@ -58,7 +40,7 @@ export function OverlayHighlightOutline({
       position={[0, 0.049, 0]}
     >
       <meshLambertMaterial
-        color={pickTileOutlineColor()}
+        color={tileOverlayColor}
         toneMapped={false}
         emissiveIntensity={0.5}
         emissive={TILE_COLORS.HOVERED_EMISSIVE_LIGHT}

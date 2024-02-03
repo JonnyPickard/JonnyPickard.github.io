@@ -12,7 +12,11 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function OverlayHighlight(props: JSX.IntrinsicElements["mesh"]) {
+export function OverlayHighlight(
+  props: JSX.IntrinsicElements["mesh"] & {
+    tileOverlayColor: TILE_COLORS;
+  },
+) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTileHighlight.glb",
   ) as GLTFResult;
@@ -25,10 +29,10 @@ export function OverlayHighlight(props: JSX.IntrinsicElements["mesh"]) {
       position={[0, 0.049, 0]}
     >
       <meshLambertMaterial
-        color={TILE_COLORS.PLAYER}
+        color={props.tileOverlayColor}
         toneMapped={false}
         emissiveIntensity={0.6}
-        emissive={TILE_COLORS.HOVERED_EMISSIVE_LIGHT}
+        emissive={props.tileOverlayColor}
         transparent
         opacity={0.2}
       />

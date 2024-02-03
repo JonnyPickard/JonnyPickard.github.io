@@ -10,7 +10,7 @@ import {
 import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
-import { calculateRotation } from "../utils";
+import { calculateRotation, getTileOverlayColor } from "../utils";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */
@@ -18,11 +18,11 @@ interface HexTileProps {
   /* Between 0 - 5 */
   textureSeed: number;
   rotationSeed: number;
-  isHoveredTile?: boolean;
-  isPlayerTile?: boolean;
   isDestinationTile?: boolean;
+  isHoveredTile?: boolean;
+  isOriginTile?: boolean;
+  isPlayerTile?: boolean;
   isTerrainTile?: boolean;
-  hideTile?: boolean;
   showCoordinates?: boolean;
   showCoordinatesAs?: "OFFSET" | "AXIAL" | "CUBE";
   showSphere?: boolean;
@@ -33,13 +33,13 @@ export function HexTile({
   position,
   rotationSeed,
   textureSeed,
-  hideTile = false,
   showSphere = false,
   showCoordinates = true,
   showCoordinatesAs = "CUBE",
-  isHoveredTile,
-  isPlayerTile,
   isDestinationTile,
+  isHoveredTile,
+  isOriginTile,
+  isPlayerTile,
   isTerrainTile,
   ...props
 }: JSX.IntrinsicElements["group"] & HexTileProps) {
@@ -59,6 +59,13 @@ export function HexTile({
     }
   }, [showCoordinatesAs, hex]);
 
+  const tileOverlayColor = getTileOverlayColor(
+    isDestinationTile,
+    isHoveredTile,
+    isOriginTile,
+    isPlayerTile,
+  );
+
   return (
     <group {...props} position={position}>
       <HexTileGrass rotation={rotation} />
@@ -69,13 +76,14 @@ export function HexTile({
           isHoveredTile={isHoveredTile}
         />
       )}
-      {isHoveredTile && <OverlayHighlightOutline />}
       {isTerrainTile && <Terrain rotation={rotation} />}
-      {isPlayerTile && <OverlayHighlight />}
-      {isPlayerTile && <Player />}
-      {isPlayerTile && !isHoveredTile && (
-        <OverlayHighlightOutline isPlayerTile={isPlayerTile} />
+      {tileOverlayColor && (
+        <OverlayHighlightOutline tileOverlayColor={tileOverlayColor} />
       )}
+      {tileOverlayColor && (
+        <OverlayHighlight tileOverlayColor={tileOverlayColor} />
+      )}
+      {isPlayerTile && <Player />}
     </group>
   );
 }
