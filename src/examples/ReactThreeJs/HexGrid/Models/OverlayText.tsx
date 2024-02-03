@@ -5,8 +5,11 @@ import * as THREE from "three";
 const textRotation = new THREE.Euler(-(Math.PI / 2), 0, 0);
 
 interface OverlayTextProps {
-  col: number;
-  row: number;
+  coordinates: {
+    q: number;
+    r: number;
+    s: number | null;
+  };
   color?: string;
   isTerrainTile?: boolean;
   isHoveredTile?: boolean;
@@ -16,12 +19,11 @@ interface OverlayTextProps {
  * OverlayText to overlay tile coordinates on tiles
  *
  * @export
- * @param {OverlayTextProps} { col, row, color = "white" }
+ * @param {OverlayTextProps}
  * @return {*}
  */
 export function OverlayText({
-  col,
-  row,
+  coordinates: { q, r, s },
   color = "white",
   isTerrainTile = false,
   isHoveredTile = false,
@@ -32,13 +34,14 @@ export function OverlayText({
 
   return (
     <Text
+      letterSpacing={0.1}
       color={color}
-      letterSpacing={0.17}
       fontSize={fontSize}
       rotation={textRotation}
       position={[0, textVerticalPosition, 0]}
     >
-      [{col}, {row}]
+      [{q}, {r}
+      {s ? `, ${s}` : null}]
       <meshLambertMaterial
         emissive={"white"}
         emissiveIntensity={fontGlowStrength}

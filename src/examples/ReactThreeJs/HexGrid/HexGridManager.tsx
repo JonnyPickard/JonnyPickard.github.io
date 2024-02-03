@@ -95,9 +95,6 @@ export const HexGridManager = () => {
 
     const isTerrainTile = hex.isTraversable === false;
 
-    // Is an offset row
-    const isOffset = Boolean(row % 2);
-
     // Will use as a prop to Hide 3/4's of the tiles
     // To make understanding the 3D geometry easier
     // const hideTile = Boolean(q % 2 && isOffset);
@@ -111,11 +108,9 @@ export const HexGridManager = () => {
 
     return (
       <HexTile
+        hex={hex}
         key={`${col}-${row}`}
         position={[x, 0, y]}
-        col={col}
-        row={row}
-        isOffset={isOffset}
         isHoveredTile={isHoveredTile}
         isPlayerTile={isPlayerTile}
         isDestinationTile={isDestinationTile}

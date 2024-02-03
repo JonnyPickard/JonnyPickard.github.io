@@ -7,16 +7,14 @@ import {
   Player,
   Terrain,
 } from ".";
+import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
 import { calculateRotation } from "../utils";
 
 interface HexTileProps {
-  isOffset: boolean;
-  /* Offset coords - Column */
-  col: number;
-  /* Offset coords - Row */
-  row: number;
+  /* Classing containing information about the hex relative to the grid */
+  hex: Hex;
   /* Between 0 - 5 */
   textureSeed: number;
   rotationSeed: number;
@@ -26,19 +24,19 @@ interface HexTileProps {
   isTerrainTile?: boolean;
   hideTile?: boolean;
   showCoordinates?: boolean;
+  showCoordinatesAs?: "OFFSET" | "AXIAL" | "CUBE";
   showSphere?: boolean;
 }
 
 export function HexTile({
+  hex,
   position,
-  col,
-  row,
   rotationSeed,
   textureSeed,
-  isOffset,
   hideTile = false,
   showSphere = false,
   showCoordinates = true,
+  showCoordinatesAs = "CUBE",
   isHoveredTile,
   isPlayerTile,
   isDestinationTile,
@@ -49,13 +47,24 @@ export function HexTile({
     () => calculateRotation(textureSeed, rotationSeed),
     [textureSeed, rotationSeed],
   );
+
+  const coordinatesToDisplayForTextOverlay = useMemo(() => {
+    switch (showCoordinatesAs) {
+      case "OFFSET":
+        return { q: hex.col, r: hex.row, s: null };
+      case "AXIAL":
+        return { q: hex.q, r: hex.r, s: null };
+      case "CUBE":
+        return { q: hex.q, r: hex.r, s: hex.s };
+    }
+  }, [showCoordinatesAs, hex]);
+
   return (
     <group {...props} position={position}>
       <HexTileGrass rotation={rotation} />
       {showCoordinates && (
         <OverlayText
-          col={col}
-          row={row}
+          coordinates={coordinatesToDisplayForTextOverlay}
           isTerrainTile={isTerrainTile}
           isHoveredTile={isHoveredTile}
         />
