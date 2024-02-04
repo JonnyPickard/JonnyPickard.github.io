@@ -28,7 +28,7 @@ export const AvatarScene = () => {
       <ambientLight intensity={1.25} />
       <directionalLight position={[0, 10, 5]} intensity={20} />
       <Suspense fallback={null}>
-        <CubeCamera>{() => <AvatarModel position={[0, -1, 0]} />}</CubeCamera>
+        <CubeCamera>{() => <AvatarModel position={[0, -0.5, 2]} />}</CubeCamera>
       </Suspense>
       <SkyBox />
       <OrbitControls />

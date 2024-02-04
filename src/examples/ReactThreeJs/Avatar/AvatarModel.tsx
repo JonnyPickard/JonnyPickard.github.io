@@ -47,6 +47,8 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
       "stop",
     );
 
+    actions["Dance_Flair"]?.setEffectiveTimeScale(0.7).play();
+
     return () => gui.destroy();
   }, [actions]);
 
