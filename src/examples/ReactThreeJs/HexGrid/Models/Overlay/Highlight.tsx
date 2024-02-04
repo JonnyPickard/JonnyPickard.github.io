@@ -12,7 +12,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function OverlayHighlight(
+export function HighlightTile(
   props: JSX.IntrinsicElements["mesh"] & {
     tileOverlayColor: TILE_COLORS;
   },
@@ -34,7 +34,7 @@ export function OverlayHighlight(
         emissiveIntensity={0.6}
         emissive={props.tileOverlayColor}
         transparent
-        opacity={0.2}
+        opacity={0.6}
       />
     </mesh>
   );

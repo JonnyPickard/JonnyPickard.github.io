@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { OverlayText } from "./Text";
 import { Scene } from "../";
-import { TILE_COLORS } from "../constants";
+import { TILE_COLORS } from "../../constants";
 
 const meta = {
   title: "Examples/ReactThreeJs/HexGrid/Overlays",

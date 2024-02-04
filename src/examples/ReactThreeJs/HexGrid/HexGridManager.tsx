@@ -14,6 +14,7 @@ import {
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
+import { TILE_MESH_SIZE } from ".";
 
 type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
 
@@ -54,16 +55,9 @@ export const HexGridManager = () => {
 
   // Only run on first render to prevent expensive grid recalculations
   useEffect(() => {
-    // Size is calculated as the diameter of the outer circle
-    // that can be drawn around the hex
-    // See https://www.redblobgames.com/grids/hexagons/#basics
-    // Mesh size calculated using geometry.boundingBox.max.z
-    // It would be better to reference the mesh vs this:
-    const hardcodedTileSize = 0.9937889575958252;
-
     // 1. Create a hex class:
     const Hex = defineCustomHex({
-      dimensions: hardcodedTileSize,
+      dimensions: TILE_MESH_SIZE,
       origin: { x: 8, y: 6 },
       orientation: Orientation.POINTY,
     });

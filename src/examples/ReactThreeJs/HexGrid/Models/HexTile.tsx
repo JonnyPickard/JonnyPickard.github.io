@@ -1,8 +1,8 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
 import {
   HexTileGrass,
-  OverlayOutline,
-  OverlayHighlight,
+  Outline,
+  HighlightTile,
   OverlayText,
   Player,
   Terrain,
@@ -77,11 +77,9 @@ export function HexTile({
         />
       )}
       {isTerrainTile && <Terrain rotation={rotation} />}
+      {tileOverlayColor && <Outline tileOverlayColor={tileOverlayColor} />}
       {tileOverlayColor && (
-        <OverlayOutline tileOverlayColor={tileOverlayColor} />
-      )}
-      {tileOverlayColor && (
-        <OverlayHighlight tileOverlayColor={tileOverlayColor} />
+        <HighlightTile tileOverlayColor={tileOverlayColor} />
       )}
       {isPlayerTile && <Player />}
     </group>

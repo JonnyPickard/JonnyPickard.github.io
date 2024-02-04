@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OverlayOutline } from "./Outline";
+import { Outline as HighlightOutline } from "./Outline";
 import { Scene } from "../";
-import { TILE_COLORS } from "../constants";
+import { TILE_COLORS } from "../../constants";
 
 const meta = {
   title: "Examples/ReactThreeJs/HexGrid/Overlays",
@@ -13,11 +13,11 @@ const meta = {
       </Scene>
     ),
   ],
-  component: OverlayOutline,
+  component: HighlightOutline,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof OverlayOutline>;
+} satisfies Meta<typeof HighlightOutline>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

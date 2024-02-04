@@ -12,7 +12,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface OverlayOutlineProps {
+interface OutlineProps {
   tileOverlayColor: TILE_COLORS;
 }
 
@@ -20,13 +20,13 @@ interface OverlayOutlineProps {
  * Helper show the bounding HighlightOutline around a mesh instance
  *
  * @export
- * @param {OverlayOutlineProps} { tileSize }
+ * @param {OutlineProps} { tileSize }
  * @return {*}
  */
-export function OverlayOutline({
+export function Outline({
   tileOverlayColor,
   ...props
-}: JSX.IntrinsicElements["mesh"] & OverlayOutlineProps) {
+}: JSX.IntrinsicElements["mesh"] & OutlineProps) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTilleHighlightOutline.glb",
   ) as GLTFResult;

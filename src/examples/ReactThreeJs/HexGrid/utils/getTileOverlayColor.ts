@@ -1,4 +1,4 @@
-import { TILE_COLORS } from "../Models/constants";
+import { TILE_COLORS } from "../constants";
 
 export const getTileOverlayColor = (
   isDestinationTile?: boolean,
