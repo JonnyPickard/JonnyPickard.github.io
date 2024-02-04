@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { TILE_COLORS } from ".";
+import { TILE_COLORS } from "../..";
 
 type GLTFResult = GLTF & {
   nodes: {

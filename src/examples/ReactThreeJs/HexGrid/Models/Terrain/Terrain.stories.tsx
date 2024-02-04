@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Scene } from "../Scene";
-import { Player as PlayerModel } from "./Player";
+import { Terrain as TerrainModel } from "./Terrain";
+import { Scene } from "../";
 
 const meta = {
-  title: "Examples/ReactThreeJs/HexGrid/Player",
+  title: "Examples/ReactThreeJs/HexGrid/Terrain",
   decorators: [
     (Story) => (
       <Scene>
@@ -13,13 +13,13 @@ const meta = {
       </Scene>
     ),
   ],
-  component: PlayerModel,
+  component: TerrainModel,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof PlayerModel>;
+} satisfies Meta<typeof TerrainModel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Player: Story = {};
+export const Terrain: Story = {};

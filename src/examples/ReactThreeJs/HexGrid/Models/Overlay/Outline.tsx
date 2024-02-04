@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { TILE_COLORS } from ".";
+import { TILE_COLORS } from "../..";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -12,7 +12,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface OverlayHighlightOutlineProps {
+interface OverlayOutlineProps {
   tileOverlayColor: TILE_COLORS;
 }
 
@@ -20,13 +20,13 @@ interface OverlayHighlightOutlineProps {
  * Helper show the bounding HighlightOutline around a mesh instance
  *
  * @export
- * @param {OverlayHighlightOutlineProps} { tileSize }
+ * @param {OverlayOutlineProps} { tileSize }
  * @return {*}
  */
-export function OverlayHighlightOutline({
+export function OverlayOutline({
   tileOverlayColor,
   ...props
-}: JSX.IntrinsicElements["mesh"] & OverlayHighlightOutlineProps) {
+}: JSX.IntrinsicElements["mesh"] & OverlayOutlineProps) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTilleHighlightOutline.glb",
   ) as GLTFResult;

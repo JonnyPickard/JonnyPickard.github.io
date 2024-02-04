@@ -43,7 +43,7 @@ export function OverlayText({
       [{q}, {r}
       {s ? `, ${s}` : null}]
       <meshLambertMaterial
-        emissive={"white"}
+        emissive={color}
         emissiveIntensity={fontGlowStrength}
       />
     </Text>
