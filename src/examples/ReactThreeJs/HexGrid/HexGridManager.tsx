@@ -14,14 +14,14 @@ import {
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
-import { TILE_MESH_SIZE } from ".";
+import {
+  TILE_MESH_SIZE,
+  DEFAULT_PLAYER_TILE,
+  GRID_WIDTH,
+  GRID_HEIGHT,
+} from "./constants";
 
-type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
-
-const DEFAULT_PLAYER_TILE: OffsetCoordinates = {
-  col: 4,
-  row: 5,
-};
+import type { NullableOffsetCoordinates } from "./types";
 
 export const HexGridManager = () => {
   /* 
@@ -63,7 +63,10 @@ export const HexGridManager = () => {
     });
 
     // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
-    const hexGrid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
+    const hexGrid = new Grid(
+      Hex,
+      rectangle({ width: GRID_WIDTH, height: GRID_HEIGHT }),
+    );
 
     const terrainTiles = generateTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
     hexGrid.setHexes(terrainTiles);
@@ -72,40 +75,44 @@ export const HexGridManager = () => {
   }, []);
 
   // 3. Iterate over the grid to render each hex:
-  return grid?.toArray().map((hex) => {
-    const { x, y } = hexToPoint(hex);
-    const { col, row } = hexToOffset(hex);
+  return (
+    <>
+      {grid?.toArray().map((hex) => {
+        const { x, y } = hexToPoint(hex);
+        const { col, row } = hexToOffset(hex);
 
-    const isDestinationTile = isTile(destinationTile, { col, row });
-    const isHoveredTile = isTile(hoveredTile, { col, row });
-    const isOriginTile = isTile(originTile, { col, row });
-    const isPlayerTile = isTile(playerTile, { col, row });
-    const isTerrainTile = hex.isTraversable === false;
+        const isDestinationTile = isTile(destinationTile, { col, row });
+        const isHoveredTile = isTile(hoveredTile, { col, row });
+        const isOriginTile = isTile(originTile, { col, row });
+        const isPlayerTile = isTile(playerTile, { col, row });
+        const isTerrainTile = hex.isTraversable === false;
 
-    const [textureSeed, rotationSeed] = hex.randomSeeds;
+        const [textureSeed, rotationSeed] = hex.randomSeeds;
 
-    return (
-      <HexTile
-        hex={hex}
-        key={`${col}-${row}`}
-        position={[x, 0, y]}
-        isDestinationTile={isDestinationTile}
-        isHoveredTile={isHoveredTile}
-        isOriginTile={isOriginTile}
-        isPlayerTile={isPlayerTile}
-        isTerrainTile={isTerrainTile}
-        textureSeed={textureSeed}
-        rotationSeed={rotationSeed}
-        onPointerOver={(e) => {
-          e.stopPropagation;
-          setHoveredTile({ col, row });
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation;
-          setDestinationTile(hoveredTile);
-          setOriginTile(playerTile);
-        }}
-      />
-    );
-  });
+        return (
+          <HexTile
+            hex={hex}
+            key={`${col}-${row}`}
+            position={[x, 0, y]}
+            isDestinationTile={isDestinationTile}
+            isHoveredTile={isHoveredTile}
+            isOriginTile={isOriginTile}
+            isPlayerTile={isPlayerTile}
+            isTerrainTile={isTerrainTile}
+            textureSeed={textureSeed}
+            rotationSeed={rotationSeed}
+            onPointerOver={(e) => {
+              e.stopPropagation;
+              setHoveredTile({ col, row });
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation;
+              setDestinationTile(hoveredTile);
+              setOriginTile(playerTile);
+            }}
+          />
+        );
+      })}
+    </>
+  );
 };

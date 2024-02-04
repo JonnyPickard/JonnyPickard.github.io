@@ -1,5 +1,6 @@
 import { Grid, Hex, OffsetCoordinates, hexToOffset } from "honeycomb-grid";
 import { isTile } from ".";
+import { IMPASSABLE_COST } from "../constants";
 
 // Note: for full procedural generation you would need to run a graph search on the grid nodes
 // and make sure there are no closed off areas that could trap players.
@@ -49,6 +50,7 @@ export const generateTerrainTiles = (
       return;
     }
     tile.isTraversable = false;
+    tile.cost = IMPASSABLE_COST;
     terrainTiles.push(tile);
   });
 

@@ -1,5 +1,6 @@
 import { defineHex, HexOptions, Hex } from "honeycomb-grid";
 import { getRandomInt } from "./utils";
+import { IMPASSABLE_COST } from "./constants";
 
 // Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties
 // This seemed like the easiest solution as the hc-grid library works in a slightly unusual way for performance reasons
@@ -18,6 +19,9 @@ import { getRandomInt } from "./utils";
  */
 export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
   class CustomHex extends defineHex(hexOptions) {
+    cost!: number; // when it has a value of Infinity, the tile is impassable
+
+    private _isInPath: boolean = false;
     /**
      * Indicates whether a player can cross the tile.
      *
@@ -43,13 +47,17 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
      */
     private _randomSeeds = [getRandomInt(6), getRandomInt(6)];
 
-    // Uncomment the following block if you decide to implement visibility blocking
-    // /**
-    //  * Indicates whether the tile allows visibility through it.
-    //  *
-    //  * @defaultValue `true`
-    //  */
-    // private allowsVisibilityThrough: boolean = true;
+    get isInPath() {
+      return this._isInPath;
+    }
+
+    set isInPath(isPathTile: boolean) {
+      this._isInPath = isPathTile;
+    }
+
+    get isPassable() {
+      return this.cost < IMPASSABLE_COST;
+    }
 
     /**
      * Gets the randomly generated int seed values of the CustomHex.
