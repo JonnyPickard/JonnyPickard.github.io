@@ -9,6 +9,7 @@ const preview: Preview = {
         method: "configure",
         order: [
           "Introduction",
+          "Examples",
           "Notes",
           ["Overview", "Data Fetching & Caching", ["Introduction", "*"]],
         ],
