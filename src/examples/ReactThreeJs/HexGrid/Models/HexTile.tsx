@@ -11,6 +11,7 @@ import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
 import { calculateRotation, getTileOverlayColor } from "../utils";
+import { TILE_COLORS } from "..";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */
@@ -35,7 +36,7 @@ export function HexTile({
   textureSeed,
   showSphere = false,
   showCoordinates = true,
-  showCoordinatesAs = "CUBE",
+  showCoordinatesAs = "OFFSET",
   isDestinationTile,
   isHoveredTile,
   isOriginTile,
@@ -78,8 +79,12 @@ export function HexTile({
       )}
       {isTerrainTile && <Terrain rotation={rotation} />}
       {tileOverlayColor && <Outline tileOverlayColor={tileOverlayColor} />}
-      {tileOverlayColor && (
-        <HighlightTile tileOverlayColor={tileOverlayColor} />
+      {hex.isInPath ? (
+        <HighlightTile tileOverlayColor={TILE_COLORS.ROW} />
+      ) : (
+        tileOverlayColor && (
+          <HighlightTile tileOverlayColor={tileOverlayColor} />
+        )
       )}
       {isPlayerTile && <Player />}
     </group>

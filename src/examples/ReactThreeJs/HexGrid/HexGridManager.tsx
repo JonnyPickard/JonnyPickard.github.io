@@ -11,6 +11,7 @@ import {
   hexToPoint,
   hexToOffset,
   OffsetCoordinates,
+  isOffset as isOffsetCoords,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
@@ -20,6 +21,7 @@ import {
   GRID_WIDTH,
   GRID_HEIGHT,
 } from "./constants";
+import { AStar } from "./algorithms/AStar";
 
 import type { NullableOffsetCoordinates } from "./types";
 
@@ -74,6 +76,16 @@ export const HexGridManager = () => {
     setGrid(hexGrid);
   }, []);
 
+  useEffect(() => {
+    if (grid && isOffsetCoords(destinationTile)) {
+      AStar({
+        grid,
+        originCoords: playerTile,
+        destinationCoords: destinationTile as OffsetCoordinates,
+      });
+    }
+  }, [destinationTile, grid, playerTile]);
+
   // 3. Iterate over the grid to render each hex:
   return (
     <>
@@ -106,6 +118,9 @@ export const HexGridManager = () => {
               setHoveredTile({ col, row });
             }}
             onPointerDown={(e) => {
+              e.stopPropagation;
+            }}
+            onPointerUp={(e) => {
               e.stopPropagation;
               setDestinationTile(hoveredTile);
               setOriginTile(playerTile);

@@ -24,6 +24,10 @@ export const AStar = ({
     actualCostToMove: (_, __, tile) => tile.cost,
   });
 
+  grid.forEach((hex) => {
+    hex.isInPath = false;
+  });
+
   grid
     .traverse(shortestPath ?? [])
     .filter(
