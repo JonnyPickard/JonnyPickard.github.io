@@ -72,6 +72,7 @@ export class AStar {
     (this.previousShortestPath ?? []).forEach((tile) => {
       tile.isInPath = false;
     });
+    this.previousShortestPath = shortestPath;
 
     this.grid
       .traverse(shortestPath ?? [])
@@ -82,6 +83,6 @@ export class AStar {
         tile.isInPath = true;
       });
 
-    this.previousShortestPath = shortestPath;
+    return shortestPath;
   };
 }

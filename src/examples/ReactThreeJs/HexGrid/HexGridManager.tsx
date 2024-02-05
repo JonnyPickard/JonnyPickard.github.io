@@ -1,7 +1,7 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
 import { defineCustomHex } from ".";
-
+import { useFrame } from "@react-three/fiber";
 import { useState, useEffect } from "react";
 import {
   Hex,
@@ -32,6 +32,9 @@ export const HexGridManager = () => {
     Class used to manage path traversal
   */
   const [aStar, setAStar] = useState<AStar>();
+  /* Currently only used to rerender on path select */
+  const [activePath, setActivePath] = useState<Hex[]>([]);
+  const [hoverPath, setHoverPath] = useState<Hex[]>([]);
   /* 
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
@@ -90,20 +93,27 @@ export const HexGridManager = () => {
     setAStar(new AStar(hexGrid));
   }, []);
 
-  // useEffect(() => {
-  // if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
-  //   aStar?.traverse(playerTile, destinationTile);
-  // }
-  // }, [destinationTile, grid, playerTile]);
-
-  // On Hover Calc Path
   useEffect(() => {
-    if (grid && isOffsetCoords(hoveredTile)) {
-      if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
-        aStar?.traverse(playerTile, hoveredTile);
+    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
+      const shortestPath = aStar?.traverse(playerTile, destinationTile);
+      if (shortestPath) {
+        setActivePath(shortestPath);
       }
     }
-  }, [hoveredTile, grid, playerTile, aStar]);
+  }, [grid, aStar, playerTile, destinationTile]);
+
+  // On Hover Calc Path
+  // Would be better to have this a different color than active path
+  // useEffect(() => {
+  //   if (grid && isOffsetCoords(hoveredTile)) {
+  //     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
+  //       const shortestPath = aStar?.traverse(playerTile, hoveredTile);
+  //       if (shortestPath) {
+  //         setHoverPath(shortestPath);
+  //       }
+  //     }
+  //   }
+  // }, [hoveredTile, grid, playerTile, aStar]);
 
   // 3. Iterate over the grid to render each hex:
   return (
