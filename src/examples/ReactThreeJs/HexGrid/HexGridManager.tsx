@@ -23,6 +23,7 @@ import {
   TILE_MESH_DIMENSIONS,
 } from "./constants";
 import { AStar } from "./algorithms/AStar";
+import { useInterval } from "usehooks-ts";
 
 import type { NullableOffsetCoordinates } from "./types";
 
@@ -104,14 +105,15 @@ export const HexGridManager = () => {
       if (shortestPath) {
         setActivePath(shortestPath);
         setActiveDestinationTile(destinationTile);
+
         // Reset destination tile
         setDestinationTile({ col: null, row: null });
+        setOriginTile(destinationTile);
       }
     }
   }, [grid, aStar, playerTile, destinationTile]);
 
-  // On Hover Calc Path
-  // Would be better to have this a different color than active path
+  // Mapping a Path based on hover
   // useEffect(() => {
   //   if (grid && isOffsetCoords(hoveredTile)) {
   //     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
@@ -122,6 +124,20 @@ export const HexGridManager = () => {
   //     }
   //   }
   // }, [hoveredTile, grid, playerTile, aStar]);
+
+  // Game Tick
+  useInterval(
+    () => {
+      if (activePath.length) {
+        const nextTile = activePath[0];
+        const shortenedPath = activePath.slice(1);
+        setPlayerTile(nextTile);
+        setActivePath(shortenedPath);
+      }
+    },
+    // Delay in milliseconds or null to stop it
+    activePath.length ? 600 : null,
+  );
 
   // 3. Iterate over the grid to render each hex:
   return (
