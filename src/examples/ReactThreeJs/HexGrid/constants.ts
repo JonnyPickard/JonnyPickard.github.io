@@ -23,6 +23,7 @@ export const DEFAULT_PLAYER_TILE: OffsetCoordinates = {
 };
 export const GRID_WIDTH = 10;
 export const GRID_HEIGHT = 10;
+export const TERRAIN_TILES_AMOUNT = 6;
 
 export enum TILE_COLORS {
   ROW = "#9d0d8c",

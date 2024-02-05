@@ -1,50 +1,87 @@
-import { Grid, Hex, OffsetCoordinates, ring } from "honeycomb-grid";
+import {
+  Grid,
+  Hex,
+  OffsetCoordinates,
+  ring,
+  hexToPoint,
+  Point,
+} from "honeycomb-grid";
 import { aStar } from "abstract-astar";
+import { LRUCache } from "lru-cache";
 
-interface AStarOptions {
+export class AStar {
   grid: Grid<Hex>;
-  originCoords: OffsetCoordinates;
-  destinationCoords: OffsetCoordinates;
-}
+  shortestPathCache = new LRUCache<
+    [OffsetCoordinates, OffsetCoordinates],
+    Hex[]
+  >({ max: 250 });
+  neighborsCache = new LRUCache<Point, Hex[]>({ max: 250 });
+  previousShortestPath?: Hex[];
 
-const neighborsMap = new Map<string, Hex[]>();
+  constructor(grid: Grid<Hex>) {
+    this.grid = grid;
+  }
 
-export const AStar = ({
-  grid,
-  originCoords,
-  destinationCoords,
-}: AStarOptions) => {
-  const start = grid.getHex(originCoords)!;
-  const goal = grid.getHex(destinationCoords)!;
+  getNeighbors = (center: Hex) => {
+    const cacheKey = hexToPoint(center);
+    const cachedNeighbors = this.neighborsCache.get(cacheKey);
+    if (cachedNeighbors) {
+      return cachedNeighbors;
+    }
 
-  const shortestPath = aStar<Hex>({
-    start,
-    goal,
-    estimateFromNodeToGoal: (tile) => grid.distance(tile, goal),
-    neighborsAdjacentToNode: (center) => {
-      const cacheKey = `${center.q}-${center.r}`;
-      const cachedNeighbors = neighborsMap.get(cacheKey);
-      if (cachedNeighbors) {
-        return cachedNeighbors;
-      }
+    const neighbors = this.grid.traverse(ring({ radius: 1, center })).toArray();
+    this.neighborsCache.set(cacheKey, neighbors);
+    return neighbors;
+  };
 
-      const neighbors = grid.traverse(ring({ radius: 1, center })).toArray();
-      neighborsMap.set(cacheKey, neighbors);
-      return neighbors;
-    },
-    actualCostToMove: (_, __, tile) => tile.cost,
-  });
+  getShortestPath = (
+    originCoords: OffsetCoordinates,
+    destinationCoords: OffsetCoordinates,
+  ) => {
+    const cachedPath = this.shortestPathCache.get([
+      originCoords,
+      destinationCoords,
+    ]);
 
-  grid.forEach((hex) => {
-    hex.isInPath = false;
-  });
+    if (cachedPath) {
+      return cachedPath;
+    }
 
-  grid
-    .traverse(shortestPath ?? [])
-    .filter(
-      (tile) => !tile.equals(originCoords) && !tile.equals(destinationCoords),
-    )
-    .forEach((tile) => {
-      tile.isInPath = true;
+    const start = this.grid.getHex(originCoords)!;
+    const goal = this.grid.getHex(destinationCoords)!;
+
+    const shortestPath = aStar<Hex>({
+      start,
+      goal,
+      estimateFromNodeToGoal: (tile) => this.grid.distance(tile, goal),
+      neighborsAdjacentToNode: (center) => this.getNeighbors(center),
+      actualCostToMove: (_, __, tile) => tile.cost,
     });
-};
+
+    this.shortestPathCache.set([originCoords, destinationCoords], shortestPath);
+    return shortestPath;
+  };
+
+  traverse = (
+    originCoords: OffsetCoordinates,
+    destinationCoords: OffsetCoordinates,
+  ) => {
+    const shortestPath = this.getShortestPath(originCoords, destinationCoords);
+
+    // Reset previous path
+    (this.previousShortestPath ?? []).forEach((tile) => {
+      tile.isInPath = false;
+    });
+
+    this.grid
+      .traverse(shortestPath ?? [])
+      .filter(
+        (tile) => !tile.equals(originCoords) && !tile.equals(destinationCoords),
+      )
+      .forEach((tile) => {
+        tile.isInPath = true;
+      });
+
+    this.previousShortestPath = shortestPath;
+  };
+}

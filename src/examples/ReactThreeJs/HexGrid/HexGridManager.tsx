@@ -12,7 +12,6 @@ import {
   hexToOffset,
   OffsetCoordinates,
   isOffset as isOffsetCoords,
-  createHexOrigin,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
@@ -22,12 +21,17 @@ import {
   GRID_WIDTH,
   GRID_HEIGHT,
   HEX_ORIGIN,
+  TERRAIN_TILES_AMOUNT,
 } from "./constants";
 import { AStar } from "./algorithms/AStar";
 
 import type { NullableOffsetCoordinates } from "./types";
 
 export const HexGridManager = () => {
+  /* 
+    Class used to manage path traversal
+  */
+  const [aStar, setAStar] = useState<AStar>();
   /* 
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
@@ -75,32 +79,31 @@ export const HexGridManager = () => {
       }),
     );
 
-    const terrainTiles = generateTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
+    const terrainTiles = generateTerrainTiles(
+      hexGrid,
+      TERRAIN_TILES_AMOUNT,
+      DEFAULT_PLAYER_TILE,
+    );
     hexGrid.setHexes(terrainTiles);
 
     setGrid(hexGrid);
+    setAStar(new AStar(hexGrid));
   }, []);
 
-  useEffect(() => {
-    if (grid && isOffsetCoords(destinationTile)) {
-      AStar({
-        grid,
-        originCoords: playerTile,
-        destinationCoords: destinationTile as OffsetCoordinates,
-      });
-    }
-  }, [destinationTile, grid, playerTile]);
-
-  // // Should cache nieghbour calculations
   // useEffect(() => {
-  //   if (grid && isOffsetCoords(hoveredTile)) {
-  //     AStar({
-  //       grid,
-  //       originCoords: playerTile,
-  //       destinationCoords: hoveredTile as OffsetCoordinates,
-  //     });
-  //   }
-  // }, [hoveredTile, grid, playerTile]);
+  // if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
+  //   aStar?.traverse(playerTile, destinationTile);
+  // }
+  // }, [destinationTile, grid, playerTile]);
+
+  // On Hover Calc Path
+  useEffect(() => {
+    if (grid && isOffsetCoords(hoveredTile)) {
+      if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
+        aStar?.traverse(playerTile, hoveredTile);
+      }
+    }
+  }, [hoveredTile, grid, playerTile, aStar]);
 
   // 3. Iterate over the grid to render each hex:
   return (
