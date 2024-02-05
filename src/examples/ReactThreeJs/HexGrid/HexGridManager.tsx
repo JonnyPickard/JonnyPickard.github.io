@@ -1,6 +1,6 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { defineCustomHex, setTerrainTiles } from ".";
+import { defineCustomHex } from ".";
 import { useState, useEffect } from "react";
 import {
   Hex,
@@ -10,18 +10,30 @@ import {
   hexToPoint,
   hexToOffset,
   OffsetCoordinates,
+  isOffset as isOffsetCoords,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
-import { isTile } from "./utils";
+import { isTile, generateTerrainTiles } from "./utils";
+import {
+  DEFAULT_PLAYER_TILE,
+  GRID_WIDTH,
+  GRID_HEIGHT,
+  HEX_ORIGIN,
+  TERRAIN_TILES_AMOUNT,
+  TILE_MESH_DIMENSIONS,
+} from "./constants";
+import { AStar } from "./algorithms/AStar";
 
-type NullableOffsetCoordinates = OffsetCoordinates | { col: null; row: null };
-
-const DEFAULT_PLAYER_TILE: OffsetCoordinates = {
-  col: 4,
-  row: 5,
-};
+import type { NullableOffsetCoordinates } from "./types";
 
 export const HexGridManager = () => {
+  /* 
+    Class used to manage path traversal
+  */
+  const [aStar, setAStar] = useState<AStar>();
+  /* Currently only used to rerender on path select */
+  const [activePath, setActivePath] = useState<Hex[]>([]);
+  const [hoverPath, setHoverPath] = useState<Hex[]>([]);
   /* 
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
@@ -53,86 +65,97 @@ export const HexGridManager = () => {
 
   // Only run on first render to prevent expensive grid recalculations
   useEffect(() => {
-    // Size is calculated as the diameter of the outer circle
-    // that can be drawn around the hex
-    // See https://www.redblobgames.com/grids/hexagons/#basics
-    const hardcodedTileSize = 0.9937889575958252;
-    // nodes.HexTile.geometry.boundingBox.max
-    // const boundingBox = {
-    //   "x": 0.8642922043800354,
-    //   "y": 0.026939410716295242,
-    //   "z": 0.9937889575958252
-    // }
-
     // 1. Create a hex class:
     const Hex = defineCustomHex({
-      dimensions: hardcodedTileSize,
-      // origin: "topLeft", // default
-      // NOTE: This seems to be about the grid offset?
-      // but should really work out how to calc the hexs vs grid
-      // Probably due to different unit sizes for the grid/ my mesh?
-      origin: { x: 8, y: 6 },
+      dimensions: TILE_MESH_DIMENSIONS,
+      origin: HEX_ORIGIN,
       orientation: Orientation.POINTY,
-      // offset every other row by 1/2 hex
-      // offset: -1, // default (odd-r)
-      // offset: 1, // (even-r)
     });
 
     // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
-    const hexGrid = new Grid(Hex, rectangle({ width: 10, height: 10 }));
+    const hexGrid = new Grid(
+      Hex,
+      rectangle({
+        width: GRID_WIDTH,
+        height: GRID_HEIGHT,
+      }),
+    );
 
-    setTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
+    const terrainTiles = generateTerrainTiles(
+      hexGrid,
+      TERRAIN_TILES_AMOUNT,
+      DEFAULT_PLAYER_TILE,
+    );
+    hexGrid.setHexes(terrainTiles);
+
     setGrid(hexGrid);
+    setAStar(new AStar(hexGrid));
   }, []);
 
+  useEffect(() => {
+    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
+      const shortestPath = aStar?.traverse(playerTile, destinationTile);
+      if (shortestPath) {
+        setActivePath(shortestPath);
+      }
+    }
+  }, [grid, aStar, playerTile, destinationTile]);
+
+  // On Hover Calc Path
+  // Would be better to have this a different color than active path
+  // useEffect(() => {
+  //   if (grid && isOffsetCoords(hoveredTile)) {
+  //     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
+  //       const shortestPath = aStar?.traverse(playerTile, hoveredTile);
+  //       if (shortestPath) {
+  //         setHoverPath(shortestPath);
+  //       }
+  //     }
+  //   }
+  // }, [hoveredTile, grid, playerTile, aStar]);
+
   // 3. Iterate over the grid to render each hex:
-  return grid?.toArray().map((hex) => {
-    // Internally honeycomb uses Axial coordinates
-    // But these seem confusing to look at in a rectangle
-    // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-    const { x, y } = hexToPoint(hex);
-    const { col, row } = hexToOffset(hex);
+  return (
+    <>
+      {grid?.toArray().map((hex) => {
+        const { x, y } = hexToPoint(hex);
+        const { col, row } = hexToOffset(hex);
 
-    const isTerrainTile = hex.isTraversable === false;
+        const isDestinationTile = isTile(destinationTile, { col, row });
+        const isHoveredTile = isTile(hoveredTile, { col, row });
+        const isOriginTile = isTile(originTile, { col, row });
+        const isPlayerTile = isTile(playerTile, { col, row });
+        const isTerrainTile = hex.isTraversable === false;
 
-    // Is an offset row
-    const isOffset = Boolean(row % 2);
+        const [textureSeed, rotationSeed] = hex.randomSeeds;
 
-    // Will use as a prop to Hide 3/4's of the tiles
-    // To make understanding the 3D geometry easier
-    // const hideTile = Boolean(q % 2 && isOffset);
-    const hideTile = false;
-
-    const isHoveredTile = isTile(hoveredTile, { col, row });
-    const isPlayerTile = isTile(playerTile, { col, row });
-    const isDestinationTile = isTile(destinationTile, { col, row });
-
-    const [textureSeed, rotationSeed] = hex.randomSeeds;
-
-    return (
-      <HexTile
-        key={`${col}-${row}`}
-        position={[x, 0, y]}
-        col={col}
-        row={row}
-        isOffset={isOffset}
-        isHoveredTile={isHoveredTile}
-        isPlayerTile={isPlayerTile}
-        isDestinationTile={isDestinationTile}
-        isTerrainTile={isTerrainTile}
-        textureSeed={textureSeed}
-        rotationSeed={rotationSeed}
-        hideTile={hideTile}
-        onPointerOver={(e) => {
-          e.stopPropagation;
-          setHoveredTile({ col, row });
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation;
-          setDestinationTile(hoveredTile);
-          setOriginTile(playerTile);
-        }}
-      />
-    );
-  });
+        return (
+          <HexTile
+            hex={hex}
+            key={`${col}-${row}`}
+            position={[x, 0, y]}
+            isDestinationTile={isDestinationTile}
+            isHoveredTile={isHoveredTile}
+            isOriginTile={isOriginTile}
+            isPlayerTile={isPlayerTile}
+            isTerrainTile={isTerrainTile}
+            textureSeed={textureSeed}
+            rotationSeed={rotationSeed}
+            onPointerOver={(e) => {
+              e.stopPropagation;
+              setHoveredTile({ col, row });
+            }}
+            onPointerDown={(e) => {
+              e.stopPropagation;
+            }}
+            onPointerUp={(e) => {
+              e.stopPropagation;
+              setDestinationTile(hoveredTile);
+              setOriginTile(playerTile);
+            }}
+          />
+        );
+      })}
+    </>
+  );
 };

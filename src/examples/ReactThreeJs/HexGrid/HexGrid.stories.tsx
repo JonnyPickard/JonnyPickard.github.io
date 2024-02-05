@@ -13,4 +13,4 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const HexGrid: Story = {};
+export const Grid: Story = {};

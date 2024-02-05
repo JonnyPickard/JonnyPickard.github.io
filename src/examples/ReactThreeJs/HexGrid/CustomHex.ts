@@ -1,5 +1,5 @@
 import { defineHex, HexOptions, Hex } from "honeycomb-grid";
-import { getRandomInt, getRandomItemIndex } from "./utils";
+import { getRandomInt } from "./utils";
 
 // Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties
 // This seemed like the easiest solution as the hc-grid library works in a slightly unusual way for performance reasons
@@ -7,17 +7,18 @@ import { getRandomInt, getRandomItemIndex } from "./utils";
 // Reference to the original defineHex function: https://github.com/flauwekeul/honeycomb/blob/master/src/hex/functions/defineHex.ts
 
 /**
- * Defines a custom HexTile class with optional configuration options, extending the functionality of the base HexTile.
+ * Defines a custom CustomHex class with optional configuration options, extending the functionality of the base CustomHex.
  *
- * @param hexOptions - Optional configuration options for the HexTile.
- * @returns A custom HexTile class based on the provided options.
+ * @param hexOptions - Optional configuration options for the CustomHex.
+ * @returns A custom CustomHex class based on the provided options.
  *
  * @remarks
- * This function extends the `defineHex` function from the Honeycomb library to create a HexTile class
+ * This function extends the `defineHex` function from the Honeycomb library to create a CustomHex class
  * with additional properties for traversability and ranged shooting.
  */
 export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
-  class HexTile extends defineHex(hexOptions) {
+  class CustomHex extends defineHex(hexOptions) {
+    private _isInPath: boolean = false;
     /**
      * Indicates whether a player can cross the tile.
      *
@@ -33,26 +34,26 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
     private _allowsRangedShooting: boolean = true;
 
     /**
-     * Seed values used to initialize random properties of the HexTile.
+     * Seed values used to initialize random properties of the CustomHex.
      *
      * @remarks
-     * This seed is utilized to generate random values for certain properties of the HexTile,
+     * This seed is utilized to generate random values for certain properties of the CustomHex,
      * providing a basis for variety within the game environment.
      *
      * @defaultValue A random integer between 0 and 5, inclusive.
      */
     private _randomSeeds = [getRandomInt(6), getRandomInt(6)];
 
-    // Uncomment the following block if you decide to implement visibility blocking
-    // /**
-    //  * Indicates whether the tile allows visibility through it.
-    //  *
-    //  * @defaultValue `true`
-    //  */
-    // private allowsVisibilityThrough: boolean = true;
+    get isInPath() {
+      return this._isInPath;
+    }
+
+    set isInPath(isPathTile: boolean) {
+      this._isInPath = isPathTile;
+    }
 
     /**
-     * Gets the randomly generated int seed values of the HexTile.
+     * Gets the randomly generated int seed values of the CustomHex.
      *
      * @returns {number[]} The current seed values.
      */

@@ -1,47 +1,46 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
 import {
   HexTileGrass,
-  OverlayHighlightOutline,
-  OverlayHighlight,
+  Outline,
+  HighlightTile,
   OverlayText,
   Player,
   Terrain,
 } from ".";
+import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
-import { calculateRotation } from "../utils";
+import { calculateRotation, getTileOverlayColor } from "../utils";
+import { TILE_COLORS } from "..";
 
 interface HexTileProps {
-  isOffset: boolean;
-  /* Offset coords - Column */
-  col: number;
-  /* Offset coords - Row */
-  row: number;
+  /* Classing containing information about the hex relative to the grid */
+  hex: Hex;
   /* Between 0 - 5 */
   textureSeed: number;
   rotationSeed: number;
-  isHoveredTile?: boolean;
-  isPlayerTile?: boolean;
   isDestinationTile?: boolean;
+  isHoveredTile?: boolean;
+  isOriginTile?: boolean;
+  isPlayerTile?: boolean;
   isTerrainTile?: boolean;
-  hideTile?: boolean;
   showCoordinates?: boolean;
+  showCoordinatesAs?: "OFFSET" | "AXIAL" | "CUBE";
   showSphere?: boolean;
 }
 
 export function HexTile({
+  hex,
   position,
-  col,
-  row,
   rotationSeed,
   textureSeed,
-  isOffset,
-  hideTile = false,
   showSphere = false,
   showCoordinates = true,
-  isHoveredTile,
-  isPlayerTile,
+  showCoordinatesAs = "OFFSET",
   isDestinationTile,
+  isHoveredTile,
+  isOriginTile,
+  isPlayerTile,
   isTerrainTile,
   ...props
 }: JSX.IntrinsicElements["group"] & HexTileProps) {
@@ -49,24 +48,45 @@ export function HexTile({
     () => calculateRotation(textureSeed, rotationSeed),
     [textureSeed, rotationSeed],
   );
+
+  const coordinatesToDisplayForTextOverlay = useMemo(() => {
+    switch (showCoordinatesAs) {
+      case "OFFSET":
+        return { q: hex.col, r: hex.row, s: null };
+      case "AXIAL":
+        return { q: hex.q, r: hex.r, s: null };
+      case "CUBE":
+        return { q: hex.q, r: hex.r, s: hex.s };
+    }
+  }, [showCoordinatesAs, hex]);
+
+  const tileOverlayColor = getTileOverlayColor(
+    isDestinationTile,
+    isHoveredTile,
+    isOriginTile,
+    isPlayerTile,
+  );
+
   return (
     <group {...props} position={position}>
       <HexTileGrass rotation={rotation} />
       {showCoordinates && (
         <OverlayText
-          col={col}
-          row={row}
+          coordinates={coordinatesToDisplayForTextOverlay}
           isTerrainTile={isTerrainTile}
           isHoveredTile={isHoveredTile}
         />
       )}
-      {isHoveredTile && <OverlayHighlightOutline />}
       {isTerrainTile && <Terrain rotation={rotation} />}
-      {isPlayerTile && <OverlayHighlight />}
-      {isPlayerTile && <Player />}
-      {isPlayerTile && !isHoveredTile && (
-        <OverlayHighlightOutline isPlayerTile={isPlayerTile} />
+      {tileOverlayColor && <Outline tileOverlayColor={tileOverlayColor} />}
+      {hex.isInPath ? (
+        <HighlightTile tileOverlayColor={TILE_COLORS.ROW} />
+      ) : (
+        tileOverlayColor && (
+          <HighlightTile tileOverlayColor={tileOverlayColor} />
+        )
       )}
+      {isPlayerTile && <Player />}
     </group>
   );
 }

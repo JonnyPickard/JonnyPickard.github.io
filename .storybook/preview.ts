@@ -9,6 +9,15 @@ const preview: Preview = {
         method: "configure",
         order: [
           "Introduction",
+          "Examples",
+          [
+            "ReactThreeJs",
+            [
+              "Avatar",
+              "HexGrid",
+              ["Tile", "Grid", "Player", "Terrain", "Overlays", "*"],
+            ],
+          ],
           "Notes",
           ["Overview", "Data Fetching & Caching", ["Introduction", "*"]],
         ],

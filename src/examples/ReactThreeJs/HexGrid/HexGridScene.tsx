@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo } from "react";
 import {
-  OrbitControls,
+  MapControls,
   GizmoHelper,
   GizmoViewport,
   Stats,
@@ -13,10 +13,12 @@ import { HexGridManager } from "./HexGridManager";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
 import { extend } from "@react-three/fiber";
 import * as THREE from "three";
+import { CHARACTER_START_CAM_POSITION } from "./constants";
 
 export const HexGridScene = () => {
   // https://github.com/framer/motion/issues/2074#issuecomment-1724813108
   useMemo(() => extend(THREE), []);
+  const { camX, camZ } = CHARACTER_START_CAM_POSITION;
 
   return (
     <MotionCanvas
@@ -60,8 +62,11 @@ export const HexGridScene = () => {
         <HexGridManager />
       </Suspense>
 
-      <LayoutCamera position={[0, 6, 10]} />
-      <OrbitControls makeDefault />
+      <LayoutCamera position={[camX, 10, 20]} makeDefault />
+      <MapControls
+        target={[camX, 0, camZ]}
+        makeDefault
+      />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}

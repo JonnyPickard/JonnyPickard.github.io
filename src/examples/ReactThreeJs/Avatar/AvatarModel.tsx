@@ -23,7 +23,7 @@ interface GLTFAction extends THREE.AnimationClip {
 
 export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
-  const all = useGLTF("/3d-models/Paladin.glb") as GLTFResult;
+  const all = useGLTF("/3d-models/avatar/Paladin.glb") as GLTFResult;
   const { nodes, materials, animations } = all;
   const { actions } = useAnimations(animations, group);
 
@@ -46,6 +46,8 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
       },
       "stop",
     );
+
+    actions["Dance_Flair"]?.setEffectiveTimeScale(0.7).play();
 
     return () => gui.destroy();
   }, [actions]);
@@ -73,4 +75,4 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload("/3d-models/Paladin.glb");
+useGLTF.preload("/3d-models/avatar/Paladin.glb");
