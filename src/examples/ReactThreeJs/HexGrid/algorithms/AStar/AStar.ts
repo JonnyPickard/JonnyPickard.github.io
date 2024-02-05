@@ -7,6 +7,8 @@ interface AStarOptions {
   destinationCoords: OffsetCoordinates;
 }
 
+const neighborsMap = new Map<string, Hex[]>();
+
 export const AStar = ({
   grid,
   originCoords,
@@ -19,8 +21,17 @@ export const AStar = ({
     start,
     goal,
     estimateFromNodeToGoal: (tile) => grid.distance(tile, goal),
-    neighborsAdjacentToNode: (center) =>
-      grid.traverse(ring({ radius: 1, center })).toArray(),
+    neighborsAdjacentToNode: (center) => {
+      const cacheKey = `${center.q}-${center.r}`;
+      const cachedNeighbors = neighborsMap.get(cacheKey);
+      if (cachedNeighbors) {
+        return cachedNeighbors;
+      }
+
+      const neighbors = grid.traverse(ring({ radius: 1, center })).toArray();
+      neighborsMap.set(cacheKey, neighbors);
+      return neighbors;
+    },
     actualCostToMove: (_, __, tile) => tile.cost,
   });
 
