@@ -50,7 +50,6 @@ export const generateTerrainTiles = (
       return;
     }
     tile.isTraversable = false;
-    tile.cost = IMPASSABLE_COST;
     terrainTiles.push(tile);
   });
 

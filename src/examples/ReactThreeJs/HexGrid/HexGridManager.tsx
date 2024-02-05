@@ -16,12 +16,12 @@ import {
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
 import {
-  TILE_MESH_SIZE,
   DEFAULT_PLAYER_TILE,
   GRID_WIDTH,
   GRID_HEIGHT,
   HEX_ORIGIN,
   TERRAIN_TILES_AMOUNT,
+  TILE_MESH_DIMENSIONS,
 } from "./constants";
 import { AStar } from "./algorithms/AStar";
 
@@ -68,7 +68,7 @@ export const HexGridManager = () => {
   useEffect(() => {
     // 1. Create a hex class:
     const Hex = defineCustomHex({
-      dimensions: TILE_MESH_SIZE,
+      dimensions: TILE_MESH_DIMENSIONS,
       origin: HEX_ORIGIN,
       orientation: Orientation.POINTY,
     });

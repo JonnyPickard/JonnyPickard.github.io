@@ -8,6 +8,7 @@ import {
 } from "honeycomb-grid";
 import { aStar } from "abstract-astar";
 import { LRUCache } from "lru-cache";
+import { IMPASSABLE_COST } from "../../constants";
 
 export class AStar {
   grid: Grid<Hex>;
@@ -55,7 +56,9 @@ export class AStar {
       goal,
       estimateFromNodeToGoal: (tile) => this.grid.distance(tile, goal),
       neighborsAdjacentToNode: (center) => this.getNeighbors(center),
-      actualCostToMove: (_, __, tile) => tile.cost,
+      // This doesn't really matter as it's either terrain or traversable
+      actualCostToMove: (_, _fromTile, toTile) =>
+        toTile.isTraversable ? 0 : IMPASSABLE_COST /* Infinity */,
     });
 
     this.shortestPathCache.set([originCoords, destinationCoords], shortestPath);

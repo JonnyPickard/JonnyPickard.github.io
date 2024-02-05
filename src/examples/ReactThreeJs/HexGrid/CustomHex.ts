@@ -19,8 +19,6 @@ import { IMPASSABLE_COST } from "./constants";
  */
 export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
   class CustomHex extends defineHex(hexOptions) {
-    cost: number = 0; // when it has a value of Infinity, the tile is impassable
-
     private _isInPath: boolean = false;
     /**
      * Indicates whether a player can cross the tile.
@@ -53,10 +51,6 @@ export const defineCustomHex = (hexOptions?: Partial<HexOptions>) =>
 
     set isInPath(isPathTile: boolean) {
       this._isInPath = isPathTile;
-    }
-
-    get isPassable() {
-      return this.cost < IMPASSABLE_COST;
     }
 
     /**
