@@ -1,6 +1,5 @@
 import { defineHex, HexOptions, Hex } from "honeycomb-grid";
 import { getRandomInt } from "./utils";
-import { IMPASSABLE_COST } from "./constants";
 
 // Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties
 // This seemed like the easiest solution as the hc-grid library works in a slightly unusual way for performance reasons

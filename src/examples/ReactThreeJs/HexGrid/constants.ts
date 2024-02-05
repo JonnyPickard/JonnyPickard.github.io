@@ -7,8 +7,8 @@ import {
   Hex,
 } from "honeycomb-grid";
 
-export const GRID_WIDTH = 12;
-export const GRID_HEIGHT = 12;
+export const GRID_HEIGHT = 10;
+export const GRID_WIDTH = 10;
 export const TERRAIN_TILES_AMOUNT = 6;
 export const IMPASSABLE_COST = Infinity;
 // Size is calculated as the diameter of the outer circle
@@ -25,11 +25,10 @@ export const HEX_ORIGIN = createHexOrigin("topLeft", {
   width: TILE_MESH_SIZE,
   height: TILE_MESH_SIZE,
 });
-
 export const DEFAULT_PLAYER_TILE: OffsetCoordinates = {
-  row: Math.floor(GRID_HEIGHT / 2),
   /* If offset row Math.floor(GRID_WIDTH / 2) -1 */
   col: Math.floor(GRID_WIDTH / 2),
+  row: Math.floor(GRID_HEIGHT / 2),
 };
 
 const cubeCoords = offsetToCubePointy(
@@ -37,6 +36,7 @@ const cubeCoords = offsetToCubePointy(
   DEFAULT_PLAYER_TILE.row,
   -1,
 );
+
 const charStart = hexToPoint({
   orientation: Orientation.POINTY,
   dimensions: TILE_MESH_DIMENSIONS,
@@ -44,7 +44,6 @@ const charStart = hexToPoint({
   ...cubeCoords,
   offset: -1,
 } as Hex);
-console.log(charStart);
 
 export const CHARACTER_START_CAM_POSITION = {
   camX: charStart.x,
