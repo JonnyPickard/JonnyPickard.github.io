@@ -12,6 +12,7 @@ import {
   hexToOffset,
   OffsetCoordinates,
   isOffset as isOffsetCoords,
+  createHexOrigin,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
 import { isTile, generateTerrainTiles } from "./utils";
@@ -20,6 +21,7 @@ import {
   DEFAULT_PLAYER_TILE,
   GRID_WIDTH,
   GRID_HEIGHT,
+  HEX_ORIGIN,
 } from "./constants";
 import { AStar } from "./algorithms/AStar";
 
@@ -60,14 +62,17 @@ export const HexGridManager = () => {
     // 1. Create a hex class:
     const Hex = defineCustomHex({
       dimensions: TILE_MESH_SIZE,
-      origin: { x: 8, y: 6 },
+      origin: HEX_ORIGIN,
       orientation: Orientation.POINTY,
     });
 
     // 2. Create a grid by passing the class and a "traverser" for a rectangular-shaped grid:
     const hexGrid = new Grid(
       Hex,
-      rectangle({ width: GRID_WIDTH, height: GRID_HEIGHT }),
+      rectangle({
+        width: GRID_WIDTH,
+        height: GRID_HEIGHT,
+      }),
     );
 
     const terrainTiles = generateTerrainTiles(hexGrid, 6, DEFAULT_PLAYER_TILE);
@@ -85,6 +90,17 @@ export const HexGridManager = () => {
       });
     }
   }, [destinationTile, grid, playerTile]);
+
+  // // Should cache nieghbour calculations
+  // useEffect(() => {
+  //   if (grid && isOffsetCoords(hoveredTile)) {
+  //     AStar({
+  //       grid,
+  //       originCoords: playerTile,
+  //       destinationCoords: hoveredTile as OffsetCoordinates,
+  //     });
+  //   }
+  // }, [hoveredTile, grid, playerTile]);
 
   // 3. Iterate over the grid to render each hex:
   return (

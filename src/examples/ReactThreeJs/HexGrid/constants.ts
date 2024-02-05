@@ -1,4 +1,4 @@
-import { OffsetCoordinates } from "honeycomb-grid";
+import { OffsetCoordinates, createHexOrigin } from "honeycomb-grid";
 
 // Size is calculated as the diameter of the outer circle
 // that can be drawn around the hex
@@ -6,6 +6,14 @@ import { OffsetCoordinates } from "honeycomb-grid";
 // Mesh size calculated using geometry.boundingBox.max.z
 // It would be better to reference the mesh vs this:
 export const TILE_MESH_SIZE = 0.9937889575958252;
+export const TILE_MESH_WIDTH = 0.9937889575958252;
+export const TILE_MESH_HEIGHT = 0.8642922043800354;
+export const CHARACTER_START_POSITION_X = 8.24271282830388;
+export const CHARACTER_START_POSITION_Z = 7.885563284158707;
+export const HEX_ORIGIN = createHexOrigin("topLeft", {
+  width: TILE_MESH_WIDTH,
+  height: TILE_MESH_HEIGHT,
+});
 export const IMPASSABLE_COST = Infinity;
 export const IMPASSABLE_CHANCE = 0.35;
 export const MAX_COST = 5;
