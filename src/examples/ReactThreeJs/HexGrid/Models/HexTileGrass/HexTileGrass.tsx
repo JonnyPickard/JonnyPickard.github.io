@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Merged } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
@@ -11,18 +11,27 @@ type GLTFResult = GLTF & {
   };
 };
 export function HexTileGrass(props: JSX.IntrinsicElements["mesh"]) {
-  const { nodes, materials } = useGLTF(
-    "/3d-models/hex-grid/HexGrass.glb",
-  ) as GLTFResult;
-
+  const { nodes } = useGLTF("/3d-models/hex-grid/HexGrass.glb") as GLTFResult;
   return (
-    <mesh
-      {...props}
-      dispose={null}
-      receiveShadow
-      geometry={nodes.HexGrass.geometry}
-      material={materials.M_HexGrass}
-    />
+    // Instanced meshes
+    <Merged meshes={[nodes.HexGrass]}>
+      {
+        // eslint-disable-next-line
+        // @ts-ignore
+        // Works but cant work out how to type it ATM
+        (HexGrass) => {
+          return (
+            <HexGrass
+              {...props}
+              dispose={null}
+              receiveShadow
+              geometry={HexGrass.geometry}
+              material={HexGrass.materials}
+            />
+          );
+        }
+      }
+    </Merged>
   );
 }
 

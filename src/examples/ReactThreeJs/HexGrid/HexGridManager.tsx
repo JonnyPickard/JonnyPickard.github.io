@@ -1,5 +1,3 @@
-// NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
-// https://www.redblobgames.com/grids/hexagons/#coordinates-offset
 import { defineCustomHex } from ".";
 import { useState, useEffect } from "react";
 import {

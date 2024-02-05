@@ -11,7 +11,7 @@ import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
 import { calculateRotation, getTileOverlayColor } from "../utils";
-import { TILE_COLORS } from "..";
+import { TILE_COLORS } from "../constants";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */

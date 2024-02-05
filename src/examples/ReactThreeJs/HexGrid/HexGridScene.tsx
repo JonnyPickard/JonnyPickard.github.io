@@ -1,5 +1,3 @@
-// NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
-
 import { Suspense, useMemo } from "react";
 import {
   MapControls,
@@ -63,10 +61,7 @@ export const HexGridScene = () => {
       </Suspense>
 
       <LayoutCamera position={[camX, 10, 20]} makeDefault />
-      <MapControls
-        target={[camX, 0, camZ]}
-        makeDefault
-      />
+      <MapControls target={[camX, 0, camZ]} makeDefault />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}
