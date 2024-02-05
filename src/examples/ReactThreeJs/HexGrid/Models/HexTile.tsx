@@ -1,4 +1,5 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
+// NOTE: Tried this but you have to hack it to make shadows work
 import {
   HexTileGrass,
   Outline,
@@ -11,7 +12,6 @@ import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
 import { calculateRotation, getTileOverlayColor } from "../utils";
-import { TILE_COLORS } from "..";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */
@@ -20,6 +20,7 @@ interface HexTileProps {
   textureSeed: number;
   rotationSeed: number;
   isDestinationTile?: boolean;
+  isActiveDestinationTile?: boolean;
   isHoveredTile?: boolean;
   isOriginTile?: boolean;
   isPlayerTile?: boolean;
@@ -38,6 +39,7 @@ export function HexTile({
   showCoordinates = true,
   showCoordinatesAs = "OFFSET",
   isDestinationTile,
+  isActiveDestinationTile,
   isHoveredTile,
   isOriginTile,
   isPlayerTile,
@@ -60,12 +62,14 @@ export function HexTile({
     }
   }, [showCoordinatesAs, hex]);
 
-  const tileOverlayColor = getTileOverlayColor(
+  const tileOverlayColor = getTileOverlayColor({
     isDestinationTile,
+    isActiveDestinationTile,
     isHoveredTile,
     isOriginTile,
     isPlayerTile,
-  );
+    isInPath: hex.isInPath,
+  });
 
   return (
     <group {...props} position={position}>
@@ -79,12 +83,8 @@ export function HexTile({
       )}
       {isTerrainTile && <Terrain rotation={rotation} />}
       {tileOverlayColor && <Outline tileOverlayColor={tileOverlayColor} />}
-      {hex.isInPath ? (
-        <HighlightTile tileOverlayColor={TILE_COLORS.ROW} />
-      ) : (
-        tileOverlayColor && (
-          <HighlightTile tileOverlayColor={tileOverlayColor} />
-        )
+      {tileOverlayColor && (
+        <HighlightTile tileOverlayColor={tileOverlayColor} />
       )}
       {isPlayerTile && <Player />}
     </group>

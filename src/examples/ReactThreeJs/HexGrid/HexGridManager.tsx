@@ -56,6 +56,12 @@ export const HexGridManager = () => {
       col: null,
       row: null,
     });
+  /* If it's possible to navigate to tile set this */
+  const [activeDestinationTile, setActiveDestinationTile] =
+    useState<NullableOffsetCoordinates>({
+      col: null,
+      row: null,
+    });
 
   /* Defaulting to a reletively central point to begin with*/
   const [playerTile, setPlayerTile] =
@@ -97,6 +103,9 @@ export const HexGridManager = () => {
       const shortestPath = aStar?.traverse(playerTile, destinationTile);
       if (shortestPath) {
         setActivePath(shortestPath);
+        setActiveDestinationTile(destinationTile);
+        // Reset destination tile
+        setDestinationTile({ col: null, row: null });
       }
     }
   }, [grid, aStar, playerTile, destinationTile]);
@@ -122,6 +131,10 @@ export const HexGridManager = () => {
         const { col, row } = hexToOffset(hex);
 
         const isDestinationTile = isTile(destinationTile, { col, row });
+        const isActiveDestinationTile = isTile(activeDestinationTile, {
+          col,
+          row,
+        });
         const isHoveredTile = isTile(hoveredTile, { col, row });
         const isOriginTile = isTile(originTile, { col, row });
         const isPlayerTile = isTile(playerTile, { col, row });
@@ -135,6 +148,7 @@ export const HexGridManager = () => {
             key={`${col}-${row}`}
             position={[x, 0, y]}
             isDestinationTile={isDestinationTile}
+            isActiveDestinationTile={isActiveDestinationTile}
             isHoveredTile={isHoveredTile}
             isOriginTile={isOriginTile}
             isPlayerTile={isPlayerTile}

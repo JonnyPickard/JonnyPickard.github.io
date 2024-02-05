@@ -79,9 +79,7 @@ export class AStar {
 
     this.grid
       .traverse(shortestPath ?? [])
-      .filter(
-        (tile) => !tile.equals(originCoords) && !tile.equals(destinationCoords),
-      )
+      .filter((tile) => !tile.equals(originCoords))
       .forEach((tile) => {
         tile.isInPath = true;
       });

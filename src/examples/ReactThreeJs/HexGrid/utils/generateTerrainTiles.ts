@@ -27,6 +27,10 @@ export const generateTerrainTiles = (
     return [];
   }
 
+  if (grid.size <= 0) {
+    return [];
+  }
+
   // generate to store unique indexes for selecting random tiles.
   const tileUniqueIndexes = new Set<number>();
 
