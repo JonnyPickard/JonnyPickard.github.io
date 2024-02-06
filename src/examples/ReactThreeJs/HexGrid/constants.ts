@@ -9,7 +9,8 @@ import {
 
 export const GRID_HEIGHT = 12;
 export const GRID_WIDTH = 12;
-export const TERRAIN_TILES_AMOUNT = 30;
+// export const TERRAIN_TILES_AMOUNT = 30;
+export const TERRAIN_TILES_AMOUNT = 0;
 export const IMPASSABLE_COST = Infinity;
 // Size is calculated as the diameter of the outer circle
 // that can be drawn around the hex

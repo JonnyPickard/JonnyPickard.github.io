@@ -1,4 +1,4 @@
-export * from "./calculateNeighborDirection";
+export * from "./calculateDirection";
 export * from "./calculateRotation";
 export * from "./calculateTileRotation";
 export * from "./generateTerrainTiles";

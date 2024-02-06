@@ -1,7 +1,7 @@
 import { defineCustomHex } from "..";
 import { Hex, Orientation } from "honeycomb-grid";
 
-describe("Custom HexTile", () => {
+describe("Custom Hex", () => {
   it("should be instantiated with default options", () => {
     const CustomHexTile = defineCustomHex();
     const hexTile = new CustomHexTile();
