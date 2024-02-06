@@ -11,7 +11,7 @@ import {
 import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
-import { calculateRotation, getTileOverlayColor } from "../utils";
+import { calculateTileRotation, getTileOverlayColor } from "../utils";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */
@@ -47,7 +47,7 @@ export function HexTile({
   ...props
 }: JSX.IntrinsicElements["group"] & HexTileProps) {
   const rotation = useMemo(
-    () => calculateRotation(textureSeed, rotationSeed),
+    () => calculateTileRotation(textureSeed, rotationSeed),
     [textureSeed, rotationSeed],
   );
 

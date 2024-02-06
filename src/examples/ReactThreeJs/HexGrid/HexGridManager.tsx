@@ -13,7 +13,7 @@ import {
   isOffset as isOffsetCoords,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
-import { isTile, generateTerrainTiles } from "./utils";
+import { isTile, generateTerrainTiles, calculateRotation } from "./utils";
 import {
   DEFAULT_PLAYER_TILE,
   GRID_WIDTH,
@@ -103,6 +103,18 @@ export const HexGridManager = () => {
     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
       const shortestPath = aStar?.traverse(playerTile, destinationTile);
       if (shortestPath) {
+        console.log(shortestPath);
+        console.log(playerTile);
+
+        const nextTile = shortestPath[0];
+        const playerHex = grid.getHex(playerTile);
+        if (playerHex) {
+          calculateRotation({
+            fromHex: playerHex,
+            toHex: nextTile,
+          });
+        }
+
         setActivePath(shortestPath);
         setActiveDestinationTile(destinationTile);
 
@@ -131,12 +143,18 @@ export const HexGridManager = () => {
       if (activePath.length) {
         const nextTile = activePath[0];
         const shortenedPath = activePath.slice(1);
-        setPlayerTile(nextTile);
-        setActivePath(shortenedPath);
+        console.log(activePath);
+        // calculateRotation({
+        //   fromHex: grid?.getHex(playerTile),
+        //   toHex: nextTile,
+        // });
+        // setPlayerTile(nextTile);
+        // setActivePath(shortenedPath);
       }
     },
     // Delay in milliseconds or null to stop it
-    activePath.length ? 600 : null,
+    null,
+    // activePath.length ? 600 : null,
   );
 
   // 3. Iterate over the grid to render each hex:
@@ -171,6 +189,7 @@ export const HexGridManager = () => {
             isTerrainTile={isTerrainTile}
             textureSeed={textureSeed}
             rotationSeed={rotationSeed}
+            showCoordinatesAs="AXIAL"
             onPointerOver={(e) => {
               e.stopPropagation;
               setHoveredTile({ col, row });
