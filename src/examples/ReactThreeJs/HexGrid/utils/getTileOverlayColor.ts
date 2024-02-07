@@ -10,7 +10,7 @@ interface getTileOverlayColorOptions {
 }
 
 export const getTileOverlayColor = ({
-  isDestinationTile,
+  // isDestinationTile,
   isActiveDestinationTile,
   isHoveredTile,
   isOriginTile,

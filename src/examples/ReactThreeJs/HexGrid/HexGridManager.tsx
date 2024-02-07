@@ -13,7 +13,7 @@ import {
   isOffset as isOffsetCoords,
 } from "honeycomb-grid";
 import { HexTile } from "./Models";
-import { isTile, generateTerrainTiles, calculateRotation } from "./utils";
+import { isTile, generateTerrainTiles } from "./utils";
 import {
   DEFAULT_PLAYER_TILE,
   GRID_WIDTH,
@@ -27,14 +27,20 @@ import { useInterval } from "usehooks-ts";
 
 import type { NullableOffsetCoordinates } from "./types";
 
+import { usePlayerStore } from "./store";
+
 export const HexGridManager = () => {
+  const setIsRunning = usePlayerStore((state) => state.setIsRunning);
+  const setPlayerRotation = usePlayerStore((state) => state.setPlayerRotation);
   /* 
     Class used to manage path traversal
   */
   const [aStar, setAStar] = useState<AStar>();
   /* Currently only used to rerender on path select */
   const [activePath, setActivePath] = useState<Hex[]>([]);
-  const [hoverPath, setHoverPath] = useState<Hex[]>([]);
+
+  // TODO:
+  // const [hoverPath, setHoverPath] = useState<Hex[]>([]);
   /* 
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
@@ -103,27 +109,23 @@ export const HexGridManager = () => {
     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
       const shortestPath = aStar?.traverse(playerTile, destinationTile);
       if (shortestPath) {
-        console.log(shortestPath);
-        console.log(playerTile);
-
-        const nextTile = shortestPath[0];
-        const playerHex = grid.getHex(playerTile);
-        if (playerHex) {
-          calculateRotation({
-            fromHex: playerHex,
-            toHex: nextTile,
-          });
-        }
-
         setActivePath(shortestPath);
         setActiveDestinationTile(destinationTile);
+        setOriginTile(playerTile);
 
         // Reset destination tile
         setDestinationTile({ col: null, row: null });
-        setOriginTile(destinationTile);
       }
     }
   }, [grid, aStar, playerTile, destinationTile]);
+
+  useEffect(() => {
+    if (activePath.length >= 1) {
+      setIsRunning(true);
+    } else {
+      setIsRunning(false);
+    }
+  }, [activePath, setIsRunning]);
 
   // Mapping a Path based on hover
   // useEffect(() => {
@@ -137,74 +139,84 @@ export const HexGridManager = () => {
   //   }
   // }, [hoveredTile, grid, playerTile, aStar]);
 
+  useEffect(() => {
+    if (playerTile && activePath.length) {
+      const nextTile = activePath[0];
+      const currentTile = grid?.getHex(playerTile);
+
+      if (currentTile) {
+        setPlayerRotation({
+          fromHex: currentTile,
+          toHex: nextTile,
+        });
+      }
+    }
+  }, [activePath, grid, setPlayerRotation, playerTile]);
+
   // Game Tick
   useInterval(
     () => {
-      if (activePath.length) {
-        const nextTile = activePath[0];
-        const shortenedPath = activePath.slice(1);
-        console.log(activePath);
-        // calculateRotation({
-        //   fromHex: grid?.getHex(playerTile),
-        //   toHex: nextTile,
-        // });
-        // setPlayerTile(nextTile);
-        // setActivePath(shortenedPath);
+      const nextTile = activePath[0];
+      const shortenedPath = activePath.slice(1);
+      const currentTile = grid?.getHex(playerTile);
+
+      if (currentTile) {
+        setPlayerRotation({
+          fromHex: currentTile,
+          toHex: nextTile,
+        });
       }
+      setPlayerTile(nextTile);
+      setActivePath(shortenedPath);
     },
     // Delay in milliseconds or null to stop it
-    null,
-    // activePath.length ? 600 : null,
+    activePath.length ? 600 : null,
   );
 
   // 3. Iterate over the grid to render each hex:
-  return (
-    <>
-      {grid?.toArray().map((hex) => {
-        const { x, y } = hexToPoint(hex);
-        const { col, row } = hexToOffset(hex);
+  return grid?.toArray().map((hex) => {
+    const { x, y } = hexToPoint(hex);
+    const { col, row } = hexToOffset(hex);
 
-        const isDestinationTile = isTile(destinationTile, { col, row });
-        const isActiveDestinationTile = isTile(activeDestinationTile, {
-          col,
-          row,
-        });
-        const isHoveredTile = isTile(hoveredTile, { col, row });
-        const isOriginTile = isTile(originTile, { col, row });
-        const isPlayerTile = isTile(playerTile, { col, row });
-        const isTerrainTile = hex.isTraversable === false;
+    const isDestinationTile = isTile(destinationTile, { col, row });
+    const isActiveDestinationTile = isTile(activeDestinationTile, {
+      col,
+      row,
+    });
+    const isHoveredTile = isTile(hoveredTile, { col, row });
+    const isOriginTile = isTile(originTile, { col, row });
+    const isPlayerTile = isTile(playerTile, { col, row });
+    const isTerrainTile = hex.isTraversable === false;
 
-        const [textureSeed, rotationSeed] = hex.randomSeeds;
+    const [textureSeed, rotationSeed] = hex.randomSeeds;
 
-        return (
-          <HexTile
-            hex={hex}
-            key={`${col}-${row}`}
-            position={[x, 0, y]}
-            isDestinationTile={isDestinationTile}
-            isActiveDestinationTile={isActiveDestinationTile}
-            isHoveredTile={isHoveredTile}
-            isOriginTile={isOriginTile}
-            isPlayerTile={isPlayerTile}
-            isTerrainTile={isTerrainTile}
-            textureSeed={textureSeed}
-            rotationSeed={rotationSeed}
-            showCoordinatesAs="AXIAL"
-            onPointerOver={(e) => {
-              e.stopPropagation;
-              setHoveredTile({ col, row });
-            }}
-            onPointerDown={(e) => {
-              e.stopPropagation;
-            }}
-            onPointerUp={(e) => {
-              e.stopPropagation;
-              setDestinationTile(hoveredTile);
-              setOriginTile(playerTile);
-            }}
-          />
-        );
-      })}
-    </>
-  );
+    return (
+      <HexTile
+        hex={hex}
+        key={`${col}-${row}`}
+        position={[x, 0, y]}
+        isDestinationTile={isDestinationTile}
+        isActiveDestinationTile={isActiveDestinationTile}
+        isHoveredTile={isHoveredTile}
+        isOriginTile={isOriginTile}
+        isPlayerTile={isPlayerTile}
+        isTerrainTile={isTerrainTile}
+        textureSeed={textureSeed}
+        rotationSeed={rotationSeed}
+        showCoordinatesAs="AXIAL"
+        onPointerOver={(e) => {
+          e.stopPropagation;
+          setHoveredTile({ col, row });
+        }}
+        onPointerDown={(e) => {
+          e.stopPropagation;
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation;
+          setDestinationTile(hoveredTile);
+          setOriginTile(playerTile);
+        }}
+      />
+    );
+  });
 };

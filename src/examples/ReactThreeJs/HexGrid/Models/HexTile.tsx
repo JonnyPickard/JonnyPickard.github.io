@@ -27,7 +27,7 @@ interface HexTileProps {
   isTerrainTile?: boolean;
   showCoordinates?: boolean;
   showCoordinatesAs?: "OFFSET" | "AXIAL" | "CUBE";
-  showSphere?: boolean;
+  // showSphere?: boolean;
 }
 
 export function HexTile({
@@ -35,7 +35,7 @@ export function HexTile({
   position,
   rotationSeed,
   textureSeed,
-  showSphere = false,
+  // showSphere = false,
   showCoordinates = true,
   showCoordinatesAs = "OFFSET",
   isDestinationTile,

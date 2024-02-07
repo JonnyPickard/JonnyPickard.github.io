@@ -2,50 +2,32 @@ import { Hex } from "honeycomb-grid";
 
 import { calculateDirection } from ".";
 
-/**
- * Calculates the rotation angle needed to rotate from one direction to another on a hexagonal grid.
- * @param fromDirection The starting direction.
- * @param toDirection The ending direction.
- * @returns The rotation angle in degrees.
- */
-function calculateRotationAngle(
-  fromDirection: string,
-  toDirection: string,
+function calculateRotationDegrees(
+  fromDirection: string, // 'NE', 'E', 'SE', 'SW', 'W', 'NW'
+  toDirection: string, // 'NE', 'E', 'SE', 'SW', 'W', 'NW'
 ): number {
-  // Define angles for each edge relative to the starting direction (SW)
-  const edgeAngles: { [key: string]: number } = {
-    SE: 60,
-    E: 120,
-    NE: 180,
-    SW: 0,
-    W: 300,
-    NW: 240,
-  };
+  // Define the directions in clockwise order
+  const directions = ["SW", "W", "NW", "NE", "E", "SE"];
 
-  // Get the angles for the starting and ending directions
-  const fromAngle = edgeAngles[fromDirection];
-  const toAngle = edgeAngles[toDirection];
+  // Calculate the indices of the starting and ending directions
+  const fromIndex = directions.indexOf(fromDirection);
+  const toIndex = directions.indexOf(toDirection);
 
-  // Calculate the difference in angles
-  let rotation = toAngle - fromAngle;
+  // Calculate the number of steps needed to move from fromDirection to toDirection in clockwise and counterclockwise directions
+  const stepsClockwise = (toIndex - fromIndex + 6) % 6;
+  const stepsCounterclockwise = (fromIndex - toIndex + 6) % 6;
 
-  // Ensure the angle is within the range of 0 to 360 degrees
-  if (rotation < 0) {
-    rotation += 360;
+  // Determine the shortest rotation
+  const shortestRotationSteps = Math.min(stepsClockwise, stepsCounterclockwise);
+
+  // Calculate the rotation angle (in degrees)
+  let angle = shortestRotationSteps * 60;
+  // Adjust angle to negative if counterclockwise rotation is shorter
+  if (stepsCounterclockwise > stepsClockwise) {
+    angle *= -1;
   }
 
-  // Determine the direction of rotation
-  const direction = rotation > 180 ? 1 : -1;
-
-  // Convert the rotation to be within +/- 180 degrees
-  rotation = rotation > 180 ? 360 - rotation : rotation;
-
-  // Apply the direction to the rotation
-  if (rotation !== 180 && rotation !== 0) {
-    rotation *= direction;
-  }
-
-  return rotation;
+  return angle;
 }
 
 /**
@@ -78,10 +60,12 @@ export const calculateRotation = ({
   toHex,
   startingDirection = "SW",
 }: calculateRotationOptions) => {
-  const toDirection = calculateDirection({ fromHex, toHex });
-  if (toDirection) {
-    const rotation = calculateRotationAngle(startingDirection, toDirection);
-    return rotation;
+  const direction = calculateDirection({ fromHex, toHex });
+
+  if (direction) {
+    const degrees = calculateRotationDegrees(startingDirection, direction);
+
+    return { degrees, direction };
   }
   return null;
 };
