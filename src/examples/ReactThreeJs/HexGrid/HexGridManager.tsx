@@ -44,8 +44,6 @@ export const HexGridManager = () => {
 
   const [activePath, setActivePath] = useState<Hex[]>([]);
 
-  // TODO:
-  // const [hoverPath, setHoverPath] = useState<Hex[]>([]);
   /* 
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
@@ -102,7 +100,9 @@ export const HexGridManager = () => {
     setAStar(new AStar(hexGrid));
   }, []);
 
-  // Mapping a Path based on hover
+  // TODO: Mapping a Path based on hover?
+  //
+  // const [hoverPath, setHoverPath] = useState<Hex[]>([]);
   // useEffect(() => {
   //   if (grid && isOffsetCoords(hoveredTile)) {
   //     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(hoveredTile)) {
