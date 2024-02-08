@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, CubeCamera, useCubeTexture } from "@react-three/drei";
+import {
+  OrbitControls,
+  CubeCamera,
+  useCubeTexture,
+  Stats,
+} from "@react-three/drei";
 import { AvatarModel } from "./AvatarModel";
 
 const skyboxAssetPath = "/3d-models/textures/space-skybox/";
@@ -20,6 +25,7 @@ function SkyBox() {
 export const AvatarScene = () => {
   return (
     <Canvas
+      frameloop="demand"
       style={{
         width: "100vw",
         height: "100vh",
@@ -32,6 +38,7 @@ export const AvatarScene = () => {
       </Suspense>
       <SkyBox />
       <OrbitControls />
+      <Stats />
     </Canvas>
   );
 };
