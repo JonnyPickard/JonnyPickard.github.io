@@ -7,9 +7,10 @@ import {
   Hex,
 } from "honeycomb-grid";
 
-export const GRID_HEIGHT = 10;
-export const GRID_WIDTH = 10;
-export const TERRAIN_TILES_AMOUNT = 6;
+export const GRID_SIZE = 9;
+export const GRID_HEIGHT = GRID_SIZE;
+export const GRID_WIDTH = GRID_SIZE;
+export const TERRAIN_TILES_AMOUNT = 30;
 export const IMPASSABLE_COST = Infinity;
 // Size is calculated as the diameter of the outer circle
 // that can be drawn around the hex
@@ -51,7 +52,7 @@ export const CHARACTER_START_CAM_POSITION = {
 };
 
 export enum TILE_COLORS {
-  ROW = "#9d0d8c",
+  PATH = "#9d0d8c",
   OFFSET_ROW = "#186cb1",
   HOVERED = "#67a250",
   HOVERED_EMISSIVE_LIGHT = "limegreen",

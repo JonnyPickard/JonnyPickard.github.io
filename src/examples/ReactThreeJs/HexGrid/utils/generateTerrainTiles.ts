@@ -16,6 +16,9 @@ export const generateTerrainTiles = (
   amount: number,
   playerTile: OffsetCoordinates,
 ) => {
+  if (grid.size <= 0) {
+    return [];
+  }
   /**
    * Checks if the requested amount of terrain tiles exceeds the grid size.
    * Displays a warning and returns the original grid if the condition is true.
@@ -32,7 +35,7 @@ export const generateTerrainTiles = (
 
   // Generate unique indexes until reaching the specified amount.
   while (tileUniqueIndexes.size !== amount) {
-    tileUniqueIndexes.add(Math.floor(Math.random() * grid.size) + 1);
+    tileUniqueIndexes.add(Math.floor(Math.random() * grid.size));
   }
 
   // Convert the grid to an array for easy manipulation.
@@ -43,13 +46,17 @@ export const generateTerrainTiles = (
 
   // Iterate through unique indexes, update tile properties, and add to terrainTiles array.
   tileUniqueIndexes.forEach((uniqueIndex) => {
-    const tile = gridAsArray[uniqueIndex];
-    // Don't put untraversable tiles under the player start location
-    if (isTile(hexToOffset(tile), playerTile)) {
-      return;
+    try {
+      const tile = gridAsArray[uniqueIndex].clone();
+      // Don't put untraversable tiles under the player start location
+      if (isTile(hexToOffset(tile), playerTile)) {
+        return;
+      }
+      tile.isTraversable = false;
+      terrainTiles.push(tile);
+    } catch (err) {
+      console.error("[generateTerrainTiles]: apply terrain at index:", err);
     }
-    tile.isTraversable = false;
-    terrainTiles.push(tile);
   });
 
   // Update the grid with the modified terrain tiles and return the result.

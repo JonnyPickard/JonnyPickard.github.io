@@ -33,21 +33,21 @@ export const HexGridScene = () => {
       <motion.ambientLight
         intensity={2}
         position={[0, 5, 10]}
-        color={"#fdfefe"}
+        color={"#89ceff"}
       />
       {/* Shadow casting sun type light */}
       <motion.directionalLight
-        color={"#ffecad"}
+        color={"#b5a92a"}
         /* Trying to position inline with sun */
-        position={[10, 15, -10]}
-        intensity={2}
+        position={[camX * 2, 5, camZ * 2]}
+        intensity={10}
         shadow-mapSize-height={1024}
         shadow-mapSize-width={1024}
         castShadow
       />
       {/* Sun/ Atmosphere shader */}
       <Sky
-        sunPosition={[10, 0.02, -10]}
+        sunPosition={[10, 0.01, -10]}
         distance={3000}
         turbidity={8}
         rayleigh={8}
@@ -62,11 +62,8 @@ export const HexGridScene = () => {
         <HexGridManager />
       </Suspense>
 
-      <LayoutCamera position={[camX, 10, 20]} makeDefault />
-      <MapControls
-        target={[camX, 0, camZ]}
-        makeDefault
-      />
+      <LayoutCamera position={[camX, 20, camZ + 6]} makeDefault />
+      <MapControls target={[camX, 0, camZ]} makeDefault />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
           axisColors={["red", "green", "blue"]}

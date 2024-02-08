@@ -1,4 +1,5 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
+// NOTE: Tried this but you have to hack it to make shadows work
 import {
   HexTileGrass,
   Outline,
@@ -10,8 +11,7 @@ import {
 import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
-import { calculateRotation, getTileOverlayColor } from "../utils";
-import { TILE_COLORS } from "..";
+import { calculateTileRotation, getTileOverlayColor } from "../utils";
 
 interface HexTileProps {
   /* Classing containing information about the hex relative to the grid */
@@ -20,13 +20,14 @@ interface HexTileProps {
   textureSeed: number;
   rotationSeed: number;
   isDestinationTile?: boolean;
+  isActiveDestinationTile?: boolean;
   isHoveredTile?: boolean;
   isOriginTile?: boolean;
   isPlayerTile?: boolean;
   isTerrainTile?: boolean;
   showCoordinates?: boolean;
   showCoordinatesAs?: "OFFSET" | "AXIAL" | "CUBE";
-  showSphere?: boolean;
+  // showSphere?: boolean;
 }
 
 export function HexTile({
@@ -34,10 +35,11 @@ export function HexTile({
   position,
   rotationSeed,
   textureSeed,
-  showSphere = false,
+  // showSphere = false,
   showCoordinates = true,
   showCoordinatesAs = "OFFSET",
   isDestinationTile,
+  isActiveDestinationTile,
   isHoveredTile,
   isOriginTile,
   isPlayerTile,
@@ -45,7 +47,7 @@ export function HexTile({
   ...props
 }: JSX.IntrinsicElements["group"] & HexTileProps) {
   const rotation = useMemo(
-    () => calculateRotation(textureSeed, rotationSeed),
+    () => calculateTileRotation(textureSeed, rotationSeed),
     [textureSeed, rotationSeed],
   );
 
@@ -60,12 +62,14 @@ export function HexTile({
     }
   }, [showCoordinatesAs, hex]);
 
-  const tileOverlayColor = getTileOverlayColor(
+  const tileOverlayColor = getTileOverlayColor({
     isDestinationTile,
+    isActiveDestinationTile,
     isHoveredTile,
     isOriginTile,
     isPlayerTile,
-  );
+    isInPath: hex.isInPath,
+  });
 
   return (
     <group {...props} position={position}>
@@ -79,12 +83,8 @@ export function HexTile({
       )}
       {isTerrainTile && <Terrain rotation={rotation} />}
       {tileOverlayColor && <Outline tileOverlayColor={tileOverlayColor} />}
-      {hex.isInPath ? (
-        <HighlightTile tileOverlayColor={TILE_COLORS.ROW} />
-      ) : (
-        tileOverlayColor && (
-          <HighlightTile tileOverlayColor={tileOverlayColor} />
-        )
+      {tileOverlayColor && (
+        <HighlightTile tileOverlayColor={tileOverlayColor} />
       )}
       {isPlayerTile && <Player />}
     </group>

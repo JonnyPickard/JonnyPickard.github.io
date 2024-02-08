@@ -65,26 +65,32 @@ export class AStar {
     return shortestPath;
   };
 
+  resetPreviousPath = () => {
+    if (this.previousShortestPath) {
+      this.previousShortestPath.forEach((tile) => {
+        tile.isInPath = false;
+      });
+
+      this.previousShortestPath = [];
+    }
+  };
+
   traverse = (
     originCoords: OffsetCoordinates,
     destinationCoords: OffsetCoordinates,
   ) => {
-    const shortestPath = this.getShortestPath(originCoords, destinationCoords);
+    const shortestPath = this.getShortestPath(
+      originCoords,
+      destinationCoords,
+    )?.filter((tile) => !tile.equals(originCoords));
 
     // Reset previous path
-    (this.previousShortestPath ?? []).forEach((tile) => {
-      tile.isInPath = false;
-    });
+    this.resetPreviousPath();
     this.previousShortestPath = shortestPath;
 
-    this.grid
-      .traverse(shortestPath ?? [])
-      .filter(
-        (tile) => !tile.equals(originCoords) && !tile.equals(destinationCoords),
-      )
-      .forEach((tile) => {
-        tile.isInPath = true;
-      });
+    this.grid.traverse(shortestPath ?? []).forEach((tile) => {
+      tile.isInPath = true;
+    });
 
     return shortestPath;
   };
