@@ -1,8 +1,10 @@
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import GUI from "lil-gui";
+import { useThree } from "@react-three/fiber";
+import { useInterval } from "usehooks-ts";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -26,6 +28,19 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
   const all = useGLTF("/3d-models/avatar/Paladin.glb") as GLTFResult;
   const { nodes, materials, animations } = all;
   const { actions } = useAnimations(animations, group);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const { invalidate } = useThree();
+
+  useInterval(
+    () => {
+      invalidate();
+    },
+    // Delay in milliseconds or null to stop it
+    // Lower = higher fps
+    // 20 = around 50fps on mac
+    isPlaying ? 20 : null,
+  );
 
   useEffect(() => {
     const gui = new GUI();
@@ -34,6 +49,7 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
       {
         play: () => {
           actions["Dance_Flair"]?.setEffectiveTimeScale(0.7).play();
+          setIsPlaying(true);
         },
       },
       "play",
@@ -42,12 +58,13 @@ export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
       {
         stop: () => {
           actions["Dance_Flair"]?.stop();
+          setIsPlaying(false);
         },
       },
       "stop",
     );
 
-    actions["Dance_Flair"]?.setEffectiveTimeScale(0.7).play();
+    actions["Dance_Flair"]?.setEffectiveTimeScale(0.8).play();
 
     return () => gui.destroy();
   }, [actions]);
