@@ -15,7 +15,7 @@ const preview: Preview = {
             [
               "Avatar",
               "HexGrid",
-              ["Tile", "Grid", "Player", "Terrain", "Overlays", "*"],
+              ["Grid", "Tile", "Player", "Terrain", "Overlays", "*"],
             ],
           ],
           "Notes",

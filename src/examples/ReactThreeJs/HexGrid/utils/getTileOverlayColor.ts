@@ -21,10 +21,10 @@ export const getTileOverlayColor = ({
     return TILE_COLORS.DESTINATION;
   } else if (isHoveredTile) {
     return TILE_COLORS.HOVERED;
-  } else if (isInPath) {
-    return TILE_COLORS.PATH;
   } else if (isPlayerTile) {
     return TILE_COLORS.PLAYER;
+  } else if (isInPath) {
+    return TILE_COLORS.PATH;
   } else if (isOriginTile) {
     return TILE_COLORS.ORIGIN;
   } else {
