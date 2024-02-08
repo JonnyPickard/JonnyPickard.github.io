@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OverlaySphere } from "./Sphere";
-import { Scene } from "../";
+import { HexTileGrass as HexTileGrassModel } from "./HexTileGrass";
+import { Scene } from "..";
 
 const meta = {
-  title: "Examples/ReactThreeJs/HexGrid/Overlays",
+  title: "Examples/Game Dev/Hex Grid",
   decorators: [
     (Story) => (
       <Scene>
@@ -12,13 +12,13 @@ const meta = {
       </Scene>
     ),
   ],
-  component: OverlaySphere,
+  component: HexTileGrassModel,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof OverlaySphere>;
+} satisfies Meta<typeof HexTileGrassModel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Sphere: Story = {};
+export const Tile: Story = {};
