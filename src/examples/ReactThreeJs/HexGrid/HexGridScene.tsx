@@ -1,5 +1,3 @@
-// NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
-
 import { Suspense, useMemo } from "react";
 import {
   MapControls,
@@ -11,17 +9,37 @@ import {
 } from "@react-three/drei";
 import { HexGridManager } from "./HexGridManager";
 import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
-import { extend } from "@react-three/fiber";
+import { extend, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { CHARACTER_START_CAM_POSITION } from "./constants";
+import { useInterval } from "usehooks-ts";
+import { usePlayerStore } from "./store";
+
+/**
+ * LimitFPS
+ * Has to be inside canvas hence returning empty JSX
+ *
+ * @return {*}
+ */
+const LimitFPS = () => {
+  const { invalidate } = useThree();
+
+  useInterval(() => {
+    invalidate();
+  }, 14);
+
+  return <></>;
+};
 
 export const HexGridScene = () => {
   // https://github.com/framer/motion/issues/2074#issuecomment-1724813108
   useMemo(() => extend(THREE), []);
   const { camX, camZ } = CHARACTER_START_CAM_POSITION;
+  const isRunning = usePlayerStore((state) => state.isRunning);
 
   return (
     <MotionCanvas
+      frameloop={isRunning ? "always" : "demand"}
       shadows
       style={{
         backgroundColor: "#111a21",
@@ -29,6 +47,8 @@ export const HexGridScene = () => {
         height: "100vh",
       }}
     >
+      {/* Allow natural rendering during movement as it seemed more janky without */}
+      {!isRunning && <LimitFPS />}
       {/* Cool front facing light */}
       <motion.ambientLight
         intensity={2}
