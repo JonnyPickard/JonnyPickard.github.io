@@ -65,6 +65,16 @@ export class AStar {
     return shortestPath;
   };
 
+  resetPreviousPath = () => {
+    if (this.previousShortestPath) {
+      this.previousShortestPath.forEach((tile) => {
+        tile.isInPath = false;
+      });
+
+      this.previousShortestPath = [];
+    }
+  };
+
   traverse = (
     originCoords: OffsetCoordinates,
     destinationCoords: OffsetCoordinates,
@@ -75,9 +85,7 @@ export class AStar {
     )?.filter((tile) => !tile.equals(originCoords));
 
     // Reset previous path
-    (this.previousShortestPath ?? []).forEach((tile) => {
-      tile.isInPath = false;
-    });
+    this.resetPreviousPath();
     this.previousShortestPath = shortestPath;
 
     this.grid.traverse(shortestPath ?? []).forEach((tile) => {

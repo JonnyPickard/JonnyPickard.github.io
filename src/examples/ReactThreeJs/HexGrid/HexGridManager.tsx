@@ -29,6 +29,11 @@ import type { NullableOffsetCoordinates } from "./types";
 
 import { usePlayerStore } from "./store";
 
+const nullCoordinateState = () => ({
+  col: null,
+  row: null,
+});
+
 export const HexGridManager = () => {
   const setIsRunning = usePlayerStore((state) => state.setIsRunning);
   const setPlayerRotation = usePlayerStore((state) => state.setPlayerRotation);
@@ -36,7 +41,7 @@ export const HexGridManager = () => {
     Class used to manage path traversal
   */
   const [aStar, setAStar] = useState<AStar>();
-  /* Currently only used to rerender on path select */
+
   const [activePath, setActivePath] = useState<Hex[]>([]);
 
   // TODO:
@@ -45,30 +50,22 @@ export const HexGridManager = () => {
     Tile that the Player is hovering over 
     Will be used to calculate path traversal
   */
-  const [hoveredTile, setHoveredTile] = useState<NullableOffsetCoordinates>({
-    col: null,
-    row: null,
-  });
+  const [hoveredTile, setHoveredTile] = useState<NullableOffsetCoordinates>(
+    nullCoordinateState(),
+  );
   /* 
     When a destination tile is set for traversal
     Origin tile set as the starting point 
   */
-  const [originTile, setOriginTile] = useState<NullableOffsetCoordinates>({
-    col: null,
-    row: null,
-  });
+  const [originTile, setOriginTile] = useState<NullableOffsetCoordinates>(
+    nullCoordinateState(),
+  );
   /* Tile that the player clicks to move to */
   const [destinationTile, setDestinationTile] =
-    useState<NullableOffsetCoordinates>({
-      col: null,
-      row: null,
-    });
+    useState<NullableOffsetCoordinates>(nullCoordinateState());
   /* If it's possible to navigate to tile set this */
   const [activeDestinationTile, setActiveDestinationTile] =
-    useState<NullableOffsetCoordinates>({
-      col: null,
-      row: null,
-    });
+    useState<NullableOffsetCoordinates>(nullCoordinateState());
 
   /* Defaulting to a reletively central point to begin with*/
   const [playerTile, setPlayerTile] =
@@ -105,28 +102,6 @@ export const HexGridManager = () => {
     setAStar(new AStar(hexGrid));
   }, []);
 
-  useEffect(() => {
-    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
-      const shortestPath = aStar?.traverse(playerTile, destinationTile);
-      if (shortestPath) {
-        setActivePath(shortestPath);
-        setActiveDestinationTile(destinationTile);
-        setOriginTile(playerTile);
-
-        // Reset destination tile
-        setDestinationTile({ col: null, row: null });
-      }
-    }
-  }, [grid, aStar, playerTile, destinationTile]);
-
-  useEffect(() => {
-    if (activePath.length >= 1) {
-      setIsRunning(true);
-    } else {
-      setIsRunning(false);
-    }
-  }, [activePath, setIsRunning]);
-
   // Mapping a Path based on hover
   // useEffect(() => {
   //   if (grid && isOffsetCoords(hoveredTile)) {
@@ -139,33 +114,58 @@ export const HexGridManager = () => {
   //   }
   // }, [hoveredTile, grid, playerTile, aStar]);
 
+  // Set path based on a destination tile getting set
   useEffect(() => {
-    if (playerTile && activePath.length) {
-      const nextTile = activePath[0];
-      const currentTile = grid?.getHex(playerTile);
+    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
+      const shortestPath = aStar?.traverse(playerTile, destinationTile);
+      if (shortestPath) {
+        setActivePath(shortestPath);
+        setActiveDestinationTile(destinationTile);
+        setOriginTile(playerTile);
 
-      if (currentTile) {
-        setPlayerRotation({
-          fromHex: currentTile,
-          toHex: nextTile,
-        });
+        // Reset destination tile
+        setDestinationTile(nullCoordinateState());
       }
     }
+  }, [grid, aStar, playerTile, destinationTile]);
+
+  // Player animation
+  useEffect(() => {
+    if (activePath.length >= 1) {
+      setIsRunning(true);
+    } else {
+      setIsRunning(false);
+    }
+  }, [activePath, setIsRunning]);
+
+  // Player rotation
+  useEffect(() => {
+    const currentTile = grid?.getHex(playerTile);
+
+    if (currentTile && activePath.length) {
+      const nextTile = activePath[0];
+
+      setPlayerRotation({
+        fromHex: currentTile,
+        toHex: nextTile,
+      });
+    }
   }, [activePath, grid, setPlayerRotation, playerTile]);
+
+  // Reset Path Highlighting After Reaching Destination
+  useEffect(() => {
+    if (!activePath.length) {
+      aStar?.resetPreviousPath();
+      setActiveDestinationTile(nullCoordinateState());
+    }
+  }, [activePath, aStar]);
 
   // Game Tick
   useInterval(
     () => {
       const nextTile = activePath[0];
       const shortenedPath = activePath.slice(1);
-      const currentTile = grid?.getHex(playerTile);
 
-      if (currentTile) {
-        setPlayerRotation({
-          fromHex: currentTile,
-          toHex: nextTile,
-        });
-      }
       setPlayerTile(nextTile);
       setActivePath(shortenedPath);
     },

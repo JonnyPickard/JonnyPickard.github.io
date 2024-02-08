@@ -66,10 +66,11 @@ export const calculateDirection = ({
   toHex,
 }: calculateDirectionOptions) => {
   const subtractedCoords = { q: toHex.q - fromHex.q, r: toHex.r - fromHex.r };
+
   const direction = getDirection(subtractedCoords);
   if (!direction) {
     console.warn(
-      "[calculateDirection]: Direction not found. Check that hexs are valid & orientated correctly.",
+      "[calculateDirection]: Direction not found. Check that hexs are neighboring, valid & orientated correctly.",
     );
     return null;
   }

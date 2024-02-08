@@ -3,7 +3,7 @@ import { calculateRotation } from "../../utils/calculateRotation";
 import { Hex } from "honeycomb-grid";
 
 describe("calculateRotation", () => {
-  const startingDirection = "SW";
+  const initiallyFacing = "SW";
 
   it("should return the correct rotation when moving NE", () => {
     const fromHex = { q: 0, r: 0 } as Hex;
@@ -16,7 +16,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -32,7 +32,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -48,7 +48,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -64,7 +64,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -80,7 +80,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -96,7 +96,7 @@ describe("calculateRotation", () => {
       direction: expectedRotationDir,
     };
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toEqual(
       expectedRotation,
     );
   });
@@ -105,6 +105,6 @@ describe("calculateRotation", () => {
     const fromHex = { q: 0, r: 0 } as Hex;
     const toHex = { q: 2, r: 3 } as Hex; // Invalid direction
 
-    expect(calculateRotation({ fromHex, toHex, startingDirection })).toBeNull();
+    expect(calculateRotation({ fromHex, toHex, initiallyFacing })).toBeNull();
   });
 });

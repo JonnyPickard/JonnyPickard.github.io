@@ -52,7 +52,7 @@ interface calculateRotationOptions {
    * The direction the character is initially facing.
    * @note Defaults to "SW" (southwest): Direction I chose for my game.
    */
-  startingDirection: DIRECTION;
+  initiallyFacing: DIRECTION;
 }
 
 /**
@@ -65,12 +65,12 @@ interface calculateRotationOptions {
 export const calculateRotation = ({
   fromHex,
   toHex,
-  startingDirection = "SW",
+  initiallyFacing = "SW",
 }: calculateRotationOptions) => {
   const direction = calculateDirection({ fromHex, toHex });
 
   if (direction) {
-    const degrees = calculateRotationDegrees(startingDirection, direction);
+    const degrees = calculateRotationDegrees(initiallyFacing, direction);
 
     return { degrees, direction };
   }
