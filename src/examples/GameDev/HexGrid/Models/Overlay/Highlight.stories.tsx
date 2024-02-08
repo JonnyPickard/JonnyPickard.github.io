@@ -5,7 +5,7 @@ import { Scene } from "..";
 import { TILE_COLORS } from "../../constants";
 
 const meta = {
-  title: "Examples/ReactThreeJs/HexGrid/Overlays",
+  title: "Examples/Game Dev/Hex Grid/Overlays",
   decorators: [
     (Story) => (
       <Scene>

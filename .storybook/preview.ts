@@ -11,12 +11,13 @@ const preview: Preview = {
           "Introduction",
           "Examples",
           [
-            "ReactThreeJs",
+            "Game Dev",
             [
-              "Avatar",
-              "HexGrid",
-              ["Grid", "Tile", "Player", "Terrain", "Overlays", "*"],
+              "Hex Grid",
+              ["Notes", "Grid", "Tile", "Player", "Terrain", "Overlays", "*"],
             ],
+            "ReactThreeJs",
+            ["Avatar"],
           ],
           "Notes",
           ["Overview", "Data Fetching & Caching", ["Introduction", "*"]],
