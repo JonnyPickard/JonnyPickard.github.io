@@ -38,7 +38,6 @@ export function HexTile({
   // showSphere = false,
   showCoordinates = true,
   showCoordinatesAs = "OFFSET",
-  isDestinationTile,
   isActiveDestinationTile,
   isHoveredTile,
   isOriginTile,
@@ -63,7 +62,6 @@ export function HexTile({
   }, [showCoordinatesAs, hex]);
 
   const tileOverlayColor = getTileOverlayColor({
-    isDestinationTile,
     isActiveDestinationTile,
     isHoveredTile,
     isOriginTile,

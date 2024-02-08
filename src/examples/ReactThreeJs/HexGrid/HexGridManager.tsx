@@ -204,17 +204,18 @@ export const HexGridManager = () => {
         textureSeed={textureSeed}
         rotationSeed={rotationSeed}
         showCoordinatesAs="AXIAL"
+        onClick={(e) => {
+          e.stopPropagation;
+          setDestinationTile(
+            // NOTE: works better using hovered tile to indicate
+            // However, mobile users can't hover.
+            isOffsetCoords(hoveredTile) ? hoveredTile : { col, row },
+          );
+          setOriginTile(playerTile);
+        }}
         onPointerOver={(e) => {
           e.stopPropagation;
           setHoveredTile({ col, row });
-        }}
-        onPointerDown={(e) => {
-          e.stopPropagation;
-        }}
-        onPointerUp={(e) => {
-          e.stopPropagation;
-          setDestinationTile(hoveredTile);
-          setOriginTile(playerTile);
         }}
       />
     );

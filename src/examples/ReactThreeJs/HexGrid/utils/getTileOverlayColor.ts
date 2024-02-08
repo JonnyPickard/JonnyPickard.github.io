@@ -1,7 +1,6 @@
 import { TILE_COLORS } from "../constants";
 
 interface getTileOverlayColorOptions {
-  isDestinationTile?: boolean;
   isActiveDestinationTile?: boolean;
   isHoveredTile?: boolean;
   isOriginTile?: boolean;
@@ -10,7 +9,6 @@ interface getTileOverlayColorOptions {
 }
 
 export const getTileOverlayColor = ({
-  // isDestinationTile,
   isActiveDestinationTile,
   isHoveredTile,
   isOriginTile,
