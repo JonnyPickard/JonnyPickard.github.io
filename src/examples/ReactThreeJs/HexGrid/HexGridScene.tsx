@@ -33,7 +33,7 @@ export const HexGridScene = () => {
       <motion.ambientLight
         intensity={2}
         position={[0, 5, 10]}
-        color={"#fdfefe5"}
+        color={"#89ceff"}
       />
       {/* Shadow casting sun type light */}
       <motion.directionalLight

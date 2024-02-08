@@ -10,7 +10,6 @@ import {
 export const GRID_SIZE = 9;
 export const GRID_HEIGHT = GRID_SIZE;
 export const GRID_WIDTH = GRID_SIZE;
-// export const TERRAIN_TILES_AMOUNT = 30;
 export const TERRAIN_TILES_AMOUNT = 30;
 export const IMPASSABLE_COST = Infinity;
 // Size is calculated as the diameter of the outer circle

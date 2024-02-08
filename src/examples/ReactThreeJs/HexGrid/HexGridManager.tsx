@@ -114,7 +114,7 @@ export const HexGridManager = () => {
   //   }
   // }, [hoveredTile, grid, playerTile, aStar]);
 
-  // Set path based on a destination tile getting set
+  // Set path based on a destination tile getting set & pathing possible.
   useEffect(() => {
     if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
       const shortestPath = aStar?.traverse(playerTile, destinationTile);
