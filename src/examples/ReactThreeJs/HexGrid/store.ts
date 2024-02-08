@@ -1,7 +1,7 @@
 import { devtools } from "zustand/middleware";
 import type {} from "@redux-devtools/extension"; // required for devtools typing
 import { create } from "zustand";
-import { calculateRotation } from "./utils";
+import { calculateRotation, DIRECTION } from "./utils";
 import { Hex } from "honeycomb-grid";
 
 import { logger } from "./utils";
@@ -10,7 +10,7 @@ interface PlayerState {
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
   playerRotation: {
-    direction: string;
+    direction: DIRECTION;
     degrees: number;
   };
   setPlayerRotation: (rotationOptions: { fromHex: Hex; toHex: Hex }) => void;

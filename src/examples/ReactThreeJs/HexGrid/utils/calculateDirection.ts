@@ -13,6 +13,8 @@ enum DIRECTIONS {
   NW = "NW",
 }
 
+export type DIRECTION = keyof typeof DIRECTIONS;
+
 /**
  * Represents axial directions for pointy-top hexagonal orientation.
  */
@@ -35,7 +37,7 @@ const getDirection = ({ q, r }: { q: number; r: number }) => {
   const direction = findkey(
     DIRECTIONS_POINTY,
     (o) => q === o.q && r === o.r,
-  ) as keyof typeof DIRECTIONS;
+  ) as DIRECTION;
 
   return direction ? DIRECTIONS[direction] : null;
 };

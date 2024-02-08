@@ -1,10 +1,16 @@
 import { Hex } from "honeycomb-grid";
 
-import { calculateDirection } from ".";
+import { calculateDirection, DIRECTION } from ".";
 
+/**
+ * Calculates the rotation angle needed to rotate from one hexagon to another on a hexagonal grid.
+ * @param fromDirection The starting direction.
+ * @param toDirection The ending direction.
+ * @returns The rotation angle in degrees.
+ */
 function calculateRotationDegrees(
-  fromDirection: string, // 'NE', 'E', 'SE', 'SW', 'W', 'NW'
-  toDirection: string, // 'NE', 'E', 'SE', 'SW', 'W', 'NW'
+  fromDirection: DIRECTION,
+  toDirection: DIRECTION,
 ): number {
   // Define the directions in clockwise order
   const directions = ["SW", "W", "NW", "NE", "E", "SE"];
@@ -43,17 +49,18 @@ interface calculateRotationOptions {
    */
   toHex: Hex;
   /**
-   * The direction the character is initially facing. Defaults to "SW" (southwest).
-   * @note Just what I chose for my game
+   * The direction the character is initially facing.
+   * @note Defaults to "SW" (southwest): Direction I chose for my game.
    */
-  startingDirection?: string;
+  startingDirection: DIRECTION;
 }
 
 /**
  * Calculates the rotation angle needed to rotate from one hexagon to another on a hexagonal grid.
  * @param options Options for calculating the rotation angle.
- * @returns The rotation angle in degrees.
- * @note Currently only works for POINTY orientation.
+ * @returns An object containing the rotation angle in degrees and the final direction.
+ * If the direction cannot be determined, returns null.
+ * @note Currently only works for POINTY orientation. But, it wouldn't be hard to change this to also account for flat top.
  */
 export const calculateRotation = ({
   fromHex,

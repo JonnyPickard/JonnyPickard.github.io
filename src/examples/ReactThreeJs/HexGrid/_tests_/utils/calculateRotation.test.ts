@@ -6,62 +6,105 @@ describe("calculateRotation", () => {
   const startingDirection = "SW";
 
   it("should return the correct rotation when moving NE", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: 1, r: -1 } as Hex;
-    const expectedRotationAngle = 180;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: 1, r: -1 } as Hex;
+
+    const expectedRotationDeg = 180;
+    const expectedRotationDir = "NE";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should return the correct rotation when moving E", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: 1, r: 0 } as Hex;
-    const expectedRotationAngle = -120;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: 1, r: 0 } as Hex;
+
+    const expectedRotationDeg = 120;
+    const expectedRotationDir = "E";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should return the correct rotation when moving SE", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: 0, r: 1 } as Hex;
-    const expectedRotationAngle = -60;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: 0, r: 1 } as Hex;
+
+    const expectedRotationDeg = 60;
+    const expectedRotationDir = "SE";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should return the correct rotation when moving SW", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: -1, r: 1 } as Hex;
-    const expectedRotationAngle = 0;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: -1, r: 1 } as Hex;
+
+    const expectedRotationDeg = 0;
+    const expectedRotationDir = "SW";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should return the correct rotation when moving W", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: -1, r: 0 } as Hex;
-    const expectedRotationAngle = 60;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: -1, r: 0 } as Hex;
+
+    const expectedRotationDeg = -60;
+    const expectedRotationDir = "W";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should return the correct rotation when moving NW", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: 0, r: -1 } as Hex;
-    const expectedRotationAngle = 120;
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: 0, r: -1 } as Hex;
+
+    const expectedRotationDeg = -120;
+    const expectedRotationDir = "NW";
+    const expectedRotation = {
+      degrees: expectedRotationDeg,
+      direction: expectedRotationDir,
+    };
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toEqual(
-      expectedRotationAngle,
+      expectedRotation,
     );
   });
 
   it("should handle invalid directions and return undefined", () => {
-    const fromHex: Hex = { q: 0, r: 0 } as Hex;
-    const toHex: Hex = { q: 2, r: 3 } as Hex; // Invalid direction
+    const fromHex = { q: 0, r: 0 } as Hex;
+    const toHex = { q: 2, r: 3 } as Hex; // Invalid direction
+
     expect(calculateRotation({ fromHex, toHex, startingDirection })).toBeNull();
   });
 });
