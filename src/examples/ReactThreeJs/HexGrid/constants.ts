@@ -52,12 +52,6 @@ export const CHARACTER_START_CAM_POSITION = {
   camZ: charStart.y,
 };
 
-// TODO: unset
-// export const CHARACTER_START_CAM_POSITION = {
-//   camX: 10.824652278139203,
-//   camZ: 9.44099509716034,
-// };
-
 export enum TILE_COLORS {
   PATH = "#9d0d8c",
   OFFSET_ROW = "#186cb1",

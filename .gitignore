@@ -31,7 +31,6 @@ src/assets/3d-models/hex-grid
 
 # !to allow files
 !src/assets/3d-models/hex-grid/Boulder.glb
-!src/assets/3d-models/hex-grid/Eve1.glb
 !src/assets/3d-models/hex-grid/HexGrass.glb
 !src/assets/3d-models/hex-grid/HexTileHighlight.glb
 !src/assets/3d-models/hex-grid/HexTilleHighlightOutline.glb

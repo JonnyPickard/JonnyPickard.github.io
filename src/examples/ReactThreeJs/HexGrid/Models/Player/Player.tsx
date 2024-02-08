@@ -33,8 +33,7 @@ export function Player(props: JSX.IntrinsicElements["group"]) {
 
   // NOTE: Loaders are cached so it should only run once
   const { nodes, materials, animations } = useGLTF(
-    // "/3d-models/hex-grid/Player.glb",
-    "/3d-models/hex-grid/Eve1.glb",
+    "/3d-models/hex-grid/Player.glb",
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
@@ -45,7 +44,7 @@ export function Player(props: JSX.IntrinsicElements["group"]) {
     if (srf) {
       srf.clampWhenFinished = true;
       srf.repetitions = 0;
-      srf.setEffectiveTimeScale(1.6);
+      srf.setEffectiveTimeScale(1.67);
     }
     if (isRunning) {
       // NOTE: Really hard to debug 1 frame rubberbanding issue with the animation when position changes.
@@ -91,5 +90,4 @@ export function Player(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-// useGLTF.preload("/3d-models/hex-grid/Player.glb");
-useGLTF.preload("/3d-models/hex-grid/Eve1.glb");
+useGLTF.preload("/3d-models/hex-grid/Player.glb");
