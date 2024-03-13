@@ -6,17 +6,15 @@ import LinkTo from "@storybook/addon-links/react";
   title="Examples/Game Dev/Hex Grid/Notes"
 />
 
-# HexGrid Working Notes
+# HexGrid Notes
 
 <time dateTime="2024-02-08">Feb 8, 2024</time>
-
-
-- [Honeycomb Hex Grid Library][2]
-- [Hex Geometry][3]
 
 ## Overview
 
 An attempt at using [ThreeJs][1] + [Honeycomb][2] to render a hex grid.
+
+A lot of the logic comes from this amazing guide: [RedBlobGames Hexagonal Grids][3].
 
 **DISCLAIMER:** This is a learning exercise/ POC as I wanted to experiment with some hex grid coordinate systems as well as
 pathing/ grid traversal algorithms and should not be considered production ready code.
@@ -36,45 +34,24 @@ pathing/ grid traversal algorithms and should not be considered production ready
     - Width = `√3 x Size`
     - Height = `2 x Size`
 
-```tsx
-const CustomHex = defineHex({
-  // Uses the outer circle diameter to make x/ y
-  // nodes.Cylinder.geometry.boundingBox.max.z
-  dimensions: 0.5553572773933411;
-  // FLAT = flat top, POINTY = pointy top
-  orientation: Orientation.POINTY,
-  // Z is uneccessary as the hex tile grid should represent a 2d plane
-  origin: { x: 0, y: 0 },
-});
-
-// hex is an instance
-const hex = new CustomHex();
-```
-
-[1]: https://threejs.org/ "ThreeJs"
-[2]: https://abbekeultjes.nl/honeycomb/guide/getting-started.html "Honeycomb"
-[3]: https://www.redblobgames.com/grids/hexagons/#basics "Hex Geometry"
-[4]: https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/ "Hexagonal Path Finding Visualiser"
-
 ## Pathfinding
 
-- There seem to be 3 main types people use:
+- There are 3 main types people use:
   - A\*
   - Biased A\*
     - A\* is Heuristic - A function that ranks alternatives in search algorithms at each branching step
       based on available information to decide which branch to follow.
   - Dijkstra
+- If the map layout is static there are more performant algorithms that cache sections of the graph like [JPS][5].
+- This [Hexagonal Path Finding Visualiser][4] by `Rory Sullivan` was a great reference.
 
-- It would be good to try out multiple but I should start with A* as it seems to be the most popular for this.
-- It would be good to also display on screen the total number of loops the algorithm has to make.
-- This [Hexagonal Path Finding Visualiser][4] by `Rory Sullivan` is great & along the lines of what I'm aiming to acomplish.
 
-### Steps
+[1]: https://threejs.org/ "ThreeJs"
+[2]: https://abbekeultjes.nl/honeycomb/guide/getting-started.html "Honeycomb"
+[3]: https://www.redblobgames.com/grids/hexagons/#basics "Hex Geometry"
+[4]: https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/ "Hexagonal Path Finding Visualiser"
+[5]: http://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter14_JPS_Plus_An_Extreme_A_Star_Speed_Optimization_for_Static_Uniform_Cost_Grids.pdf "JPS+"
 
-- Text overlay different coordinate types?
-- graphNode class = col, row, neighbours, isTerrain, distanceFromStart, isStart, isEnd
-- calcHexDistance - calculate the distance between two tiles on the grid.
-- graphFromGrid hex
 
 {/* a* https://github.com/anvaka/ngraph.path/blob/main/a-star/a-star.js */}
 {/* a* https://github.com/AlurienFlame/Honeycomb/blob/master/sketch.js#L257 */}
