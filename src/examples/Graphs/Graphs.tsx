@@ -6,10 +6,8 @@ export interface GraphsProps {
 
 export function Graphs({ prop = "default value" }: GraphsProps) {
   return (
-    <div className="bg-slate-600 h-dvh">
-      <div className="p-16">
-        <MatrixGrid />
-      </div>
+    <div className="p-16">
+      <MatrixGrid />
     </div>
   );
 }

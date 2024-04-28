@@ -8,6 +8,13 @@ const meta: Meta<typeof Graphs> = {
   parameters: {
     layout: "fullscreen",
   },
+  decorators: [
+    (Story) => (
+      <div className="h-screen bg-slate-900 flex items-center justify-center">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
