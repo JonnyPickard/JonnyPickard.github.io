@@ -1,19 +1,31 @@
 const defaultMatrix = [
   [0, 1, 0, 0],
   [0, 0, 1, 0],
-  [0, 1, 0, 0],
+  [0, 1, 0, 2],
   [0, 1, 0, 0],
 ];
 const defaultCellSize = 60;
 const defaultStrokeWidth = 2;
 const defaultFillColor = "fill-lime-300";
+const secondaryFillColor = "fill-pink-700";
+const transparentFillColor = "fill-transparent";
 const defaultStrokeColor = "stroke-slate-50";
+
+const pickCellColor = (cellTypeInt: number) => {
+  switch (cellTypeInt) {
+    case 1:
+      return defaultFillColor;
+    case 2:
+      return secondaryFillColor;
+    default:
+      return transparentFillColor;
+  }
+};
 
 interface MatrixGridProps {
   matrix?: number[][];
   cellSize?: number;
   strokeWidth?: number;
-  fillColor?: string;
   strokeColor?: string;
 }
 
@@ -21,7 +33,6 @@ export function MatrixGrid({
   matrix = defaultMatrix,
   cellSize = defaultCellSize,
   strokeWidth = defaultStrokeWidth,
-  fillColor = defaultFillColor,
   strokeColor = defaultStrokeColor,
 }: MatrixGridProps) {
   return (
@@ -38,10 +49,7 @@ export function MatrixGrid({
               width={cellSize}
               height={cellSize}
               stroke-width={strokeWidth}
-              className={[
-                cell === 1 ? fillColor : "fill-transparent",
-                strokeColor,
-              ].join(" ")}
+              className={[pickCellColor(cell), strokeColor].join(" ")}
             />
             <text
               x={colIndex * cellSize + cellSize / 2}
