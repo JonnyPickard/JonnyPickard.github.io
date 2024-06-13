@@ -1,0 +1,87 @@
+import { GraphDiagram, Node, NodeToNode } from "../../examples/Graphs";
+
+import { Meta } from "@storybook/blocks";
+import LinkTo from "@storybook/addon-links/react";
+
+<Meta name="Notes/Graphs" title="Notes/Graphs" />
+
+# Graph Data Structures
+
+<time dateTime="2024-05-05">May 5, 2024</time>
+
+<hr />
+
+<br />
+
+## Intro
+
+A mathematical graph is a set of <span className="text-indigo-500">nodes</span> and <span className="text-emerald-500">edges</span>.
+
+<div className="flex h-96 w-full justify-center">
+  <GraphDiagram />
+</div>
+
+<span className="text-indigo-500">Nodes</span>
+\( also called
+<span className="text-indigo-500">vertices</span> or
+<span className="text-indigo-500">objects</span>
+\) are connected together by
+<span className="text-emerald-500">edges</span>
+\( also called
+<span className="text-emerald-500">links</span> or
+<span className="text-emerald-500">connections</span> or
+<span className="text-emerald-500">edges</span> or
+<span className="text-emerald-500">arcs</span>
+\).
+
+For any graph we need to know two things:
+
+<ol className="sb-unstyled list-decimal text-slate-50">
+  <li className="pb-2">
+    <span className="text-indigo-500">Set of nodes</span>:
+    <ul className="flex justify-evenly align-middle">
+      <li>
+        <Node name={"A"} />
+      </li>
+      <li>
+        <Node name={"B"} />
+      </li>
+      <li>
+        <Node name={"C"} />
+      </li>
+      <li>
+        <Node name={"D"} />
+      </li>
+      <li>
+        <Node name={"E"} />
+      </li>
+      <li>
+        <Node name={"F"} />
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span className="text-emerald-500">Set of edges</span> from each node:
+    <ul className="list-disc">
+      <li>
+        <span className="text-emerald-500">A</span>:{" "}
+        <NodeToNode from="A" to="B" />
+      </li>
+      <li>
+        <span className="text-emerald-500">B</span>:{" "}
+      </li>
+      <li>
+        <span className="text-emerald-500">C</span>:{" "}
+      </li>
+      <li>
+        <span className="text-emerald-500">D</span>:{" "}
+      </li>
+      <li>
+        <span className="text-emerald-500">E</span>:{" "}
+      </li>
+      <li>
+        <span className="text-emerald-500">F</span>:{" "}
+      </li>
+    </ul>
+  </li>
+</ol>
