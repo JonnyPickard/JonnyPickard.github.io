@@ -3,9 +3,9 @@ import { GraphDiagram, Node, NodeToNode } from "../../examples/Graphs";
 import { Meta } from "@storybook/blocks";
 import LinkTo from "@storybook/addon-links/react";
 
-<Meta name="Notes/Graphs" title="Notes/Graphs" />
+<Meta name="Notes/Fundamentals/Graphs" title="Notes/Fundamentals/Graphs" />
 
-# Graph Data Structures
+# Graph Data Structures & Pathfinding Algorithms
 
 <time dateTime="2024-05-05">May 5, 2024</time>
 
@@ -63,25 +63,52 @@ For any graph we need to know two things:
   <li>
     <span className="text-emerald-500">Set of edges</span> from each node:
     <ul className="list-disc">
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">A</span>:{" "}
         <NodeToNode from="A" to="B" />
+        <NodeToNode from="A" to="D" />
+        <NodeToNode from="A" to="G" />
       </li>
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">B</span>:{" "}
+        <NodeToNode from="B" to="A" />
+        <NodeToNode from="B" to="C" />
+        <NodeToNode from="B" to="F" />
       </li>
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">C</span>:{" "}
+        <NodeToNode from="C" to="B" />
+        <NodeToNode from="C" to="D" />
+        <NodeToNode from="C" to="E" />
       </li>
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">D</span>:{" "}
+        <NodeToNode from="D" to="C" />
+        <NodeToNode from="D" to="A" />
       </li>
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">E</span>:{" "}
+        <NodeToNode from="E" to="C" />
+        <NodeToNode from="E" to="F" />
       </li>
-      <li>
+      <li className="flex items-center">
         <span className="text-emerald-500">F</span>:{" "}
+        <NodeToNode from="F" to="B" />
+        <NodeToNode from="F" to="E" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">G</span>:{" "}
+        <NodeToNode from="G" to="A" />
       </li>
     </ul>
   </li>
 </ol>
+
+Graph search algorithms don't really understand the layout or properties of a grid. They only understand
+the connectivity.
+
+## Encoding a Grid in Graph Form
+
+## Links
+
+- [Graph Theory](https://www.redblobgames.com/pathfinding/grids/graphs.html)

@@ -1,4 +1,5 @@
 import { Node } from "./Node";
+import { Edge } from "./Edge";
 
 interface NodeToNodeProps {
   from: string;
@@ -7,8 +8,9 @@ interface NodeToNodeProps {
 
 export function NodeToNode({ from, to }: NodeToNodeProps) {
   return (
-    <div className="flex">
+    <div className="flex m-2">
       <Node name={from} />
+      <Edge />
       <Node name={to} />
     </div>
   );

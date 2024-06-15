@@ -5,8 +5,8 @@ interface NodeProps {
 export function Node({ name }: NodeProps) {
   return (
     <span
-      className="align-center flex h-12 w-12 justify-center rounded-full
-        bg-indigo-600 p-4 leading-none"
+      className="items-center flex h-8 w-8 justify-center rounded-full
+        bg-indigo-600 leading-none my-2"
     >
       {name}
     </span>

@@ -1,16 +1,16 @@
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 
 interface EdgeProps {
-  direction: "L" | "R";
+  direction?: "L" | "R";
 }
 
-export function Edge({ direction }: EdgeProps) {
+export function Edge({ direction = "R" }: EdgeProps) {
   return (
     <span
-      className="align-center flex h-12 w-12 justify-center rounded-full
-        bg-indigo-600 p-4 leading-none"
+      className={`flex items-center justify-center p-1 leading-none
+      text-emerald-500 ${direction === "L" ? "rotate-180" : ""}`}
     >
-      <LiaLongArrowAltRightSolid />
+      <LiaLongArrowAltRightSolid size={32} />
     </span>
   );
 }
