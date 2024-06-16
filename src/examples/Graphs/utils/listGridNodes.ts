@@ -1,14 +1,26 @@
 /**
- * List all nodes for a given grid size
+ * List all node coordinates for a given grid
  */
-export const listGridNodes = (rows: number, columns: number) => {
-  const grid = [];
+export const listGridNodes = (
+  rows: number,
+  columns: number,
+  matrix?: number[][],
+) => {
+  let r = rows;
+  let c = columns;
 
-  for (let x = 0; x < rows; x++) {
-    for (let y = 0; y < columns; y++) {
-      grid.push([x, y]);
+  if (matrix && matrix.length > 0) {
+    r = matrix.length;
+    c = matrix[0].length;
+  }
+
+  const nodes = [];
+
+  for (let x = 0; x < r; x++) {
+    for (let y = 0; y < c; y++) {
+      nodes.push([x, y]);
     }
   }
 
-  return grid;
+  return nodes;
 };
