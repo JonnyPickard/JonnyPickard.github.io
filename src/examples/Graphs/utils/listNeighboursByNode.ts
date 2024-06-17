@@ -1,12 +1,9 @@
-/**
- * Represents a node in the graph as a coordinate pair.
- */
-type GraphNode = number[];
+import type { GraphNode } from "./types";
 
 /**
  * Represents the neighbors of a node as an array of coordinate pairs.
  */
-type Neighbors = number[][];
+type Neighbors = GraphNode[];
 
 /**
  * Given an array of nodes represented by coordinate pairs, this function calculates
@@ -37,7 +34,7 @@ type Neighbors = number[][];
  * ```
  */
 export const listNeighboursByNode = (
-  nodes: number[][],
+  nodes: GraphNode[],
 ): Map<GraphNode, Neighbors> => {
   const neighborsByNode: Map</* node */ GraphNode, /* neighbors */ Neighbors> =
     new Map();
@@ -50,10 +47,10 @@ export const listNeighboursByNode = (
 
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
-    const neighbors: number[][] = [];
+    const neighbors: Neighbors = [];
 
     directions.forEach((dir) => {
-      const neighbor = [node[0] + dir[0], node[1] + dir[1]];
+      const neighbor: GraphNode = [node[0] + dir[0], node[1] + dir[1]];
       // If neighbor is an existing node
       if (
         nodes.findIndex((n) => {

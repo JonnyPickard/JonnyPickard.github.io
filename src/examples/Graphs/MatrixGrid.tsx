@@ -4,6 +4,7 @@ const defaultMatrix = [
   [0, 1, 0, 2],
   [0, 1, 0, 0],
 ];
+
 const defaultCellSize = 60;
 const defaultStrokeWidth = 2;
 const defaultFillColor = "fill-lime-300";
@@ -29,6 +30,13 @@ interface MatrixGridProps {
   strokeColor?: string;
 }
 
+/**
+ * This is intended for drawing a grid with:
+ *
+ * 0: Empty Tiles - white
+ * 1: Players Path - green
+ * 2: Terrain Tiles - red
+ */
 export function MatrixGrid({
   matrix = defaultMatrix,
   cellSize = defaultCellSize,
@@ -49,7 +57,7 @@ export function MatrixGrid({
               width={cellSize}
               height={cellSize}
               stroke-width={strokeWidth}
-              className={[pickCellColor(cell), strokeColor].join(" ")}
+              className={[pickCellColor(cell), strokeColor].join("")}
             />
             <text
               x={colIndex * cellSize + cellSize / 2}
@@ -59,7 +67,7 @@ export function MatrixGrid({
               className={[
                 "text-sm",
                 cell === 1 ? "fill-slate-900" : "fill-slate-50",
-              ].join(" ")}
+              ].join("")}
             >
               {`${rowIndex}, ${colIndex}`}
             </text>

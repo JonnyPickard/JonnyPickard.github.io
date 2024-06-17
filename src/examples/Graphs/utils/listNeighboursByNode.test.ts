@@ -1,14 +1,15 @@
 import { listNeighboursByNode } from "./listNeighboursByNode";
+import type { GraphNode } from "./types";
 
 describe("listNeighboursByNode", () => {
   test("should find neighbors for a single node", () => {
-    const nodes = [[0, 0]];
+    const nodes: GraphNode[] = [[0, 0]];
     const result = listNeighboursByNode(nodes);
     expect(result.size).toBe(0);
   });
 
   test("should find all neighbors for a node", () => {
-    const nodes = [
+    const nodes: GraphNode[] = [
       [0, 0],
       [1, 0],
       [0, 1],
@@ -28,7 +29,7 @@ describe("listNeighboursByNode", () => {
   });
 
   test("should find no neighbors if none exist", () => {
-    const nodes = [
+    const nodes: GraphNode[] = [
       [0, 0],
       [2, 2],
     ];
@@ -37,7 +38,7 @@ describe("listNeighboursByNode", () => {
   });
 
   test("should correctly identify neighbors in a larger grid", () => {
-    const nodes = [
+    const nodes: GraphNode[] = [
       [0, 0],
       [0, 1],
       [0, 2],
@@ -75,7 +76,7 @@ describe("listNeighboursByNode", () => {
   });
 
   test("should handle nodes with no neighbors gracefully", () => {
-    const nodes = [
+    const nodes: GraphNode[] = [
       [0, 0],
       [10, 10],
     ];

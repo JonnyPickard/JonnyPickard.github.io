@@ -102,6 +102,7 @@ describe("calculateRotation", () => {
   });
 
   it("should handle invalid directions and return undefined", () => {
+    console.warn = vi.fn();
     const fromHex = { q: 0, r: 0 } as Hex;
     const toHex = { q: 2, r: 3 } as Hex; // Invalid direction
 

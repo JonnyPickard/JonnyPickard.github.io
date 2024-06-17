@@ -51,6 +51,7 @@ describe("generateTerrainTiles", () => {
   });
 
   it("should return an empty array if amount is greater than grid size", () => {
+    console.warn = vi.fn();
     const result = generateTerrainTiles(grid, 30, playerTile);
     expect(result).toEqual([]);
   });
