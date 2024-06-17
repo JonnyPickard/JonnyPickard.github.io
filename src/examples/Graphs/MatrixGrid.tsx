@@ -1,3 +1,5 @@
+import { clsx } from "clsx";
+
 const defaultMatrix = [
   [0, 1, 0, 0],
   [0, 0, 1, 0],
@@ -56,18 +58,18 @@ export function MatrixGrid({
               y={rowIndex * cellSize + strokeWidth}
               width={cellSize}
               height={cellSize}
-              stroke-width={strokeWidth}
-              className={[pickCellColor(cell), strokeColor].join("")}
+              strokeWidth={strokeWidth}
+              className={clsx([pickCellColor(cell), strokeColor])}
             />
             <text
               x={colIndex * cellSize + cellSize / 2}
               y={rowIndex * cellSize + cellSize / 2}
               dominantBaseline="middle"
               textAnchor="middle"
-              className={[
+              className={clsx([
                 "text-sm",
                 cell === 1 ? "fill-slate-900" : "fill-slate-50",
-              ].join("")}
+              ])}
             >
               {`${rowIndex}, ${colIndex}`}
             </text>
