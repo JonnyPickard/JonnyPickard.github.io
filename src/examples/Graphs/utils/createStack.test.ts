@@ -1,11 +1,11 @@
-import { stack } from "./stack";
+import { createStack } from "./createStack";
 import type { GraphNode } from "./types";
 
 describe("stack", () => {
-  let testStack: ReturnType<typeof stack>;
+  let testStack: ReturnType<typeof createStack>;
 
   beforeEach(() => {
-    testStack = stack();
+    testStack = createStack();
   });
 
   test("should add a node to the stack", () => {

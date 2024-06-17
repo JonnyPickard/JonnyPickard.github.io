@@ -12,8 +12,8 @@ import type { GraphNode } from "./types";
  * add element: append to rear (push)
  * remove element: remove from rear (pop)
  */
-export const stack = () => {
-  const _stack: GraphNode[] = [];
+export const createStack = () => {
+  const stack: GraphNode[] = [];
 
   return {
     /**
@@ -21,18 +21,18 @@ export const stack = () => {
      * @param {GraphNode} node - The graph node to add.
      * @returns {number} The new length of the stack.
      */
-    add: (node: GraphNode) => _stack.push(node),
+    add: (node: GraphNode) => stack.push(node),
 
     /**
      * Removes the last GraphNode from the stack.
      * @returns {GraphNode | undefined} The removed graph node, or undefined if the stack is empty.
      */
-    remove: () => _stack.pop(),
+    remove: () => stack.pop(),
 
     /**
      * The current state of the stack.
      * @type {GraphNode[]}
      */
-    stack: _stack,
+    stack: stack,
   };
 };

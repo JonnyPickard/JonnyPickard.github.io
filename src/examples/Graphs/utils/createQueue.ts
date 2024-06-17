@@ -14,8 +14,8 @@ import type { GraphNode } from "./types";
  * add: append to rear (push)
  * remove: remove from front (shift)
  */
-export const queue = () => {
-  const _queue: GraphNode[] = [];
+export const createQueue = () => {
+  const queue: GraphNode[] = [];
 
   return {
     /**
@@ -23,18 +23,18 @@ export const queue = () => {
      * @param {GraphNode} node - The graph node to add.
      * @returns {number} The new length of the queue.
      */
-    add: (node: GraphNode) => _queue.push(node),
+    add: (node: GraphNode) => queue.push(node),
 
     /**
      * Removes the first GraphNode from the queue.
      * @returns {GraphNode | undefined} The removed graph node, or undefined if the queue is empty.
      */
-    remove: () => _queue.shift(),
+    remove: () => queue.shift(),
 
     /**
      * The current state of the queue.
      * @type {GraphNode[]}
      */
-    queue: _queue,
+    queue: queue,
   };
 };

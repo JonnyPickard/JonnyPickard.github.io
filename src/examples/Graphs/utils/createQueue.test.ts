@@ -1,11 +1,11 @@
-import { queue } from "./queue";
+import { createQueue } from "./createQueue";
 import type { GraphNode } from "./types";
 
-describe("queue", () => {
-  let testQueue: ReturnType<typeof queue>;
+describe("createQueue", () => {
+  let testQueue: ReturnType<typeof createQueue>;
 
   beforeEach(() => {
-    testQueue = queue();
+    testQueue = createQueue();
   });
 
   test("should add a node to the queue", () => {
