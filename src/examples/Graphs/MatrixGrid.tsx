@@ -9,17 +9,23 @@ const defaultMatrix = [
 
 const defaultCellSize = 60;
 const defaultStrokeWidth = 2;
-const defaultFillColor = "fill-lime-300";
-const secondaryFillColor = "fill-pink-700";
+const playerPathFillColor = "fill-lime-300";
+const terrainFillColor = "fill-pink-700";
+const playerStartFillColor = "fill-emerald-700";
+const playerDestinationFillColor = "fill-violet-700";
 const transparentFillColor = "fill-transparent";
 const defaultStrokeColor = "stroke-slate-50";
 
 const pickCellColor = (cellTypeInt: number) => {
   switch (cellTypeInt) {
     case 1:
-      return defaultFillColor;
+      return terrainFillColor;
     case 2:
-      return secondaryFillColor;
+      return playerStartFillColor;
+    case 3:
+      return playerDestinationFillColor;
+    case 4:
+      return playerPathFillColor;
     default:
       return transparentFillColor;
   }
@@ -52,7 +58,11 @@ export function MatrixGrid({
     >
       {matrix.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
-          <g key={`${rowIndex}-${colIndex}`}>
+          <g
+            key={`${rowIndex}-${colIndex}`}
+            // TODO: Add click handler to add start & end pos
+            // onClick={() => console.log(`${rowIndex}, ${colIndex}`)}
+          >
             <rect
               x={colIndex * cellSize + strokeWidth}
               y={rowIndex * cellSize + strokeWidth}
