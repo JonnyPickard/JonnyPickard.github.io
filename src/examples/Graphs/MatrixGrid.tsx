@@ -1,10 +1,10 @@
 import { clsx } from "clsx";
 
 const defaultMatrix = [
-  [0, 1, 0, 0],
+  [0, 0, 0, 0],
   [0, 0, 1, 0],
-  [0, 1, 0, 2],
-  [0, 1, 0, 0],
+  [0, 0, 0, 2],
+  [1, 0, 0, 0],
 ];
 
 const defaultCellSize = 60;
@@ -76,10 +76,7 @@ export function MatrixGrid({
               y={rowIndex * cellSize + cellSize / 2}
               dominantBaseline="middle"
               textAnchor="middle"
-              className={clsx([
-                "text-sm",
-                cell === 1 ? "fill-slate-900" : "fill-slate-50",
-              ])}
+              className={clsx(["text-sm", "fill-slate-50"])}
             >
               {`${rowIndex}, ${colIndex}`}
             </text>

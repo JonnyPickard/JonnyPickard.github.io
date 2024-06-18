@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import clsx from "clsx";
 
-import { Graphs } from "./Graphs";
+import { Graphs, GraphKey } from ".";
 
 const meta: Meta<typeof Graphs> = {
   component: Graphs,
@@ -10,7 +11,23 @@ const meta: Meta<typeof Graphs> = {
   },
   decorators: [
     (Story) => (
-      <div className="h-screen bg-slate-900 flex items-center justify-center">
+      <div
+        className={clsx(
+          "h-screen",
+          "bg-slate-900",
+          "flex items-center",
+          "justify-center",
+        )}
+      >
+        <GraphKey
+          keyTable={[
+            { color: "border border-white", description: "traversable" },
+            { color: "bg-pink-700", description: "terrain (impassable)" },
+            { color: "bg-emerald-700", description: "player start" },
+            { color: "bg-violet-700", description: "player destination" },
+            { color: "bg-lime-300", description: "player path" },
+          ]}
+        />
         <Story />
       </div>
     ),
