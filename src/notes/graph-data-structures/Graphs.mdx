@@ -1,4 +1,9 @@
-import { GraphDiagram, Node, NodeToNode } from "../../examples/Graphs";
+import {
+  GraphDiagram,
+  Node,
+  NodeToNode,
+  MatrixGrid,
+} from "../../examples/Graphs";
 
 import { Meta } from "@storybook/blocks";
 import LinkTo from "@storybook/addon-links/react";
@@ -15,13 +20,15 @@ import LinkTo from "@storybook/addon-links/react";
 
 ## Intro
 
+<br />
+
 A mathematical graph is a set of <span className="text-indigo-500">nodes</span> and <span className="text-emerald-500">edges</span>.
 
 <div className="flex h-96 w-full justify-center">
   <GraphDiagram />
 </div>
 
-<span className="text-indigo-500">Nodes</span>
+<span className="text-indigo-500">nodes</span>
 \( also called
 <span className="text-indigo-500">vertices</span> or
 <span className="text-indigo-500">objects</span>
@@ -107,7 +114,154 @@ For any graph we need to know two things:
 Graph search algorithms don't really understand the layout or properties of a grid. They only understand
 the connectivity.
 
+## Representing a Grid in Code
+
+> Aside: In graphics programming & a lot of computing in general, we always start with grid coordinates originating from the top left of the screen.
+> Imagine an excel spreadsheet etc. It makes sense to have top left = x0, y0 as it's human readable.
+
+We can represent a grid in code using a 2d array. This array can contain any data type but for simplicity I've done it as int 0.
+
+```js
+const grid = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+];
+```
+
+If using ints you can use different values to represent node properties. I.e. 0 = Walkable Tile, 1 = Terrain or Impassable Tile
+
+You can also use objects as nodes that contain more advanced node data. I.e movement cost, tertrain type etc.
+
+<br />
+
+**The index of the nested array at depth 1 denotes rows or x**
+
+```js
+const grid = [
+  [0, 0, 0, 0], // x0
+  [0, 0, 0, 0], // x1
+  [0, 0, 0, 0], // x2
+  [0, 0, 0, 0], // x3
+];
+```
+
+**The index of the nested array element \(depth 2\) denotes columns or y**
+
+```js
+const grid = [
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+];
+```
+
+**The resulting grid**
+
+<MatrixGrid
+  matrix={[
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ]}
+/>
+
+<br />
+
 ## Encoding a Grid in Graph Form
+
+In order to traverse a graph we need to know:
+
+1. All <span className="text-indigo-500">nodes</span> in the graph
+2. All <span className="text-emerald-500">edges</span> \(node to node connections or <span className="text-emerald-500">neighbours</span>\)
+
+### Listing Nodes
+
+To create a list of all <span className="text-indigo-500">nodes</span> in the graph we can use simple looping to get the `x, y` coordinates
+and append them into an array.
+
+```js
+/**
+ * List all node coordinates for a given grid
+ */
+export const listGridNodes = (
+  rows: number,
+  columns: number,
+  matrix?: number[][],
+) => {
+  let r = rows;
+  let c = columns;
+
+  if (matrix && matrix.length > 0) {
+    r = matrix.length;
+    c = matrix[0].length;
+  }
+
+  const nodes = [];
+
+  for (let x = 0; x < r; x++) {
+    for (let y = 0; y < c; y++) {
+      nodes.push([x, y]);
+    }
+  }
+
+  return nodes;
+};
+```
+
+> This function allows you to either dynamically define a grid or
+> pass in a 2d martrix array that represents a grid.
+
+### Finding Edges or Neighbors
+
+<span className="text-emerald-500">Edges</span> can be handled differently
+depending on how you are planning on traversing your graph.{" "}
+
+Instead of listing all <span className="text-emerald-500">edges</span>
+it is more important to create a function that finds all connections \(neighbours\) from
+specific <span className="text-indigo-500">nodes</span>.
+
+#### Grid Directions
+
+In order to find connections from a node we have to understand how grid traversal works.
+
+In the following example we start at the <span className="text-emerald-700">center point \(x1, y1\)</span> and wish to move north 1 to the <span className="text-violet-700">top middle point \(x0, y1\)</span>.
+
+<MatrixGrid
+  matrix={[
+    [0, 3, 0],
+    [0, 2, 0],
+    [0, 0, 0],
+  ]}
+/>
+
+Notice how moving north one square will always be: `x - 1, y + 0` \(y doesn't change\).
+
+In code moving north 1 grid space is as simple as:
+
+```js
+const start = { x: 1, y: 1 };
+const north = { x: -1, y: 0 };
+
+// For maths noobs, adding a negative number will subtract it.
+const end = { x: start.x + north.x, y: start.y + north.y };
+```
+
+We can therefor use the same logic to navigate in all 8 possible directions:
+
+```js
+const north = { x: -1, y: 0 };
+const northEast = { x: -1, y: 1 };
+const east = { x: 0, y: 1 };
+const southEast = { x: 1, y: 1 };
+const south = { x: 1, y: 0 };
+const southWest = { x: 1, y: -1 };
+const west = { x: 0, y: -1 };
+const northWest = { x: -1, y: -1 };
+```
 
 ## Links
 
