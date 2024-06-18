@@ -39,6 +39,7 @@ describe("calculateDirection", () => {
   });
 
   it("should handle invalid directions and return null", () => {
+    console.warn = vi.fn();
     const fromHex: Hex = { q: 0, r: 0 } as Hex;
     const toHex: Hex = { q: 2, r: 3 } as Hex; // Invalid direction
     expect(calculateDirection({ fromHex, toHex })).toBeNull();

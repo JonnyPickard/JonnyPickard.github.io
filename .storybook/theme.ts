@@ -12,4 +12,5 @@ export default create({
   fontBase: "'Roboto Mono', monospace",
   fontCode: "monospace",
   appContentBg: "#1A202C",
+  appPreviewBg: "#1A202C",
 });
