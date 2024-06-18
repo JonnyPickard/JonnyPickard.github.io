@@ -1,10 +1,10 @@
-import { listNeighboursByNode } from "./listNeighboursByNode";
+import { listNeighborsByNode } from "./listNeighborsByNode";
 import type { GraphNode } from "./types";
 
-describe("listNeighboursByNode", () => {
+describe("listNeighborsByNode", () => {
   test("should find neighbors for a single node", () => {
     const nodes: GraphNode[] = [[0, 0]];
-    const result = listNeighboursByNode(nodes);
+    const result = listNeighborsByNode(nodes);
     expect(result.size).toBe(0);
   });
 
@@ -16,7 +16,7 @@ describe("listNeighboursByNode", () => {
       [-1, 0],
       [0, -1],
     ];
-    const result = listNeighboursByNode(nodes);
+    const result = listNeighborsByNode(nodes);
     expect(result.size).toBe(5);
     expect(result.get(nodes[0])).toEqual(
       expect.arrayContaining([
@@ -33,7 +33,7 @@ describe("listNeighboursByNode", () => {
       [0, 0],
       [2, 2],
     ];
-    const result = listNeighboursByNode(nodes);
+    const result = listNeighborsByNode(nodes);
     expect(result.size).toBe(0);
   });
 
@@ -49,7 +49,7 @@ describe("listNeighboursByNode", () => {
       [2, 1],
       [2, 2],
     ];
-    const result = listNeighboursByNode(nodes);
+    const result = listNeighborsByNode(nodes);
 
     expect(result.get(nodes[4])).toEqual(
       expect.arrayContaining([
@@ -80,7 +80,7 @@ describe("listNeighboursByNode", () => {
       [0, 0],
       [10, 10],
     ];
-    const result = listNeighboursByNode(nodes);
+    const result = listNeighborsByNode(nodes);
     expect(result.size).toBe(0);
   });
 });

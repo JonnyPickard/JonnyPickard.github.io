@@ -30,41 +30,46 @@ type Neighbors = GraphNode[];
  * // result will be a Map with the nodes as keys
  * // and corresponding values representing their neighbors eg:
  * // [ 0, 0 ] => [ [ 1, 0 ], [ 0, 1 ], [ -1, 0 ], [ 0, -1 ] ]
- * const result = listNeighboursByNode(nodes);
+ * const result = listNeighborsByNode(nodes);
  * ```
  */
-export const listNeighboursByNode = (
+export const listNeighborsByNode = (
   nodes: GraphNode[],
 ): Map<GraphNode, Neighbors> => {
   const neighborsByNode: Map</* node */ GraphNode, /* neighbors */ Neighbors> =
     new Map();
-  const directions = [
-    [1, 0],
-    [0, 1],
-    [-1, 0],
-    [0, -1],
-  ];
 
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i];
-    const neighbors: Neighbors = [];
-
-    directions.forEach((dir) => {
-      const neighbor: GraphNode = [node[0] + dir[0], node[1] + dir[1]];
-      // If neighbor is an existing node
-      if (
-        nodes.findIndex((n) => {
-          return n[0] === neighbor[0] && n[1] === neighbor[1];
-        }) !== -1
-      ) {
-        neighbors.push(neighbor);
-      }
-    });
+  nodes.forEach((node) => {
+    const neighbors: Neighbors = findNeighbors(node, nodes);
 
     if (neighbors.length > 0) {
       neighborsByNode.set(node, neighbors);
     }
-  }
+  });
 
   return neighborsByNode;
+};
+
+const findNeighbors = (node: GraphNode, nodes: GraphNode[]) => {
+  const directions = [
+    [-1, 0], // N
+    [0, 1], // E
+    [1, 0], // S
+    [0, -1], // W
+  ];
+  const neighbors: Neighbors = [];
+
+  directions.forEach((dir) => {
+    const neighbor: GraphNode = [node[0] + dir[0], node[1] + dir[1]];
+    // If neighbor is an existing node
+    if (
+      nodes.findIndex((n) => {
+        return n[0] === neighbor[0] && n[1] === neighbor[1];
+      }) !== -1
+    ) {
+      neighbors.push(neighbor);
+    }
+  });
+
+  return neighbors;
 };
