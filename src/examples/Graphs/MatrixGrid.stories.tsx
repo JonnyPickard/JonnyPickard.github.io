@@ -5,7 +5,7 @@ import { Graphs, GraphKey } from ".";
 
 const meta: Meta<typeof Graphs> = {
   component: Graphs,
-  title: "Examples/Graphs/MatrixGrid",
+  title: "Examples/Graphs/Grid",
   parameters: {
     layout: "fullscreen",
   },
@@ -45,7 +45,7 @@ const defaultMatrix = [
   [0, 1, 0, 0],
 ];
 
-export const MatrixGrid: Story = {
+export const Grid: Story = {
   args: {
     matrix: defaultMatrix,
   },
