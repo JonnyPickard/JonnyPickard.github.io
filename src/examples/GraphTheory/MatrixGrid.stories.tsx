@@ -5,7 +5,7 @@ import { Graphs, GraphKey } from ".";
 
 const meta: Meta<typeof Graphs> = {
   component: Graphs,
-  title: "Examples/Graphs/MatrixGrid",
+  title: "Examples/Grids & Graphs/MatrixGrid",
   parameters: {
     layout: "fullscreen",
   },

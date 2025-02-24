@@ -1,0 +1,63 @@
+import { Meta } from "@storybook/blocks";
+
+import { MatrixGrid } from "../../examples/GraphTheory";
+
+<Meta name="Notes/Grids & Graphs/Grids" title="Notes/Grids & Graphs/Grids" />
+
+# Grids
+
+<time dateTime="2025-02-23">Feb 23, 2025</time>
+
+<hr />
+
+<br />
+
+## Introduction
+
+Rectangular grids are a common way to represent 2D space in various applications, including games, simulations, and more. Each cell in the grid can hold a value or represent a state.
+
+## Representing a Grid in Code
+
+### 2D Array Matrix Representation
+
+We can represent a grid in code using a 2D array. This array can contain any data type but for simplicity, we'll use integers.
+
+```js
+const grid = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+];
+```
+
+### Object Representation (Sparse Representation)
+
+### 1D Array (Flat Representation)
+
+### Chunking for Large Grids
+
+## Navigating the Grid
+
+To navigate the grid, we can define directions and use them to move from one cell to another.
+
+```js
+const directions = {
+  north: { x: -1, y: 0 },
+  east: { x: 0, y: 1 },
+  south: { x: 1, y: 0 },
+  west: { x: 0, y: -1 },
+};
+
+const move = (start, direction) => {
+  return { x: start.x + direction.x, y: start.y + direction.y };
+};
+
+const start = { x: 1, y: 1 };
+const newPosition = move(start, directions.north);
+console.log(newPosition); // { x: 0, y: 1 }
+```
+
+## Links
+
+- [Grid-Based Movement](https://example.com/grid-based-movement)

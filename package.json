@@ -22,7 +22,7 @@
     "framer-motion": "^10.18.0",
     "framer-motion-3d": "^10.18.0",
     "honeycomb-grid": "^4.1.5",
-    "lil-gui": "^0.19.1",
+    "lil-gui": "^0.20.0",
     "lodash.findkey": "^4.6.0",
     "lru-cache": "^10.2.0",
     "react": "^18.2.0",

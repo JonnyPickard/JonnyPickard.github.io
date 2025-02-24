@@ -36,6 +36,7 @@ interface MatrixGridProps {
   cellSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
+  tileClickCallback?: (x: number, y: number) => void;
 }
 
 /**
@@ -50,6 +51,7 @@ export function MatrixGrid({
   cellSize = defaultCellSize,
   strokeWidth = defaultStrokeWidth,
   strokeColor = defaultStrokeColor,
+  tileClickCallback = (x, y) => console.log("Clicked on", x, y),
 }: MatrixGridProps) {
   return (
     <svg
@@ -60,8 +62,7 @@ export function MatrixGrid({
         row.map((cell, colIndex) => (
           <g
             key={`${rowIndex}-${colIndex}`}
-            // TODO: Add click handler to add start & end pos
-            // onClick={() => console.log(`${rowIndex}, ${colIndex}`)}
+            onClick={() => tileClickCallback(rowIndex, colIndex)}
           >
             <rect
               x={colIndex * cellSize + strokeWidth}
