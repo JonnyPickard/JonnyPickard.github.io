@@ -36,25 +36,25 @@ interface GridProps {
  * - **1:** Players Path = **green**
  * - **2:** Terrain Tiles = **red**
  *
- * **The index of the nested array at depth 1 denotes row position & x coordinate**
+ * **The index of the nested array at depth 1 denotes row position & y coordinate**
  *
  * ```js
  * const grid = [
- *   [0, 0, 0, 0], // x0
- *   [0, 0, 0, 0], // x1
- *   [0, 0, 0, 0], // x2
- *   [0, 0, 0, 0], // x3
+ *   [0, 0, 0, 0], // y0  < [ ------- ] > this is a row so row position is up/ down in the grid (Y)
+ *   [0, 0, 0, 0], // y1
+ *   [0, 0, 0, 0], // y2
+ *   [0, 0, 0, 0], // y3
  * ];
  * ```
  *
- * **The index of the nested array element \(depth 2\) denotes column position & y coordinate**
+ * **The index of the nested array element \(depth 2\) denotes column position & x coordinate**
  *
  * ```js
  * const grid = [
- *   [y0, y1, y2, y3],
- *   [y0, y1, y2, y3],
- *   [y0, y1, y2, y3],
- *   [y0, y1, y2, y3],
+ *   [x0, <--> x1 <-->, x2, <--> x3], within a row you now have column position or X
+ *   [x0, x1, x2, x3],
+ *   [x0, x1, x2, x3],
+ *   [x0, x1, x2, x3],
  * ];
  * ```
  */
@@ -70,15 +70,15 @@ export function Grid({
     if (tileColorOverride) {
       if (
         tileColorOverride.currentNeighboursTile &&
-        tileColorOverride.currentNeighboursTile.x === rowI &&
-        tileColorOverride.currentNeighboursTile.y === colI
+        tileColorOverride.currentNeighboursTile.x === colI &&
+        tileColorOverride.currentNeighboursTile.y === rowI
       ) {
         return tileColorOverride.currentNeighboursTile.color;
       }
       if (
         tileColorOverride.currentAlgTile &&
-        tileColorOverride.currentAlgTile.x === rowI &&
-        tileColorOverride.currentAlgTile.y === colI
+        tileColorOverride.currentAlgTile.x === colI &&
+        tileColorOverride.currentAlgTile.y === rowI
       ) {
         return tileColorOverride.currentAlgTile.color;
       }

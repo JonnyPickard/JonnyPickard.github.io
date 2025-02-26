@@ -79,10 +79,10 @@ export const gridToGraph = async (
   const graph: { [node_key: string]: CoordinatesString[] } = {};
 
   const directions = [
-    [0, 1], // down
-    [1, 0], // right
-    [0, -1], // up
-    [-1, 0], // left
+    [0, 1], // right
+    [1, 0], // down
+    [0, -1], // left
+    [-1, 0], // up
   ];
 
   // Loop vert for rows
@@ -94,7 +94,7 @@ export const gridToGraph = async (
       if (matrix[y][x] === 1) continue;
 
       // 1 second to display each iteration the algorithm is on in the UI
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       setTileColorOverrides((prev) => {
         return {
           ...prev,
@@ -117,7 +117,7 @@ export const gridToGraph = async (
         // out of bounds check
         if (newX >= 0 && newX < columns && newY >= 0 && newY < rows) {
           // color current neighbour tile
-          await new Promise((resolve) => setTimeout(resolve, 200));
+          await new Promise((resolve) => setTimeout(resolve, 100));
           setCheckingNieghbourCoordinates([newX, newY]);
           setTileColorOverrides((prev) => {
             return {
@@ -131,9 +131,9 @@ export const gridToGraph = async (
           });
 
           // walls check
-          if (matrix[newX][newY] !== 1) {
+          if (matrix[newY][newX] !== 1) {
             // color success
-            await new Promise((resolve) => setTimeout(resolve, 200));
+            await new Promise((resolve) => setTimeout(resolve, 100));
             setTileColorOverrides((prev) => {
               return {
                 ...prev,
@@ -148,7 +148,7 @@ export const gridToGraph = async (
             graph[nodeKey].push(`${newX},${newY}`);
           } else {
             // color failure
-            await new Promise((resolve) => setTimeout(resolve, 200));
+            await new Promise((resolve) => setTimeout(resolve, 100));
             setTileColorOverrides((prev) => {
               return {
                 ...prev,
