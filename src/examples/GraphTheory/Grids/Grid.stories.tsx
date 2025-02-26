@@ -10,18 +10,20 @@ const meta: Meta<typeof Grid> = {
     layout: "fullscreen",
   },
   decorators: [
-    (Story) => (
-      <div
-        className={clsx(
-          "h-screen",
-          "bg-slate-900",
-          "flex items-center",
-          "justify-center",
-        )}
-      >
-        <Story />
-      </div>
-    ),
+    (Story) => {
+      return (
+        <div
+          className={clsx(
+            "h-screen",
+            "bg-slate-900",
+            "flex items-center",
+            "justify-center",
+          )}
+        >
+          <Story />
+        </div>
+      );
+    },
   ],
 };
 

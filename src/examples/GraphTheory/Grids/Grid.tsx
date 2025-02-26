@@ -15,6 +15,18 @@ interface GridProps {
   strokeWidth?: number;
   strokeColor?: string;
   tileClickCallback?: (x: number, y: number) => void;
+  tileColorOverride?: {
+    currentAlgTile: {
+      x: number;
+      y: number;
+      color: string;
+    };
+    currentNeighboursTile: {
+      x: number;
+      y: number;
+      color: string;
+    };
+  };
 }
 
 /**
@@ -52,7 +64,27 @@ export function Grid({
   strokeWidth = DEFAULT_STROKE_WIDTH,
   strokeColor = DEFAULT_STROKE_COLOR,
   tileClickCallback = (x, y) => console.log("Clicked on", x, y),
+  tileColorOverride,
 }: GridProps) {
+  const overrideCellColor = (rowI: number, colI: number) => {
+    if (tileColorOverride) {
+      if (
+        tileColorOverride.currentNeighboursTile &&
+        tileColorOverride.currentNeighboursTile.x === rowI &&
+        tileColorOverride.currentNeighboursTile.y === colI
+      ) {
+        return tileColorOverride.currentNeighboursTile.color;
+      }
+      if (
+        tileColorOverride.currentAlgTile &&
+        tileColorOverride.currentAlgTile.x === rowI &&
+        tileColorOverride.currentAlgTile.y === colI
+      ) {
+        return tileColorOverride.currentAlgTile.color;
+      }
+    }
+  };
+
   return (
     <svg
       width={matrix[0].length * cellSize + strokeWidth * 2}
@@ -70,14 +102,17 @@ export function Grid({
               width={cellSize}
               height={cellSize}
               strokeWidth={strokeWidth}
-              className={clsx([pickCellColor(cell), strokeColor])}
+              className={clsx([
+                pickCellColor(cell, overrideCellColor(rowIndex, colIndex)),
+                "red",
+              ])}
             />
             <text
               x={colIndex * cellSize + cellSize / 2}
               y={rowIndex * cellSize + cellSize / 2}
               dominantBaseline="middle"
               textAnchor="middle"
-              className={clsx(["text-sm", "fill-slate-50"])}
+              className={clsx(["text-sm", "fill-white"])}
             >
               {`${rowIndex}, ${colIndex}`}
             </text>

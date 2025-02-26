@@ -5,6 +5,9 @@ export const PLAYER_DESTINATION_FILL_COLOR = "fill-violet-700";
 export const TRANSPARENT_FILL_COLOR = "fill-transparent";
 export const DEFAULT_STROKE_COLOR = "stroke-slate-50";
 
+export const ALGORITH_CURRENT_TILE_COLOR = "fill-lime-500";
+export const FIND_NEIGHBOURS_CURRENT_TILE_COLOR = "fill-sky-600";
+
 export const DEFAULT_MATRIX = [
   [0, 0, 0, 0],
   [0, 0, 1, 0],

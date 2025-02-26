@@ -6,7 +6,15 @@ import {
   TRANSPARENT_FILL_COLOR,
 } from "../constants";
 
-export const pickCellColor = (cellTypeInt: number) => {
+export const pickCellColor = (
+  cellTypeInt: number,
+  overrideCellColor?: string,
+) => {
+  // TODO: temporary - to highlight current tile algorithm is working on
+  if (overrideCellColor) {
+    return overrideCellColor;
+  }
+
   switch (cellTypeInt) {
     case 1:
       return TERRAIN_FILL_COLOR;
