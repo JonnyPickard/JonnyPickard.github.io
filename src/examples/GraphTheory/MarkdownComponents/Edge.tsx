@@ -1,16 +1,25 @@
+import clsx from "clsx";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 
 interface EdgeProps {
   direction?: "L" | "R";
+  size?: number;
 }
 
-export function Edge({ direction = "R" }: EdgeProps) {
+export function Edge({ direction = "R", size = 32 }: EdgeProps) {
   return (
     <span
-      className={`flex items-center justify-center p-1 leading-none
-      text-emerald-500 ${direction === "L" ? "rotate-180" : ""}`}
+      className={clsx([
+        "flex",
+        "items-center",
+        "justify-center",
+        "p-1",
+        "leading-none",
+        "text-emerald-500",
+        { "rotate-180": direction === "L" },
+      ])}
     >
-      <LiaLongArrowAltRightSolid size={32} />
+      <LiaLongArrowAltRightSolid size={size} />
     </span>
   );
 }

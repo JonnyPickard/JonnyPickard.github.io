@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
-
+import { useState } from "react";
 import { pickCellColor } from "./utils";
-
+import { AlgorithmStepList } from "./AlgorithmStepList";
 import {
   DEFAULT_MATRIX,
   DEFAULT_CELL_SIZE,
@@ -66,6 +66,9 @@ export function Grid({
   tileClickCallback = (x, y) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
+  const [currentTile, setCurrentTile] = useState({ x: 0, y: 0 });
+  const [graph, setGraph] = useState<{ [node_key: string]: string[] }>({});
+
   const overrideCellColor = (rowI: number, colI: number) => {
     if (tileColorOverride) {
       if (
@@ -86,39 +89,53 @@ export function Grid({
   };
 
   return (
-    <svg
-      width={matrix[0].length * cellSize + strokeWidth * 2}
-      height={matrix.length * cellSize + strokeWidth * 2}
-    >
-      {matrix.map((row, rowIndex) =>
-        row.map((cell, colIndex) => (
-          <g
-            key={`${rowIndex}-${colIndex}`}
-            onClick={() => tileClickCallback(rowIndex, colIndex)}
-          >
-            <rect
-              x={colIndex * cellSize + strokeWidth}
-              y={rowIndex * cellSize + strokeWidth}
-              width={cellSize}
-              height={cellSize}
-              strokeWidth={strokeWidth}
-              className={clsx([
-                pickCellColor(cell, overrideCellColor(rowIndex, colIndex)),
-                "red",
-              ])}
-            />
-            <text
-              x={colIndex * cellSize + cellSize / 2}
-              y={rowIndex * cellSize + cellSize / 2}
-              dominantBaseline="middle"
-              textAnchor="middle"
-              className={clsx(["text-sm", "fill-white"])}
-            >
-              {`${rowIndex}, ${colIndex}`}
-            </text>
-          </g>
-        )),
-      )}
-    </svg>
+    <div>
+      <svg
+        width={matrix[0].length * cellSize + strokeWidth * 2}
+        height={matrix.length * cellSize + strokeWidth * 2}
+      >
+        {matrix.map(
+          (
+            row,
+            rowIndex, // x
+          ) =>
+            row.map(
+              (
+                cell,
+                colIndex, // y
+              ) => (
+                <g
+                  key={`${rowIndex}-${colIndex}`}
+                  onClick={() => tileClickCallback(rowIndex, colIndex)}
+                >
+                  <rect
+                    x={colIndex * cellSize + strokeWidth}
+                    y={rowIndex * cellSize + strokeWidth}
+                    width={cellSize}
+                    height={cellSize}
+                    strokeWidth={strokeWidth}
+                    className={clsx([
+                      pickCellColor(
+                        cell,
+                        overrideCellColor(rowIndex, colIndex),
+                      ),
+                      "red",
+                    ])}
+                  />
+                  <text
+                    x={colIndex * cellSize + cellSize / 2}
+                    y={rowIndex * cellSize + cellSize / 2}
+                    dominantBaseline="middle"
+                    textAnchor="middle"
+                    className={clsx(["text-sm", "fill-white"])}
+                  >
+                    {`${colIndex}, ${rowIndex}`}
+                  </text>
+                </g>
+              ),
+            ),
+        )}
+      </svg>
+    </div>
   );
 }

@@ -50,7 +50,10 @@ export const generateTestMatrix = (
 // columns: left, right
 
 // `x,y`;
-type CoordinatesString = string;
+type Coordinate = number;
+type CoordinatesString = `${Coordinate},${Coordinate}`;
+
+export type Graph = { [node_key: string]: CoordinatesString[] };
 
 export const gridToGraph = async (
   matrix: number[][],
@@ -71,12 +74,13 @@ export const gridToGraph = async (
   setCheckingNieghbourCoordinates: React.Dispatch<
     React.SetStateAction<number[]>
   >,
+  setGraphStep: React.Dispatch<React.SetStateAction<Graph>>,
 ) => {
   const rows = matrix.length;
   // Assume rectangular for now
   const columns = matrix[0].length;
 
-  const graph: { [node_key: string]: CoordinatesString[] } = {};
+  const graph: Graph = {};
 
   const directions = [
     [0, 1], // right
@@ -162,6 +166,8 @@ export const gridToGraph = async (
           }
         }
       }
+      setGraphStep(structuredClone(graph));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
   return graph;
