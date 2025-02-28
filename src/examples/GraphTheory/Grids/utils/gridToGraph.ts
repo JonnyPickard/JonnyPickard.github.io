@@ -1,10 +1,9 @@
+/**
+ * NOTE: this was originally implementation and have left it as it's useful
+ * I decided to switch to a generator function to have more control over ui color updates for each step
+ */
 const COLUMNS = 10;
 const ROWS = 10;
-
-export const ALGORITH_CURRENT_TILE_COLOR = "fill-sky-600";
-const FIND_NEIGHBOURS_CURRENT_TILE_COLOR = "fill-sky-400";
-const FIND_NEIGHBOURS_SUCCESS_COLOR = "fill-lime-500";
-const FIND_NEIGHBOURS_FAILURE_COLOR = "fill-rose-800";
 
 const KEY = {
   0: "traversable",
@@ -55,27 +54,7 @@ type CoordinatesString = `${Coordinate},${Coordinate}`;
 
 export type Graph = { [node_key: string]: CoordinatesString[] };
 
-export const gridToGraph = async (
-  matrix: number[][],
-  setTileColorOverrides: React.Dispatch<
-    React.SetStateAction<{
-      currentAlgTile: {
-        x: number;
-        y: number;
-        color: string;
-      };
-      currentNeighboursTile: {
-        x: number;
-        y: number;
-        color: string;
-      };
-    }>
-  >,
-  setCheckingNieghbourCoordinates: React.Dispatch<
-    React.SetStateAction<number[]>
-  >,
-  setGraphStep: React.Dispatch<React.SetStateAction<Graph>>,
-) => {
+export const gridToGraph = async (matrix: number[][]) => {
   const rows = matrix.length;
   // Assume rectangular for now
   const columns = matrix[0].length;
@@ -97,15 +76,6 @@ export const gridToGraph = async (
       // skip if cant connect
       if (matrix[y][x] === 1) continue;
 
-      // 1 second to display each iteration the algorithm is on in the UI
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      setTileColorOverrides((prev) => {
-        return {
-          ...prev,
-          currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
-        };
-      });
-
       // else can connect so add to graph
       // create coordinate based key for node
       // with empty array for future connected nodes
@@ -120,54 +90,13 @@ export const gridToGraph = async (
 
         // out of bounds check
         if (newX >= 0 && newX < columns && newY >= 0 && newY < rows) {
-          // color current neighbour tile
-          await new Promise((resolve) => setTimeout(resolve, 100));
-          setCheckingNieghbourCoordinates([newX, newY]);
-          setTileColorOverrides((prev) => {
-            return {
-              ...prev,
-              currentNeighboursTile: {
-                x: newX,
-                y: newY,
-                color: FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
-              },
-            };
-          });
-
           // walls check
           if (matrix[newY][newX] !== 1) {
-            // color success
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            setTileColorOverrides((prev) => {
-              return {
-                ...prev,
-                currentNeighboursTile: {
-                  x: newX,
-                  y: newY,
-                  color: FIND_NEIGHBOURS_SUCCESS_COLOR,
-                },
-              };
-            });
             // node can connect so push to array
             graph[nodeKey].push(`${newX},${newY}`);
-          } else {
-            // color failure
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            setTileColorOverrides((prev) => {
-              return {
-                ...prev,
-                currentNeighboursTile: {
-                  x: newX,
-                  y: newY,
-                  color: FIND_NEIGHBOURS_FAILURE_COLOR,
-                },
-              };
-            });
           }
         }
       }
-      setGraphStep(structuredClone(graph));
-      await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
   return graph;

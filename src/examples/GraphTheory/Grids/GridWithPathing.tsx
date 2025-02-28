@@ -1,5 +1,5 @@
 // import { clsx } from "clsx";
-// import { pickCellColor } from "./utils";
+// import { pickTileColor } from "./utils";
 
 import { Grid } from "./Grid";
 import { useTimer } from "../../../hooks";
@@ -8,14 +8,14 @@ import { useEffect, useState, useMemo } from "react";
 
 import {
   DEFAULT_MATRIX,
-  DEFAULT_CELL_SIZE,
+  DEFAULT_TILE_SIZE,
   DEFAULT_STROKE_WIDTH,
   DEFAULT_STROKE_COLOR,
 } from "./constants";
 
 interface GridWithPathingProps {
   matrix?: number[][];
-  cellSize?: number;
+  tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
   tileClickCallback?: (x: number, y: number) => void;
@@ -28,7 +28,7 @@ type Coordinate = {
 
 export function GridWithPathing({
   matrix = DEFAULT_MATRIX,
-  cellSize = DEFAULT_CELL_SIZE,
+  tileSize = DEFAULT_TILE_SIZE,
   strokeWidth = DEFAULT_STROKE_WIDTH,
   strokeColor = DEFAULT_STROKE_COLOR,
   tileClickCallback = (x, y) => console.log("Clicked on", x, y),
@@ -58,7 +58,7 @@ export function GridWithPathing({
   return (
     <Grid
       matrix={matrix}
-      cellSize={cellSize}
+      tileSize={tileSize}
       strokeWidth={strokeWidth}
       strokeColor={strokeColor}
       tileClickCallback={tileClickCallback}

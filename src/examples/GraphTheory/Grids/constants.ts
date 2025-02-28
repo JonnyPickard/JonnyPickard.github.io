@@ -15,5 +15,5 @@ export const DEFAULT_MATRIX = [
   [1, 0, 0, 0],
 ];
 
-export const DEFAULT_CELL_SIZE = 60;
+export const DEFAULT_TILE_SIZE = 60;
 export const DEFAULT_STROKE_WIDTH = 2;

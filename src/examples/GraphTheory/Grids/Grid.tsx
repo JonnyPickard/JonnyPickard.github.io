@@ -1,17 +1,17 @@
 import { clsx } from "clsx";
 import { useState } from "react";
-import { pickCellColor } from "./utils";
+import { pickTileColor } from "./utils";
 import { AlgorithmStepList } from "./AlgorithmStepList";
 import {
   DEFAULT_MATRIX,
-  DEFAULT_CELL_SIZE,
+  DEFAULT_TILE_SIZE,
   DEFAULT_STROKE_WIDTH,
   DEFAULT_STROKE_COLOR,
 } from "./constants";
 
 interface GridProps {
   matrix?: number[][];
-  cellSize?: number;
+  tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
   tileClickCallback?: (x: number, y: number) => void;
@@ -60,16 +60,13 @@ interface GridProps {
  */
 export function Grid({
   matrix = DEFAULT_MATRIX,
-  cellSize = DEFAULT_CELL_SIZE,
+  tileSize = DEFAULT_TILE_SIZE,
   strokeWidth = DEFAULT_STROKE_WIDTH,
   strokeColor = DEFAULT_STROKE_COLOR,
   tileClickCallback = (x, y) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
-  const [currentTile, setCurrentTile] = useState({ x: 0, y: 0 });
-  const [graph, setGraph] = useState<{ [node_key: string]: string[] }>({});
-
-  const overrideCellColor = (rowI: number, colI: number) => {
+  const overrideTileColor = (rowI: number, colI: number) => {
     if (tileColorOverride) {
       if (
         tileColorOverride.currentNeighboursTile &&
@@ -91,8 +88,8 @@ export function Grid({
   return (
     <div>
       <svg
-        width={matrix[0].length * cellSize + strokeWidth * 2}
-        height={matrix.length * cellSize + strokeWidth * 2}
+        width={matrix[0].length * tileSize + strokeWidth * 2}
+        height={matrix.length * tileSize + strokeWidth * 2}
       >
         {matrix.map(
           (
@@ -101,7 +98,7 @@ export function Grid({
           ) =>
             row.map(
               (
-                cell,
+                tile,
                 colIndex, // y
               ) => (
                 <g
@@ -109,22 +106,22 @@ export function Grid({
                   onClick={() => tileClickCallback(rowIndex, colIndex)}
                 >
                   <rect
-                    x={colIndex * cellSize + strokeWidth}
-                    y={rowIndex * cellSize + strokeWidth}
-                    width={cellSize}
-                    height={cellSize}
+                    x={colIndex * tileSize + strokeWidth}
+                    y={rowIndex * tileSize + strokeWidth}
+                    width={tileSize}
+                    height={tileSize}
                     strokeWidth={strokeWidth}
                     className={clsx([
-                      pickCellColor(
-                        cell,
-                        overrideCellColor(rowIndex, colIndex),
+                      pickTileColor(
+                        tile,
+                        overrideTileColor(rowIndex, colIndex),
                       ),
                       "red",
                     ])}
                   />
                   <text
-                    x={colIndex * cellSize + cellSize / 2}
-                    y={rowIndex * cellSize + cellSize / 2}
+                    x={colIndex * tileSize + tileSize / 2}
+                    y={rowIndex * tileSize + tileSize / 2}
                     dominantBaseline="middle"
                     textAnchor="middle"
                     className={clsx(["text-sm", "fill-white"])}
