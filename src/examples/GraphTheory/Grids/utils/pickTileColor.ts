@@ -10,7 +10,6 @@ export const pickTileColor = (
   tileTypeInt: number,
   overrideTileColor?: string,
 ) => {
-  // TODO: temporary - to highlight current tile algorithm is working on
   if (overrideTileColor) {
     return overrideTileColor;
   }

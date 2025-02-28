@@ -26,6 +26,7 @@ const preview: Preview = {
     },
     docs: {
       theme,
+      toc: true,
     },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {

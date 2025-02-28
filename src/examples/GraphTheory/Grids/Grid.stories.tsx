@@ -5,7 +5,7 @@ import { Grid } from ".";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Grid2D",
+  title: "Examples/Grids & Graphs/2D Grid",
   parameters: {
     layout: "fullscreen",
   },
@@ -39,6 +39,7 @@ const defaultMatrix = [
 ];
 
 export const Grid2D: Story = {
+  name: "2D Grid",
   args: {
     matrix: defaultMatrix,
   },

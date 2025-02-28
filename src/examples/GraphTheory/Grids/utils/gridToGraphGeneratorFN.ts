@@ -1,12 +1,19 @@
-const ALGORITH_CURRENT_TILE_COLOR = "fill-sky-600";
-const FIND_NEIGHBOURS_CURRENT_TILE_COLOR = "fill-sky-400";
-const FIND_NEIGHBOURS_SUCCESS_COLOR = "fill-lime-500";
-const FIND_NEIGHBOURS_FAILURE_COLOR = "fill-rose-800";
+import {
+  ALGORITH_CURRENT_TILE_COLOR,
+  FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
+  FIND_NEIGHBOURS_FAILURE_COLOR,
+  FIND_NEIGHBOURS_SUCCESS_COLOR,
+} from "../constants";
 
-type Coordinate = number;
-type CoordinatesString = `${Coordinate},${Coordinate}`;
+type Direction = "R" | "D" | "L" | "U";
 
-type Graph = { [node_key: string]: CoordinatesString[] };
+export type Graph = {
+  [node_key: string]: {
+    x: number;
+    y: number;
+    direction: Direction;
+  }[];
+};
 
 export function* gridToGraphGenerator(matrix: number[][]): Generator<
   {
@@ -23,11 +30,11 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
   const columns = matrix[0].length;
   const graph: Graph = {};
 
-  const directions = [
-    [0, 1], // right
-    [1, 0], // down
-    [0, -1], // left
-    [-1, 0], // up
+  const directions: [number, number, Direction][] = [
+    [0, 1, "R"], // right
+    [1, 0, "D"], // down
+    [0, -1, "L"], // left
+    [-1, 0, "U"], // up
   ];
 
   for (let y = 0; y < rows; y++) {
@@ -46,7 +53,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
       const nodeKey = `${x},${y}`;
       graph[nodeKey] = [];
 
-      for (const [dx, dy] of directions) {
+      for (const [dx, dy, direction] of directions) {
         const newX = x + dx;
         const newY = y + dy;
 
@@ -66,7 +73,8 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
 
           if (matrix[newY][newX] !== 1) {
             // Step 3: Neighbour success
-            graph[nodeKey].push(`${newX},${newY}`);
+            graph[nodeKey].push({ x: newX, y: newY, direction });
+
             yield {
               tileOverrides: {
                 currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
@@ -117,7 +125,7 @@ interface GraphGenerationOptions {
       currentNeighboursTile: { x: number; y: number; color: string };
     }>
   >;
-  setGraphStep: React.Dispatch<React.SetStateAction<Graph>>;
+  setGraph: React.Dispatch<React.SetStateAction<Graph>>;
   /* 0 - 1000 higher being slower */
   tickSpeed?: number;
 }
@@ -125,7 +133,7 @@ interface GraphGenerationOptions {
 export const runGraphGeneration = async ({
   matrix,
   setTileColorOverrides,
-  setGraphStep,
+  setGraph,
   tickSpeed = 200,
 }: GraphGenerationOptions) => {
   if (tickSpeed < 0 || tickSpeed > 1000) {
@@ -140,7 +148,7 @@ export const runGraphGeneration = async ({
 
     // Update UI
     setTileColorOverrides(tileOverrides);
-    setGraphStep(graphStep);
+    setGraph(graphStep);
 
     // Delay visualization
     await new Promise((resolve) => setTimeout(resolve, tickSpeed));
@@ -150,5 +158,5 @@ export const runGraphGeneration = async ({
   }
 
   // Final graph update
-  setGraphStep(result.value);
+  setGraph(result.value);
 };

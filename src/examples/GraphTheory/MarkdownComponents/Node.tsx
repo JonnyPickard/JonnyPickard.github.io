@@ -1,11 +1,12 @@
 import clsx from "clsx";
+import React from "react";
 
-interface NodeProps {
+interface NodeProps extends React.HTMLAttributes<HTMLSpanElement> {
   name: string;
   size?: number;
 }
 
-export function Node({ name, size = 32 }: NodeProps) {
+export function Node({ name, size = 32, className, ...props }: NodeProps) {
   return (
     <span
       className={clsx([
@@ -18,8 +19,10 @@ export function Node({ name, size = 32 }: NodeProps) {
         "my-auto",
         "text-xs",
         "text-white",
+        className,
       ])}
       style={{ width: size, height: size }}
+      {...props}
     >
       {name}
     </span>

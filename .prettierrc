@@ -1,4 +1,9 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-classnames"],
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-classnames",
+    "prettier-plugin-organize-imports"
+  ],
+  "organizeImportsSkipDestructiveCodeActions": true,
   "endingPosition": "absolute-with-indent"
 }

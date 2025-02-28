@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
-import { Graphs, GraphKey } from ".";
+import { GraphKey, Graphs } from ".";
 
 const meta: Meta<typeof Graphs> = {
   component: Graphs,
-  title: "Examples/Grids & Graphs/MatrixGrid",
+  title: "Examples/Grids & Graphs/2D Grid With Key",
   parameters: {
     layout: "fullscreen",
   },
@@ -46,6 +46,7 @@ const defaultMatrix = [
 ];
 
 export const MatrixGrid: Story = {
+  name: "2D Grid With Key",
   args: {
     matrix: defaultMatrix,
   },

@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+import React from "react";
 
-interface EdgeProps {
+interface EdgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   // right, down, left, up
   direction?: "R" | "D" | "L" | "U";
   size?: number;
 }
 
-export function Edge({ direction = "R", size = 32 }: EdgeProps) {
+export function Edge({ direction = "R", size = 32, className }: EdgeProps) {
   const pickArrowRotationFromDirection = () => {
     switch (direction) {
       case "R":
@@ -27,10 +28,11 @@ export function Edge({ direction = "R", size = 32 }: EdgeProps) {
         "flex",
         "items-center",
         "justify-center",
-        "p-1",
+        "p-0",
         "leading-none",
         "text-emerald-500",
         pickArrowRotationFromDirection(),
+        className,
       ])}
     >
       <LiaLongArrowAltRightSolid size={size} />

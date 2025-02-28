@@ -3,14 +3,13 @@ import clsx from "clsx";
 
 import { useEffect, useState } from "react";
 
-import { Grid, generateTestMatrix, Graph, runGraphGeneration } from ".";
-import { FIND_NEIGHBOURS_CURRENT_TILE_COLOR } from "./constants";
-import { GraphNodeToNodeList } from "../MarkdownComponents";
-
-const ALGORITH_CURRENT_TILE_COLOR = "fill-lime-500";
-
-// import { AlgorithmStepList } from "./AlgorithmStepList";
-// import { useTimer } from "../../../hooks";
+import type { Graph } from ".";
+import { Grid, generateTestMatrix, runGraphGeneration } from ".";
+import { GraphNodeToNeigbourList } from "../MarkdownComponents";
+import {
+  ALGORITH_CURRENT_TILE_COLOR,
+  FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
+} from "./constants";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
@@ -21,9 +20,7 @@ const meta: Meta<typeof Grid> = {
   decorators: [
     (Story) => {
       // TODO: button to generate new grid
-      const [testMatrix, setTestMatrix] = useState(
-        generateTestMatrix({ placePlayer: false }),
-      );
+      const [testMatrix] = useState(generateTestMatrix({ placePlayer: false }));
       const [tileColorOverrides, setTileColorOverrides] = useState({
         currentAlgTile: { x: 0, y: 0, color: ALGORITH_CURRENT_TILE_COLOR },
         currentNeighboursTile: {
@@ -32,15 +29,14 @@ const meta: Meta<typeof Grid> = {
           color: FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
         },
       });
-      const [graphStep, setGraphStep] = useState<Graph>({});
+      const [graph, setGraph] = useState<Graph>({});
 
       useEffect(() => {
-        // gridToGraph(testMatrix, setTileColorOverrides, setGraphStep);
         runGraphGeneration({
           matrix: testMatrix,
           setTileColorOverrides,
-          setGraphStep,
-          tickSpeed: 200,
+          setGraph,
+          tickSpeed: 150,
         });
       }, [testMatrix]);
 
@@ -59,7 +55,7 @@ const meta: Meta<typeof Grid> = {
             "overflow-hidden",
           ])}
         >
-          <div className={clsx(["h-2/3", "flex"])}>
+          <div className={clsx(["h-2/3", "flex", "w-full"])}>
             <Story
               args={{
                 matrix: testMatrix,
@@ -68,7 +64,7 @@ const meta: Meta<typeof Grid> = {
             />
           </div>
           <div className={clsx(["h-2/3", "w-full"])}>
-            <GraphNodeToNodeList graph={graphStep} />
+            <GraphNodeToNeigbourList graph={graph} />
           </div>
         </div>
       );

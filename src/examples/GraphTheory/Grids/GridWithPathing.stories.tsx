@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 import { useState } from "react";
 
-import { GridWithPathing } from "./";
 import { GraphKey } from "../GraphKey";
-import { usePlayerStartPosition } from "./hooks/usePlayerStartPosition";
-import { useMatrix, generateMatrix } from "./hooks/useMatrix";
+import { GridWithPathing } from "./";
 import { useGridControls } from "./hooks/useGridControls";
+import { generateMatrix, useMatrix } from "./hooks/useMatrix";
+import { usePlayerStartPosition } from "./hooks/usePlayerStartPosition";
 
 const PLAYER_START = { x: 0, y: 0 };
 const ROWS = 4;
@@ -72,9 +72,10 @@ export default meta;
 
 type Story = StoryObj<typeof GridWithPathing>;
 
-export const GridWithPathingStory: Story = {
-  name: "GridWithPathing",
-  args: {
-    matrix: generateMatrix(4, 4, { x: 0, y: 0 }),
-  },
-};
+// TODO: commented out until worked finished
+// export const GridWithPathingStory: Story = {
+//   name: "GridWithPathing",
+//   args: {
+//     matrix: generateMatrix(4, 4, { x: 0, y: 0 }),
+//   },
+// };
