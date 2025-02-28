@@ -19,23 +19,27 @@ export const GraphNodeToNodeList: React.FC<GraphNodeToNodeListProps> = ({
   edgeSize = 20,
 }) => {
   return (
-    <ul
-      className={clsx(["list-disc", "flex", "flex-col", "mh-full", "w-full"])}
-    >
-      {Object.entries(graph).map(([node, connections]) => (
-        <li key={node} className={clsx(["flex", "items-center"])}>
-          <span className={clsx(["text-emerald-500", "text-xs"])}>{node}:</span>
-          {connections.map((connection) => (
-            <NodeToNode
-              key={`${node}-${connection}`}
-              from={node}
-              to={connection}
-              nodeSize={nodeSize}
-              edgeSize={edgeSize}
-            />
-          ))}
-        </li>
-      ))}
-    </ul>
+    <div className={clsx(["bg-secondary-500/40", "p-4", "rounded-lg"])}>
+      <ul
+        className={clsx(["list-disc", "flex", "flex-col", "mh-full", "w-full"])}
+      >
+        {Object.entries(graph).map(([node, connections]) => (
+          <li key={node} className={clsx(["flex", "items-center"])}>
+            <span className={clsx(["text-emerald-500", "text-xs"])}>
+              {node}:
+            </span>
+            {connections.map((connection) => (
+              <NodeToNode
+                key={`${node}-${connection}`}
+                from={node}
+                to={connection}
+                nodeSize={nodeSize}
+                edgeSize={edgeSize}
+              />
+            ))}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
