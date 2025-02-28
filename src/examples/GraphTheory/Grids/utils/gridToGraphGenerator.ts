@@ -109,16 +109,29 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
   return graph;
 }
 
-export const runGraphGeneration = async (
-  matrix: number[][],
+interface GraphGenerationOptions {
+  matrix: number[][];
   setTileColorOverrides: React.Dispatch<
     React.SetStateAction<{
       currentAlgTile: { x: number; y: number; color: string };
       currentNeighboursTile: { x: number; y: number; color: string };
     }>
-  >,
-  setGraphStep: React.Dispatch<React.SetStateAction<Graph>>,
-) => {
+  >;
+  setGraphStep: React.Dispatch<React.SetStateAction<Graph>>;
+  /* 0 - 1000 higher being slower */
+  tickSpeed?: number;
+}
+
+export const runGraphGeneration = async ({
+  matrix,
+  setTileColorOverrides,
+  setGraphStep,
+  tickSpeed = 200,
+}: GraphGenerationOptions) => {
+  if (tickSpeed < 0 || tickSpeed > 1000) {
+    throw new Error("tickSpeed must be between 0 and 1000");
+  }
+
   const generator = gridToGraphGenerator(matrix);
   let result = generator.next();
 
@@ -130,7 +143,7 @@ export const runGraphGeneration = async (
     setGraphStep(graphStep);
 
     // Delay visualization
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, tickSpeed));
 
     // Move to next step
     result = generator.next();

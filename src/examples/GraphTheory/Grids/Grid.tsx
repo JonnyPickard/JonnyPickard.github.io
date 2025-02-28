@@ -1,7 +1,5 @@
 import { clsx } from "clsx";
-import { useState } from "react";
 import { pickTileColor } from "./utils";
-import { AlgorithmStepList } from "./AlgorithmStepList";
 import {
   DEFAULT_MATRIX,
   DEFAULT_TILE_SIZE,
@@ -86,7 +84,7 @@ export function Grid({
   };
 
   return (
-    <div>
+    <div className={clsx(["flex", "items-center", "justify-center", "m-4"])}>
       <svg
         width={matrix[0].length * tileSize + strokeWidth * 2}
         height={matrix.length * tileSize + strokeWidth * 2}
@@ -116,7 +114,7 @@ export function Grid({
                         tile,
                         overrideTileColor(rowIndex, colIndex),
                       ),
-                      "red",
+                      `${strokeColor}`,
                     ])}
                   />
                   <text

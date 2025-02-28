@@ -16,12 +16,14 @@ const meta: Meta<typeof Grid> = {
   component: Grid,
   title: "Examples/Grids & Graphs/Grid To Graph",
   parameters: {
-    layout: "center",
+    layout: "fullscreen",
   },
   decorators: [
     (Story) => {
       // TODO: button to generate new grid
-      const [testMatrix, setTestMatrix] = useState(generateTestMatrix());
+      const [testMatrix, setTestMatrix] = useState(
+        generateTestMatrix({ placePlayer: false }),
+      );
       const [tileColorOverrides, setTileColorOverrides] = useState({
         currentAlgTile: { x: 0, y: 0, color: ALGORITH_CURRENT_TILE_COLOR },
         currentNeighboursTile: {
@@ -34,31 +36,38 @@ const meta: Meta<typeof Grid> = {
 
       useEffect(() => {
         // gridToGraph(testMatrix, setTileColorOverrides, setGraphStep);
-        runGraphGeneration(testMatrix, setTileColorOverrides, setGraphStep);
+        runGraphGeneration({
+          matrix: testMatrix,
+          setTileColorOverrides,
+          setGraphStep,
+          tickSpeed: 200,
+        });
       }, [testMatrix]);
 
       return (
         <div
           className={clsx([
             "h-screen",
-            "mh-full",
+            "mh-screen",
             "w-screen",
-            "mw-full",
+            "mw-screen",
             "bg-slate-900",
             "flex",
             "gap-4",
             "p-4",
-            // "place-items-center",
+            "place-items-center",
             "overflow-hidden",
           ])}
         >
-          <Story
-            args={{
-              matrix: testMatrix,
-              tileColorOverride: tileColorOverrides,
-            }}
-          />
-          <div className={clsx(["overflow-scroll", "w-full"])}>
+          <div className={clsx(["h-2/3", "flex"])}>
+            <Story
+              args={{
+                matrix: testMatrix,
+                tileColorOverride: tileColorOverrides,
+              }}
+            />
+          </div>
+          <div className={clsx(["h-2/3", "w-full"])}>
             <GraphNodeToNodeList graph={graphStep} />
           </div>
         </div>

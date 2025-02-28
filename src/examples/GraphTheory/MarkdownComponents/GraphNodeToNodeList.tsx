@@ -19,10 +19,17 @@ export const GraphNodeToNodeList: React.FC<GraphNodeToNodeListProps> = ({
   edgeSize = 20,
 }) => {
   return (
-    <div className={clsx(["bg-secondary-500/40", "p-4", "rounded-lg"])}>
-      <ul
-        className={clsx(["list-disc", "flex", "flex-col", "mh-full", "w-full"])}
-      >
+    <div
+      className={clsx([
+        "bg-secondary-500/40",
+        "p-4",
+        "rounded-lg",
+        "overflow-scroll",
+        "h-full",
+        "w-full",
+      ])}
+    >
+      <ul className={clsx(["list-disc", "flex", "flex-col"])}>
         {Object.entries(graph).map(([node, connections]) => (
           <li key={node} className={clsx(["flex", "items-center"])}>
             <span className={clsx(["text-emerald-500", "text-xs"])}>
