@@ -13,8 +13,8 @@ export const GraphKey = ({ keyTable }: GraphKeyProps) => {
       className={clsx(
         "text-white",
         "absolute",
-        "top-0",
-        "right-0",
+        "top-4",
+        "left-4",
         "border-separate",
         "border-spacing-2",
         "bg-slate-900",

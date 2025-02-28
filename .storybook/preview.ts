@@ -26,9 +26,11 @@ const preview: Preview = {
     },
     docs: {
       theme,
+      toc: true,
     },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
+      disableSaveFromUI: true,
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
