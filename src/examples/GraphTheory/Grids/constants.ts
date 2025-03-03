@@ -19,3 +19,5 @@ export const ALGORITH_CURRENT_TILE_COLOR = "fill-sky-600";
 export const FIND_NEIGHBOURS_CURRENT_TILE_COLOR = "fill-sky-400";
 export const FIND_NEIGHBOURS_SUCCESS_COLOR = "fill-lime-500";
 export const FIND_NEIGHBOURS_FAILURE_COLOR = "fill-rose-800";
+
+export const PROCESSED_TILE_COLOR = "fill-teal-700";

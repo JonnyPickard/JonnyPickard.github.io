@@ -1,18 +1,18 @@
 import { clsx } from "clsx";
-import { pickTileColor } from "./utils";
 import {
   DEFAULT_MATRIX,
-  DEFAULT_TILE_SIZE,
-  DEFAULT_STROKE_WIDTH,
   DEFAULT_STROKE_COLOR,
+  DEFAULT_STROKE_WIDTH,
+  DEFAULT_TILE_SIZE,
 } from "./constants";
+import { pickTileColor } from "./utils";
 
 interface GridProps {
   matrix?: number[][];
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
-  tileClickCallback?: (x: number, y: number) => void;
+  onTileClick?: ({ x, y }: { x: number; y: number }) => void;
   tileColorOverride?: {
     currentAlgTile: {
       x: number;
@@ -61,7 +61,7 @@ export function Grid({
   tileSize = DEFAULT_TILE_SIZE,
   strokeWidth = DEFAULT_STROKE_WIDTH,
   strokeColor = DEFAULT_STROKE_COLOR,
-  tileClickCallback = (x, y) => console.log("Clicked on", x, y),
+  onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
   const overrideTileColor = (rowI: number, colI: number) => {
@@ -101,7 +101,7 @@ export function Grid({
               ) => (
                 <g
                   key={`${rowIndex}-${colIndex}`}
-                  onClick={() => tileClickCallback(rowIndex, colIndex)}
+                  onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
                 >
                   <rect
                     x={colIndex * tileSize + strokeWidth}

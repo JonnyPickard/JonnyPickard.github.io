@@ -1,4 +1,5 @@
-export * from "./pickTileColor";
+export * from "./bfsShortestPath";
+export * from "./generateTestMatrix";
 export * from "./gridToGraph";
 export * from "./gridToGraphGeneratorFN";
-export * from "./generateTestMatrix";
+export * from "./pickTileColor";

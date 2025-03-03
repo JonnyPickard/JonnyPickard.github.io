@@ -15,10 +15,53 @@ export type Graph = {
   }[];
 };
 
-// Makes an adjacency list graph representation
-// Uneccessary for 2D Map grids as its extra looping to making the list first
-// For 2D Map pathfinding you should do BFS etc as you work out neighbours
-export function* gridToGraphGenerator(matrix: number[][]): Generator<
+type Grid = number[][];
+
+interface BfsShortestPathGeneratorFN {
+  grid: Grid;
+  startX: number;
+  startY: number;
+  targetX: number;
+  targetY: number;
+}
+
+const bfsPathFromAdjacencyList = (
+  graph: Map<number, number[]>,
+  startNode: number,
+): number[] => {
+  const visited: Set<number> = new Set();
+  const queue: number[] = [startNode];
+  const result: number[] = [];
+
+  while (queue.length > 0) {
+    const node = queue.shift()!;
+
+    if (!visited.has(node)) {
+      visited.add(node);
+      result.push(node);
+
+      const neighbors = graph.get(node) || [];
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          queue.push(neighbor);
+        }
+      }
+    }
+  }
+
+  return result;
+};
+
+// TODO:
+// currently copied from the generate graph algorithm as I want to reuse
+//  the recoloring/ timer logic/ data shapes
+export function* bfsShortestPathGeneratorFN({
+  grid,
+  startX,
+  startY,
+  targetX,
+  targetY,
+}: BfsShortestPathGeneratorFN): Generator<
   {
     tileOverrides: {
       currentAlgTile: { x: number; y: number; color: string };
@@ -143,7 +186,7 @@ export const runGraphGeneration = async ({
     throw new Error("tickSpeed must be between 0 and 1000");
   }
 
-  const generator = gridToGraphGenerator(matrix);
+  const generator = bfsShortestPathGeneratorFN(matrix);
   let result = generator.next();
 
   while (!result.done) {
@@ -156,30 +199,6 @@ export const runGraphGeneration = async ({
     // Delay visualization
     await new Promise((resolve) => setTimeout(resolve, tickSpeed));
 
-    // Move to next step
-    result = generator.next();
-  }
-
-  // Final graph update
-  setGraph(result.value);
-};
-
-interface SimpleGraphGenerationOptions {
-  matrix: number[][];
-  setGraph: React.Dispatch<React.SetStateAction<Graph>>;
-}
-
-// Generate graph with:
-// - no tile recoloring
-// - no delay?
-export const runSimpleGraphGeneration = async ({
-  matrix,
-  setGraph,
-}: SimpleGraphGenerationOptions) => {
-  const generator = gridToGraphGenerator(matrix);
-  let result = generator.next();
-
-  while (!result.done) {
     // Move to next step
     result = generator.next();
   }
