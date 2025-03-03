@@ -28,6 +28,7 @@ export function bfsShortestPath({
   targetCoordinates,
 }: bfsShortestPathArgs): Coordinates[] | null {
   if (!grid.length) return null;
+
   const rows = grid.length;
   const cols = grid[0].length;
   const directions = [
@@ -40,33 +41,31 @@ export function bfsShortestPath({
   const { x: startX, y: startY } = startCoordinates;
   const { x: targetX, y: targetY } = targetCoordinates;
 
-  const queue: Coordinates[] = [startCoordinates];
+  // 🛑 Edge Case: If start == target, return immediately
+  if (startX === targetX && startY === targetY) {
+    return [{ x: startX, y: startY }];
+  }
 
-  const visited = new Set<string>();
-  // To reconstruct the path
-  const parent: { [key: string]: Coordinates | null } = {};
-
-  // Initialising
-  visited.add(`${startX},${startY}`);
+  const queue: Coordinates[] = [{ x: startX, y: startY }];
+  const visited = new Set<string>([`${startX},${startY}`]);
+  const parent: Record<string, Coordinates | null> = {};
   parent[`${startX},${startY}`] = null;
 
-  // Recursive vs while incase I want to add delays while drawing path finding
-  function bfsRecursive(): Coordinates[] | null {
-    if (queue.length === 0) return null;
+  while (queue.length > 0) {
+    const { x, y } = queue.shift()!; // Safe to use `!` because queue is not empty
 
-    const { x, y } = queue.shift()!;
-
-    // If we reached the target, reconstruct path
+    // If we reached the target, reconstruct the path
     if (x === targetX && y === targetY) {
-      let path: Coordinates[] = [];
+      const path: Coordinates[] = [];
       let current: Coordinates | null = { x, y };
       while (current !== null) {
         path.push(current);
-        current = parent[`${current.x},${current.y}`];
+        current = parent[`${current.x},${current.y}`]; // Move backwards
       }
-      return path.reverse(); // Reverse to get path from start to goal
+      return path.reverse(); // Reverse to get the path from start to goal
     }
 
+    // Explore all valid directions
     for (const [dx, dy] of directions) {
       const newX = x + dx;
       const newY = y + dy;
@@ -76,18 +75,15 @@ export function bfsShortestPath({
         newX < cols &&
         newY >= 0 &&
         newY < rows &&
-        grid[newY][newX] !== 1 &&
+        grid[newY][newX] !== 1 && // Ensure it's walkable
         !visited.has(`${newX},${newY}`)
       ) {
-        const newCoordinates: Coordinates = { x: newX, y: newY };
-        queue.push(newCoordinates);
+        queue.push({ x: newX, y: newY });
         visited.add(`${newX},${newY}`);
-        parent[`${newX},${newY}`] = { x, y }; // Store parent
+        parent[`${newX},${newY}`] = { x, y }; // Store parent to reconstruct path
       }
     }
-
-    return bfsRecursive();
   }
 
-  return bfsRecursive();
+  return null; // No path found
 }

@@ -39,35 +39,22 @@ const meta: Meta<typeof Grid> = {
         useState<Coordinates | null>(null);
       const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
 
-      const [tileColorOverride, settileColorOverride] = useState({});
+      const [tileColorOverride, setTileColorOverride] = useState({});
 
       const pickPathTile = (tile: Coordinates) => {
+        // If wall tile you can't pick it
+        if (testMatrix[tile.y][tile.x] === 1) return;
+
         if (nextClickTileType === "start") {
           setStartCoordinates(() => tile);
           // toggle so next click sets target
           setNextClickTileType(() => "target");
-
-          settileColorOverride((prev) => ({
-            ...prev,
-            startTile: {
-              ...tile,
-              color: PLAYER_START_FILL_COLOR,
-            },
-          }));
         }
 
         if (nextClickTileType === "target") {
           setTargetCoordinates(() => tile);
           // toggle so next click sets start
           setNextClickTileType(() => "start");
-
-          settileColorOverride((prev) => ({
-            ...prev,
-            targetTile: {
-              ...tile,
-              color: TARGET_FILL_COLOR,
-            },
-          }));
         }
       };
 
@@ -80,10 +67,6 @@ const meta: Meta<typeof Grid> = {
         setTestMatrix(structuredClone(originalMatrix));
         setOriginalMatrix(originalMatrix);
       }, []);
-
-      const resetGrid = () => {
-        setTestMatrix(() => structuredClone(originalMatrix));
-      };
 
       type UpdateTestMatrix = (args: {
         x: number;
@@ -112,25 +95,45 @@ const meta: Meta<typeof Grid> = {
         });
       };
 
+      // Handle state updates
       // Handle setting the start/ target coordinates after user clicks
       useEffect(() => {
         if (!startCoordinates && !targetCoordinates) return;
 
+        // Target tile was clicked
         if (nextClickTileType === "start" && targetCoordinates) {
-          // If start means last tile clicked was target
           const { x, y } = targetCoordinates;
 
           updateTestMatrix({ x, y, tileIdentifier: 3 });
+
+          setTileColorOverride((prev) => ({
+            ...prev,
+            targetTile: {
+              ...targetCoordinates,
+              color: TARGET_FILL_COLOR,
+            },
+          }));
         }
 
         if (nextClickTileType === "target" && startCoordinates) {
-          // If target means last tile clicked was start
+          // Start tile was clicked
+          // Reset override colors colors
+          setTileColorOverride(() => ({}));
+
           const { x, y } = startCoordinates;
 
-          // Reset back to original grid UI colors to start picking tiles again
-          resetGrid();
-
           updateTestMatrix({ x, y, tileIdentifier: 2 });
+
+          // Reset to original UI colors to start picking tiles again
+          setTestMatrix(() => structuredClone(originalMatrix));
+
+          setTileColorOverride((prev) => ({
+            ...prev,
+            startTile: {
+              ...startCoordinates,
+              color: PLAYER_START_FILL_COLOR,
+            },
+          }));
         }
       }, [startCoordinates, targetCoordinates, nextClickTileType]);
 
@@ -167,19 +170,24 @@ const meta: Meta<typeof Grid> = {
         <div
           className={clsx([
             "h-screen",
-            "mh-screen",
             "w-screen",
-            "mw-screen",
             "bg-slate-900",
             "flex",
             "gap-4",
             "p-4",
-            "place-items-center",
             "overflow-hidden",
             "relative",
           ])}
         >
-          <div className={clsx(["h-2/3", "flex", "w-full"])}>
+          <div
+            className={clsx([
+              "flex",
+              "w-full",
+              "h-full",
+              "justify-center",
+              "items-center",
+            ])}
+          >
             <Story
               args={{
                 onTileClick: pickPathTile,
@@ -188,9 +196,8 @@ const meta: Meta<typeof Grid> = {
               }}
             />
           </div>
-          <div className={clsx(["h-2/3", "w-full"])}>
+          <div className={clsx(["absolute", "top-2", "right-2"])}>
             <GraphKey
-              className={clsx(["absolute", "top-2", "right-2"])}
               keyTable={[
                 {
                   color: "border border-white",

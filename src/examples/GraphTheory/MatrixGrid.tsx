@@ -54,36 +54,47 @@ export function MatrixGrid({
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: MatrixGridProps) {
   return (
-    <svg
-      width={matrix[0].length * cellSize + strokeWidth * 2}
-      height={matrix.length * cellSize + strokeWidth * 2}
+    <div
+      className={clsx([
+        "flex",
+        "items-center",
+        "justify-center",
+        "m-4",
+        "w-full",
+        "h-full",
+      ])}
     >
-      {matrix.map((row, rowIndex) =>
-        row.map((cell, colIndex) => (
-          <g
-            key={`${rowIndex}-${colIndex}`}
-            onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
-          >
-            <rect
-              x={colIndex * cellSize + strokeWidth}
-              y={rowIndex * cellSize + strokeWidth}
-              width={cellSize}
-              height={cellSize}
-              strokeWidth={strokeWidth}
-              className={clsx([pickCellColor(cell), strokeColor])}
-            />
-            <text
-              x={colIndex * cellSize + cellSize / 2}
-              y={rowIndex * cellSize + cellSize / 2}
-              dominantBaseline="middle"
-              textAnchor="middle"
-              className={clsx(["text-sm", "fill-slate-50"])}
+      <svg
+        width={matrix[0].length * cellSize + strokeWidth * 2}
+        height={matrix.length * cellSize + strokeWidth * 2}
+      >
+        {matrix.map((row, rowIndex) =>
+          row.map((cell, colIndex) => (
+            <g
+              key={`${rowIndex}-${colIndex}`}
+              onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
             >
-              {`${rowIndex}, ${colIndex}`}
-            </text>
-          </g>
-        )),
-      )}
-    </svg>
+              <rect
+                x={colIndex * cellSize + strokeWidth}
+                y={rowIndex * cellSize + strokeWidth}
+                width={cellSize}
+                height={cellSize}
+                strokeWidth={strokeWidth}
+                className={clsx([pickCellColor(cell), strokeColor])}
+              />
+              <text
+                x={colIndex * cellSize + cellSize / 2}
+                y={rowIndex * cellSize + cellSize / 2}
+                dominantBaseline="middle"
+                textAnchor="middle"
+                className={clsx(["text-sm", "fill-slate-50"])}
+              >
+                {`${rowIndex}, ${colIndex}`}
+              </text>
+            </g>
+          )),
+        )}
+      </svg>
+    </div>
   );
 }

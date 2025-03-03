@@ -6,6 +6,7 @@ interface TestMatrixOptions {
   columns?: number;
   placePlayer?: boolean;
   placeTargetTile?: boolean;
+  placeWalls?: boolean;
 }
 
 export const generateTestMatrix = ({
@@ -13,15 +14,18 @@ export const generateTestMatrix = ({
   columns = COLUMNS,
   placePlayer = true,
   placeTargetTile = false,
+  placeWalls = true,
 }: TestMatrixOptions = {}): number[][] => {
   const matrix = Array.from({ length: rows }, () => Array(columns).fill(0));
 
-  // Place walls randomly
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < columns; x++) {
-      if (Math.random() < 0.2) {
-        // 20% chance to be a wall
-        matrix[y][x] = 1;
+  if (placeWalls) {
+    // Place walls randomly
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < columns; x++) {
+        if (Math.random() < 0.2) {
+          // 20% chance to be a wall
+          matrix[y][x] = 1;
+        }
       }
     }
   }
