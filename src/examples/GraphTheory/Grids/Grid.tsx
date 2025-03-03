@@ -84,53 +84,59 @@ export function Grid({
   };
 
   return (
-    <div className={clsx(["flex", "items-center", "justify-center", "m-4"])}>
-      <svg
-        width={matrix[0].length * tileSize + strokeWidth * 2}
-        height={matrix.length * tileSize + strokeWidth * 2}
-      >
-        {matrix.map(
-          (
-            row,
-            rowIndex, // x
-          ) =>
-            row.map(
-              (
-                tile,
-                colIndex, // y
-              ) => (
-                <g
-                  key={`${rowIndex}-${colIndex}`}
-                  onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
-                >
-                  <rect
-                    x={colIndex * tileSize + strokeWidth}
-                    y={rowIndex * tileSize + strokeWidth}
-                    width={tileSize}
-                    height={tileSize}
-                    strokeWidth={strokeWidth}
-                    className={clsx([
-                      pickTileColor(
-                        tile,
-                        overrideTileColor(rowIndex, colIndex),
-                      ),
-                      `${strokeColor}`,
-                    ])}
-                  />
-                  <text
-                    x={colIndex * tileSize + tileSize / 2}
-                    y={rowIndex * tileSize + tileSize / 2}
-                    dominantBaseline="middle"
-                    textAnchor="middle"
-                    className={clsx(["text-sm", "fill-white"])}
+    matrix.length && (
+      <div className={clsx(["flex", "items-center", "justify-center", "m-4"])}>
+        <svg
+          width={matrix[0].length * tileSize + strokeWidth * 2}
+          height={matrix.length * tileSize + strokeWidth * 2}
+        >
+          {matrix.map(
+            (
+              row,
+              rowIndex, // x
+            ) =>
+              row.map(
+                (
+                  tile,
+                  colIndex, // y
+                ) => (
+                  <g
+                    key={`${rowIndex}-${colIndex}`}
+                    onClick={() => {
+                      // TODO:
+                      console.log({ y: rowIndex, x: colIndex });
+                      onTileClick({ y: rowIndex, x: colIndex });
+                    }}
                   >
-                    {`${colIndex}, ${rowIndex}`}
-                  </text>
-                </g>
+                    <rect
+                      x={colIndex * tileSize + strokeWidth}
+                      y={rowIndex * tileSize + strokeWidth}
+                      width={tileSize}
+                      height={tileSize}
+                      strokeWidth={strokeWidth}
+                      className={clsx([
+                        pickTileColor(
+                          tile,
+                          overrideTileColor(rowIndex, colIndex),
+                        ),
+                        `${strokeColor}`,
+                      ])}
+                    />
+                    <text
+                      x={colIndex * tileSize + tileSize / 2}
+                      y={rowIndex * tileSize + tileSize / 2}
+                      dominantBaseline="middle"
+                      textAnchor="middle"
+                      className={clsx(["text-sm", "fill-white"])}
+                    >
+                      {`${colIndex}, ${rowIndex}`}
+                    </text>
+                  </g>
+                ),
               ),
-            ),
-        )}
-      </svg>
-    </div>
+          )}
+        </svg>
+      </div>
+    )
   );
 }

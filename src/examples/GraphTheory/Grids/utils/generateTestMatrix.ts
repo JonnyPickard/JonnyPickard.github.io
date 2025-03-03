@@ -5,14 +5,14 @@ interface TestMatrixOptions {
   rows?: number;
   columns?: number;
   placePlayer?: boolean;
-  placeDestinationTile?: boolean;
+  placeTargetTile?: boolean;
 }
 
 export const generateTestMatrix = ({
   rows = ROWS,
   columns = COLUMNS,
   placePlayer = true,
-  placeDestinationTile = false,
+  placeTargetTile = false,
 }: TestMatrixOptions = {}): number[][] => {
   const matrix = Array.from({ length: rows }, () => Array(columns).fill(0));
 
@@ -39,15 +39,15 @@ export const generateTestMatrix = ({
     }
   }
 
-  if (placeDestinationTile) {
-    // Place destinationtile randomly
-    let destinationtilePlaced = false;
-    while (!destinationtilePlaced) {
-      const destinationtileX = Math.floor(Math.random() * columns);
-      const destinationtileY = Math.floor(Math.random() * rows);
-      if (matrix[destinationtileY][destinationtileX] === 0) {
-        matrix[destinationtileY][destinationtileX] = 3;
-        destinationtilePlaced = true;
+  if (placeTargetTile) {
+    // Place targettile randomly
+    let targettilePlaced = false;
+    while (!targettilePlaced) {
+      const targettileX = Math.floor(Math.random() * columns);
+      const targettileY = Math.floor(Math.random() * rows);
+      if (matrix[targettileY][targettileX] === 0) {
+        matrix[targettileY][targettileX] = 3;
+        targettilePlaced = true;
       }
     }
   }

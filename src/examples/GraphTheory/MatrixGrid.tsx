@@ -12,7 +12,7 @@ const defaultStrokeWidth = 2;
 const playerPathFillColor = "fill-lime-300";
 const terrainFillColor = "fill-pink-700";
 const playerStartFillColor = "fill-emerald-700";
-const playerDestinationFillColor = "fill-violet-700";
+const targetFillColor = "fill-violet-700";
 const transparentFillColor = "fill-transparent";
 const defaultStrokeColor = "stroke-slate-50";
 
@@ -23,7 +23,7 @@ const pickCellColor = (cellTypeInt: number) => {
     case 2:
       return playerStartFillColor;
     case 3:
-      return playerDestinationFillColor;
+      return targetFillColor;
     case 4:
       return playerPathFillColor;
     default:

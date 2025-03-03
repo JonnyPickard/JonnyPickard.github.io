@@ -1,16 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import type { Coordinates, Graph } from ".";
-import {
-  Grid,
-  bfsShortestPath,
-  generateTestMatrix,
-  runSimpleGraphGeneration,
-} from ".";
-import { GraphNodeToNeigbourList } from "../MarkdownComponents";
+import type { Coordinates } from ".";
+import { Grid, bfsShortestPath, generateTestMatrix } from ".";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
@@ -20,39 +14,47 @@ const meta: Meta<typeof Grid> = {
   },
   decorators: [
     (Story) => {
-      const [testMatrix, setTestMatrix] = useState(
-        generateTestMatrix({ placePlayer: false, placeDestinationTile: false }),
+      const [testMatrix, setTestMatrix] = useState<number[][]>([]);
+      const [originalMatrix, setOriginalMatrix] = useState(
+        generateTestMatrix({ placePlayer: false, placeTargetTile: false }),
       );
 
-      const [graph, setGraph] = useState<Graph>({});
-      const [tileClickType, setTileClickType] = useState<"start" | "target">(
-        "start",
-      );
-      const [startCoordinates, setStartCoordinates] = useState<Coordinates>({
-        x: 0,
-        y: 0,
-      });
-      const [targetCoordinates, setTargetCoordinates] = useState<Coordinates>({
-        x: 0,
-        y: 0,
-      });
+      const [nextClickTileType, setNextClickTileType] = useState<
+        "start" | "target"
+      >("start");
+      const [startCoordinates, setStartCoordinates] =
+        useState<Coordinates | null>(null);
+      const [targetCoordinates, setTargetCoordinates] =
+        useState<Coordinates | null>(null);
+      const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
 
-      const pickPathTile = useCallback(
-        (tile: Coordinates) => {
-          if (tileClickType === "start") {
-            setStartCoordinates(tile);
-            // toggle so next click sets target
-            setTileClickType("target");
-          }
+      const pickPathTile = (tile: Coordinates) => {
+        if (nextClickTileType === "start") {
+          setStartCoordinates(() => tile);
+          // toggle so next click sets target
+          setNextClickTileType(() => "target");
+        }
 
-          if (tileClickType === "target") {
-            setTargetCoordinates(tile);
-            // toggle so next click sets start
-            setTileClickType("start");
-          }
-        },
-        [tileClickType],
-      );
+        if (nextClickTileType === "target") {
+          setTargetCoordinates(() => tile);
+          // toggle so next click sets start
+          setNextClickTileType(() => "start");
+        }
+      };
+
+      useEffect(() => {
+        const originalMatrix = generateTestMatrix({
+          placePlayer: false,
+          placeTargetTile: false,
+        });
+
+        setTestMatrix(structuredClone(originalMatrix));
+        setOriginalMatrix(originalMatrix);
+      }, []);
+
+      const resetGrid = () => {
+        setTestMatrix(() => structuredClone(originalMatrix));
+      };
 
       type UpdateTestMatrix = (args: {
         x: number;
@@ -60,8 +62,6 @@ const meta: Meta<typeof Grid> = {
         tileIdentifier?: number;
       }) => void;
 
-      // Update this with a 5 each graph node checked to show all the checked nodes
-      // while path finding
       const updateTestMatrix: UpdateTestMatrix = ({
         x,
         y,
@@ -75,44 +75,64 @@ const meta: Meta<typeof Grid> = {
             return prevMatrix;
           }
 
-          // 5 = alg processed tile color
-          newMatrix[y][x] = tileIdentifier ? tileIdentifier : 5;
+          // 5 = will be used to demonstrate all processed tiles as the alg steps still WIP though
+          // 0 = reset
+          newMatrix[y][x] =
+            tileIdentifier || tileIdentifier === 0 ? tileIdentifier : 5;
           return newMatrix;
         });
       };
 
+      // Handle setting the start/ target coordinates after user clicks
       useEffect(() => {
-        if (tileClickType === "start") {
+        if (!startCoordinates && !targetCoordinates) return;
+
+        if (nextClickTileType === "start" && targetCoordinates) {
+          // If start means last tile clicked was target
           const { x, y } = targetCoordinates;
 
           updateTestMatrix({ x, y, tileIdentifier: 3 });
         }
 
-        if (tileClickType === "target") {
+        if (nextClickTileType === "target" && startCoordinates) {
+          // If target means last tile clicked was start
           const { x, y } = startCoordinates;
+
+          // Reset back to original grid UI colors to start picking tiles again
+          resetGrid();
+
           updateTestMatrix({ x, y, tileIdentifier: 2 });
         }
-      }, [startCoordinates, targetCoordinates, tileClickType]);
+      }, [startCoordinates, targetCoordinates, nextClickTileType]);
 
+      // When coordinates are locked in find/ set path
       useEffect(() => {
-        console.log("Matrix", testMatrix);
-        runSimpleGraphGeneration({
-          matrix: testMatrix,
-          setGraph,
+        if (startCoordinates && targetCoordinates) {
+          const bfsSPath = bfsShortestPath({
+            grid: testMatrix,
+            startCoordinates,
+            targetCoordinates,
+          });
+
+          if (bfsSPath) {
+            setShortestPath(bfsSPath);
+          }
+        }
+      }, [startCoordinates, targetCoordinates]);
+
+      // Draw path
+      useEffect(() => {
+        if (
+          !shortestPath ||
+          !shortestPath.length ||
+          nextClickTileType === "target"
+        )
+          return;
+        // Tiles from start to target
+        shortestPath.forEach(({ x, y }) => {
+          updateTestMatrix({ x, y, tileIdentifier: 4 });
         });
-      }, [testMatrix]);
-
-      useEffect(() => {
-        const shortestPath = bfsShortestPath({
-          grid: testMatrix,
-          startCoordinates: { x: 0, y: 0 },
-          targetCoordinates: { x: 3, y: 3 },
-        });
-      }, []);
-
-      useEffect(() => {
-        console.log("Updated Graph:", graph);
-      }, [graph]);
+      }, [shortestPath]);
 
       return (
         <div
@@ -137,9 +157,6 @@ const meta: Meta<typeof Grid> = {
               }}
             />
           </div>
-          {/* <div className={clsx(["h-2/3", "w-full"])}>
-            <GraphNodeToNeigbourList graph={graph} />
-          </div> */}
         </div>
       );
     },

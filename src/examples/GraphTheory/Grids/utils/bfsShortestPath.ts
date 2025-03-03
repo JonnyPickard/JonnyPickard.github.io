@@ -27,7 +27,8 @@ export function bfsShortestPath({
   grid,
   startCoordinates: { x: startX, y: startY },
   targetCoordinates: { x: targetX, y: targetY },
-}: BFSArgs): number[][] | null {
+}: BFSArgs): Coordinates[] | null {
+  if (!grid.length) return null;
   const rows = grid.length;
   const cols = grid[0].length;
   const directions = [
@@ -49,11 +50,11 @@ export function bfsShortestPath({
 
     // If we reached the target, reconstruct path
     if (x === targetX && y === targetY) {
-      let path: number[][] = [];
+      let path: Coordinates[] = [];
       let current: string | null = `${x},${y}`;
       while (current !== null) {
         const [px, py] = current.split(",").map(Number);
-        path.push([px, py]);
+        path.push({ x: px, y: py });
         current = parent[current];
       }
       return path.reverse(); // Reverse to get path from start to goal

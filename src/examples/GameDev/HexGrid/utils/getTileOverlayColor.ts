@@ -1,7 +1,7 @@
 import { TILE_COLORS } from "../constants";
 
 interface getTileOverlayColorOptions {
-  isActiveDestinationTile?: boolean;
+  isActiveTargetTile?: boolean;
   isHoveredTile?: boolean;
   isOriginTile?: boolean;
   isPlayerTile?: boolean;
@@ -9,14 +9,14 @@ interface getTileOverlayColorOptions {
 }
 
 export const getTileOverlayColor = ({
-  isActiveDestinationTile,
+  isActiveTargetTile,
   isHoveredTile,
   isOriginTile,
   isPlayerTile,
   isInPath,
 }: getTileOverlayColorOptions) => {
-  if (isActiveDestinationTile) {
-    return TILE_COLORS.DESTINATION;
+  if (isActiveTargetTile) {
+    return TILE_COLORS.TARGET;
   } else if (isHoveredTile) {
     return TILE_COLORS.HOVERED;
   } else if (isPlayerTile) {

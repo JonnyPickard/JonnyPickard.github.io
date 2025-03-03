@@ -1,7 +1,7 @@
-export const PLAYER_PATH_FILL_COLOR = "fill-lime-300";
+export const PLAYER_PATH_FILL_COLOR = "fill-lime-500";
 export const TERRAIN_FILL_COLOR = "fill-pink-700";
 export const PLAYER_START_FILL_COLOR = "fill-emerald-700";
-export const PLAYER_DESTINATION_FILL_COLOR = "fill-violet-700";
+export const TARGET_FILL_COLOR = "fill-violet-700";
 export const TRANSPARENT_FILL_COLOR = "fill-transparent";
 export const DEFAULT_STROKE_COLOR = "stroke-slate-800";
 

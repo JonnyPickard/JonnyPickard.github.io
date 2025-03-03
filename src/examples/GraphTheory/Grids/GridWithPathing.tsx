@@ -38,9 +38,7 @@ export function GridWithPathing({
     y: 0,
   });
   const [playerStart, setPlayerStart] = useState<Coordinate | null>(null);
-  const [playerDestination, setPlayerDestination] = useState<Coordinate | null>(
-    null,
-  );
+  const [target, setTarget] = useState<Coordinate | null>(null);
   const [playerPath, setPlayerPath] = useState<Coordinate[] | null>(null);
 
   const activePath = useMemo(() => {

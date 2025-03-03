@@ -1,29 +1,29 @@
 // NOTE: ThreeJs uses the Y axis as up unlike blender which uses Z
 // https://www.redblobgames.com/grids/hexagons/#coordinates-offset
-import { defineCustomHex } from ".";
-import { useState, useEffect } from "react";
 import {
-  Hex,
   Grid,
-  rectangle,
-  Orientation,
-  hexToPoint,
-  hexToOffset,
+  Hex,
   OffsetCoordinates,
+  Orientation,
+  hexToOffset,
+  hexToPoint,
   isOffset as isOffsetCoords,
+  rectangle,
 } from "honeycomb-grid";
-import { HexTile } from "./Models";
-import { isTile, generateTerrainTiles } from "./utils";
+import { useEffect, useState } from "react";
+import { useInterval } from "usehooks-ts";
+import { defineCustomHex } from ".";
+import { AStar } from "./algorithms/AStar";
 import {
   DEFAULT_PLAYER_TILE,
-  GRID_WIDTH,
   GRID_HEIGHT,
+  GRID_WIDTH,
   HEX_ORIGIN,
   TERRAIN_TILES_AMOUNT,
   TILE_MESH_DIMENSIONS,
 } from "./constants";
-import { AStar } from "./algorithms/AStar";
-import { useInterval } from "usehooks-ts";
+import { HexTile } from "./Models";
+import { generateTerrainTiles, isTile } from "./utils";
 
 import type { NullableOffsetCoordinates } from "./types";
 
@@ -52,17 +52,18 @@ export const HexGridManager = () => {
     nullCoordinateState(),
   );
   /* 
-    When a destination tile is set for traversal
+    When a target tile is set for traversal
     Origin tile set as the starting point 
   */
   const [originTile, setOriginTile] = useState<NullableOffsetCoordinates>(
     nullCoordinateState(),
   );
   /* Tile that the player clicks to move to */
-  const [destinationTile, setDestinationTile] =
-    useState<NullableOffsetCoordinates>(nullCoordinateState());
+  const [targetTile, setTargetTile] = useState<NullableOffsetCoordinates>(
+    nullCoordinateState(),
+  );
   /* If it's possible to navigate to tile set this */
-  const [activeDestinationTile, setActiveDestinationTile] =
+  const [activeTargetTile, setActiveTargetTile] =
     useState<NullableOffsetCoordinates>(nullCoordinateState());
 
   /* Defaulting to a reletively central point to begin with*/
@@ -114,20 +115,20 @@ export const HexGridManager = () => {
   //   }
   // }, [hoveredTile, grid, playerTile, aStar]);
 
-  // Set path based on a destination tile getting set & pathing possible.
+  // Set path based on a target tile getting set & pathing possible.
   useEffect(() => {
-    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(destinationTile)) {
-      const shortestPath = aStar?.traverse(playerTile, destinationTile);
+    if (grid && isOffsetCoords(playerTile) && isOffsetCoords(targetTile)) {
+      const shortestPath = aStar?.traverse(playerTile, targetTile);
       if (shortestPath) {
         setActivePath(shortestPath);
-        setActiveDestinationTile(destinationTile);
+        setActiveTargetTile(targetTile);
         setOriginTile(playerTile);
 
-        // Reset destination tile
-        setDestinationTile(nullCoordinateState());
+        // Reset target tile
+        setTargetTile(nullCoordinateState());
       }
     }
-  }, [grid, aStar, playerTile, destinationTile]);
+  }, [grid, aStar, playerTile, targetTile]);
 
   // Player animation
   useEffect(() => {
@@ -152,11 +153,11 @@ export const HexGridManager = () => {
     }
   }, [activePath, grid, setPlayerRotation, playerTile]);
 
-  // Reset Path Highlighting After Reaching Destination
+  // Reset Path Highlighting After Reaching Target
   useEffect(() => {
     if (!activePath.length) {
       aStar?.resetPreviousPath();
-      setActiveDestinationTile(nullCoordinateState());
+      setActiveTargetTile(nullCoordinateState());
     }
   }, [activePath, aStar]);
 
@@ -178,8 +179,8 @@ export const HexGridManager = () => {
     const { x, y } = hexToPoint(hex);
     const { col, row } = hexToOffset(hex);
 
-    const isDestinationTile = isTile(destinationTile, { col, row });
-    const isActiveDestinationTile = isTile(activeDestinationTile, {
+    const isTargetTile = isTile(targetTile, { col, row });
+    const isActiveTargetTile = isTile(activeTargetTile, {
       col,
       row,
     });
@@ -195,8 +196,8 @@ export const HexGridManager = () => {
         hex={hex}
         key={`${col}-${row}`}
         position={[x, 0, y]}
-        isDestinationTile={isDestinationTile}
-        isActiveDestinationTile={isActiveDestinationTile}
+        isTargetTile={isTargetTile}
+        isActiveTargetTile={isActiveTargetTile}
         isHoveredTile={isHoveredTile}
         isOriginTile={isOriginTile}
         isPlayerTile={isPlayerTile}
@@ -206,7 +207,7 @@ export const HexGridManager = () => {
         showCoordinatesAs="AXIAL"
         onClick={(e) => {
           e.stopPropagation;
-          setDestinationTile(
+          setTargetTile(
             // NOTE: works better using hovered tile to indicate
             // However, mobile users can't hover.
             isOffsetCoords(hoveredTile) ? hoveredTile : { col, row },

@@ -24,7 +24,7 @@ const meta: Meta<typeof Graphs> = {
             { color: "border border-white", description: "traversable" },
             { color: "bg-pink-700", description: "terrain (impassable)" },
             { color: "bg-emerald-700", description: "player start" },
-            { color: "bg-violet-700", description: "player destination" },
+            { color: "bg-violet-700", description: "player target" },
             { color: "bg-lime-300", description: "player path" },
           ]}
         />

@@ -1,14 +1,14 @@
 // TODO: Optimisation probably should used instanced mesh for repeating tiles
 // NOTE: Tried this but you have to hack it to make shadows work
+import { Hex } from "honeycomb-grid";
 import {
   HexTileGrass,
-  Outline,
   HighlightTile,
+  Outline,
   OverlayText,
   Player,
   Terrain,
 } from ".";
-import { Hex } from "honeycomb-grid";
 
 import { useMemo } from "react";
 import { calculateTileRotation, getTileOverlayColor } from "../utils";
@@ -19,8 +19,8 @@ interface HexTileProps {
   /* Between 0 - 5 */
   textureSeed: number;
   rotationSeed: number;
-  isDestinationTile?: boolean;
-  isActiveDestinationTile?: boolean;
+  isTargetTile?: boolean;
+  isActiveTargetTile?: boolean;
   isHoveredTile?: boolean;
   isOriginTile?: boolean;
   isPlayerTile?: boolean;
@@ -38,7 +38,7 @@ export function HexTile({
   // showSphere = false,
   showCoordinates = true,
   showCoordinatesAs = "OFFSET",
-  isActiveDestinationTile,
+  isActiveTargetTile,
   isHoveredTile,
   isOriginTile,
   isPlayerTile,
@@ -62,7 +62,7 @@ export function HexTile({
   }, [showCoordinatesAs, hex]);
 
   const tileOverlayColor = getTileOverlayColor({
-    isActiveDestinationTile,
+    isActiveTargetTile,
     isHoveredTile,
     isOriginTile,
     isPlayerTile,
