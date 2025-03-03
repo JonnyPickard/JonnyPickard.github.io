@@ -1,12 +1,12 @@
+import { aStar } from "abstract-astar";
 import {
   Grid,
   Hex,
-  OffsetCoordinates,
-  ring,
   hexToPoint,
+  OffsetCoordinates,
   Point,
+  ring,
 } from "honeycomb-grid";
-import { aStar } from "abstract-astar";
 import { LRUCache } from "lru-cache";
 import { IMPASSABLE_COST } from "../../constants";
 
@@ -37,19 +37,16 @@ export class AStar {
 
   getShortestPath = (
     originCoords: OffsetCoordinates,
-    destinationCoords: OffsetCoordinates,
+    targetCoords: OffsetCoordinates,
   ) => {
-    const cachedPath = this.shortestPathCache.get([
-      originCoords,
-      destinationCoords,
-    ]);
+    const cachedPath = this.shortestPathCache.get([originCoords, targetCoords]);
 
     if (cachedPath) {
       return cachedPath;
     }
 
     const start = this.grid.getHex(originCoords)!;
-    const goal = this.grid.getHex(destinationCoords)!;
+    const goal = this.grid.getHex(targetCoords)!;
 
     const shortestPath = aStar<Hex>({
       start,
@@ -61,7 +58,7 @@ export class AStar {
         toTile.isTraversable ? 0 : IMPASSABLE_COST /* Infinity */,
     });
 
-    this.shortestPathCache.set([originCoords, destinationCoords], shortestPath);
+    this.shortestPathCache.set([originCoords, targetCoords], shortestPath);
     return shortestPath;
   };
 
@@ -77,11 +74,11 @@ export class AStar {
 
   traverse = (
     originCoords: OffsetCoordinates,
-    destinationCoords: OffsetCoordinates,
+    targetCoords: OffsetCoordinates,
   ) => {
     const shortestPath = this.getShortestPath(
       originCoords,
-      destinationCoords,
+      targetCoords,
     )?.filter((tile) => !tile.equals(originCoords));
 
     // Reset previous path

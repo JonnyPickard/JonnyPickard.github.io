@@ -15,6 +15,9 @@ export type Graph = {
   }[];
 };
 
+// Makes an adjacency list graph representation
+// Uneccessary for 2D Map grids as its extra looping to making the list first
+// For 2D Map pathfinding you should do BFS etc as you work out neighbours
 export function* gridToGraphGenerator(matrix: number[][]): Generator<
   {
     tileOverrides: {
@@ -153,6 +156,30 @@ export const runGraphGeneration = async ({
     // Delay visualization
     await new Promise((resolve) => setTimeout(resolve, tickSpeed));
 
+    // Move to next step
+    result = generator.next();
+  }
+
+  // Final graph update
+  setGraph(result.value);
+};
+
+interface SimpleGraphGenerationOptions {
+  matrix: number[][];
+  setGraph: React.Dispatch<React.SetStateAction<Graph>>;
+}
+
+// Generate graph with:
+// - no tile recoloring
+// - no delay?
+export const runSimpleGraphGeneration = async ({
+  matrix,
+  setGraph,
+}: SimpleGraphGenerationOptions) => {
+  const generator = gridToGraphGenerator(matrix);
+  let result = generator.next();
+
+  while (!result.done) {
     // Move to next step
     result = generator.next();
   }

@@ -38,9 +38,9 @@ const defaultMatrix = [
   [0, 1, 0, 0],
 ];
 
-export const Grid2D: Story = {
-  name: "2D Grid",
-  args: {
-    matrix: defaultMatrix,
-  },
-};
+// export const Grid2D: Story = {
+//   name: "2D Grid",
+//   args: {
+//     matrix: defaultMatrix,
+//   },
+// };

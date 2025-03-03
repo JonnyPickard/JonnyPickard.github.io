@@ -12,7 +12,7 @@ const defaultStrokeWidth = 2;
 const playerPathFillColor = "fill-lime-300";
 const terrainFillColor = "fill-pink-700";
 const playerStartFillColor = "fill-emerald-700";
-const playerDestinationFillColor = "fill-violet-700";
+const targetFillColor = "fill-violet-700";
 const transparentFillColor = "fill-transparent";
 const defaultStrokeColor = "stroke-slate-50";
 
@@ -23,7 +23,7 @@ const pickCellColor = (cellTypeInt: number) => {
     case 2:
       return playerStartFillColor;
     case 3:
-      return playerDestinationFillColor;
+      return targetFillColor;
     case 4:
       return playerPathFillColor;
     default:
@@ -36,7 +36,7 @@ interface MatrixGridProps {
   cellSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
-  tileClickCallback?: (x: number, y: number) => void;
+  onTileClick?: ({ x, y }: { x: number; y: number }) => void;
 }
 
 /**
@@ -51,39 +51,50 @@ export function MatrixGrid({
   cellSize = defaultCellSize,
   strokeWidth = defaultStrokeWidth,
   strokeColor = defaultStrokeColor,
-  tileClickCallback = (x, y) => console.log("Clicked on", x, y),
+  onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: MatrixGridProps) {
   return (
-    <svg
-      width={matrix[0].length * cellSize + strokeWidth * 2}
-      height={matrix.length * cellSize + strokeWidth * 2}
+    <div
+      className={clsx([
+        "flex",
+        "items-center",
+        "justify-center",
+        "m-4",
+        "w-full",
+        "h-full",
+      ])}
     >
-      {matrix.map((row, rowIndex) =>
-        row.map((cell, colIndex) => (
-          <g
-            key={`${rowIndex}-${colIndex}`}
-            onClick={() => tileClickCallback(rowIndex, colIndex)}
-          >
-            <rect
-              x={colIndex * cellSize + strokeWidth}
-              y={rowIndex * cellSize + strokeWidth}
-              width={cellSize}
-              height={cellSize}
-              strokeWidth={strokeWidth}
-              className={clsx([pickCellColor(cell), strokeColor])}
-            />
-            <text
-              x={colIndex * cellSize + cellSize / 2}
-              y={rowIndex * cellSize + cellSize / 2}
-              dominantBaseline="middle"
-              textAnchor="middle"
-              className={clsx(["text-sm", "fill-slate-50"])}
+      <svg
+        width={matrix[0].length * cellSize + strokeWidth * 2}
+        height={matrix.length * cellSize + strokeWidth * 2}
+      >
+        {matrix.map((row, rowIndex) =>
+          row.map((cell, colIndex) => (
+            <g
+              key={`${rowIndex}-${colIndex}`}
+              onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
             >
-              {`${rowIndex}, ${colIndex}`}
-            </text>
-          </g>
-        )),
-      )}
-    </svg>
+              <rect
+                x={colIndex * cellSize + strokeWidth}
+                y={rowIndex * cellSize + strokeWidth}
+                width={cellSize}
+                height={cellSize}
+                strokeWidth={strokeWidth}
+                className={clsx([pickCellColor(cell), strokeColor])}
+              />
+              <text
+                x={colIndex * cellSize + cellSize / 2}
+                y={rowIndex * cellSize + cellSize / 2}
+                dominantBaseline="middle"
+                textAnchor="middle"
+                className={clsx(["text-sm", "fill-slate-50"])}
+              >
+                {`${rowIndex}, ${colIndex}`}
+              </text>
+            </g>
+          )),
+        )}
+      </svg>
+    </div>
   );
 }

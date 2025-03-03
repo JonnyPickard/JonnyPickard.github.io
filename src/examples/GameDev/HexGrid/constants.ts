@@ -1,10 +1,10 @@
 import {
+  Hex,
   OffsetCoordinates,
-  createHexOrigin,
   Orientation,
+  createHexOrigin,
   hexToPoint,
   offsetToCubePointy,
-  Hex,
 } from "honeycomb-grid";
 
 export const GRID_SIZE = 9;
@@ -58,5 +58,5 @@ export enum TILE_COLORS {
   HOVERED_EMISSIVE_LIGHT = "limegreen",
   PLAYER = "#00bb9f",
   ORIGIN = "#3564ff",
-  DESTINATION = "#ff4dff",
+  TARGET = "#ff4dff",
 }

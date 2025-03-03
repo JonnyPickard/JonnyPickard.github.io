@@ -1,8 +1,9 @@
 import {
-  PLAYER_START_FILL_COLOR,
-  TERRAIN_FILL_COLOR,
-  PLAYER_DESTINATION_FILL_COLOR,
   PLAYER_PATH_FILL_COLOR,
+  PLAYER_START_FILL_COLOR,
+  PROCESSED_TILE_COLOR,
+  TARGET_FILL_COLOR,
+  TERRAIN_FILL_COLOR,
   TRANSPARENT_FILL_COLOR,
 } from "../constants";
 
@@ -20,9 +21,11 @@ export const pickTileColor = (
     case 2:
       return PLAYER_START_FILL_COLOR;
     case 3:
-      return PLAYER_DESTINATION_FILL_COLOR;
+      return TARGET_FILL_COLOR;
     case 4:
       return PLAYER_PATH_FILL_COLOR;
+    case 5:
+      return PROCESSED_TILE_COLOR;
     default:
       return TRANSPARENT_FILL_COLOR;
   }

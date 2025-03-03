@@ -21,6 +21,9 @@ type CoordinatesString = `${Coordinate},${Coordinate}`;
 
 type Graph = { [node_key: string]: CoordinatesString[] };
 
+/**
+ * Turns a matrix grid into an adjacency list
+ */
 export const gridToGraph = async (matrix: number[][]) => {
   const rows = matrix.length;
   // Assume rectangular for now
@@ -52,8 +55,8 @@ export const gridToGraph = async (matrix: number[][]) => {
       // Find connected nodes
       // Loop in each direction checking for walls
       for (const [dx, dy] of directions) {
-        const newX = x + dx,
-          newY = y + dy;
+        const newX = x + dx;
+        const newY = y + dy;
 
         // out of bounds check
         if (newX >= 0 && newX < columns && newY >= 0 && newY < rows) {

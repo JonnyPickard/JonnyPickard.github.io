@@ -44,9 +44,7 @@ const meta: Meta<typeof Grid> = {
         <div
           className={clsx([
             "h-screen",
-            "mh-screen",
             "w-screen",
-            "mw-screen",
             "bg-slate-900",
             "flex",
             "gap-4",
