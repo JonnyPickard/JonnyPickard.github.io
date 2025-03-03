@@ -39,14 +39,7 @@ const meta: Meta<typeof Grid> = {
         useState<Coordinates | null>(null);
       const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
 
-      const [tileColorOverride, settileColorOverride] = useState({
-        startTile: { x: 0, y: 0, color: TRANSPARENT_FILL_COLOR },
-        targetTile: {
-          x: 0,
-          y: 1,
-          color: TRANSPARENT_FILL_COLOR,
-        },
-      });
+      const [tileColorOverride, settileColorOverride] = useState({});
 
       const pickPathTile = (tile: Coordinates) => {
         if (nextClickTileType === "start") {
