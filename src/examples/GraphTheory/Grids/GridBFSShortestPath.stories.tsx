@@ -28,21 +28,25 @@ const meta: Meta<typeof Grid> = {
       const [tileClickType, setTileClickType] = useState<"start" | "target">(
         "start",
       );
-      const [pathStartCoordinates, setPathStartCoordinates] =
-        useState<Coordinates>({ x: 0, y: 0 });
-      const [pathTargetCoordinates, setPathTargetCoordinates] =
-        useState<Coordinates>({ x: 0, y: 0 });
+      const [startCoordinates, setStartCoordinates] = useState<Coordinates>({
+        x: 0,
+        y: 0,
+      });
+      const [targetCoordinates, setTargetCoordinates] = useState<Coordinates>({
+        x: 0,
+        y: 0,
+      });
 
       const pickPathTile = useCallback(
         (tile: Coordinates) => {
           if (tileClickType === "start") {
-            setPathStartCoordinates(tile);
+            setStartCoordinates(tile);
             // toggle so next click sets target
             setTileClickType("target");
           }
 
           if (tileClickType === "target") {
-            setPathTargetCoordinates(tile);
+            setTargetCoordinates(tile);
             // toggle so next click sets start
             setTileClickType("start");
           }
@@ -78,8 +82,17 @@ const meta: Meta<typeof Grid> = {
       };
 
       useEffect(() => {
-        updateTestMatrix(clickedTileCoordinates);
-      }, []);
+        if (tileClickType === "start") {
+          const { x, y } = targetCoordinates;
+
+          updateTestMatrix({ x, y, tileIdentifier: 3 });
+        }
+
+        if (tileClickType === "target") {
+          const { x, y } = startCoordinates;
+          updateTestMatrix({ x, y, tileIdentifier: 2 });
+        }
+      }, [startCoordinates, targetCoordinates, tileClickType]);
 
       useEffect(() => {
         console.log("Matrix", testMatrix);

@@ -1,3 +1,6 @@
+// @ts-nocheck
+// TODO
+
 import {
   ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
