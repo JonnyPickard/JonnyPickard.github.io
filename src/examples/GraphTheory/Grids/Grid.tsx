@@ -7,6 +7,12 @@ import {
 } from "./constants";
 import { pickTileColor } from "./utils";
 
+type ColorOverride = {
+  x: number;
+  y: number;
+  color: string;
+};
+
 interface GridProps {
   matrix?: number[][];
   tileSize?: number;
@@ -14,16 +20,10 @@ interface GridProps {
   strokeColor?: string;
   onTileClick?: ({ x, y }: { x: number; y: number }) => void;
   tileColorOverride?: {
-    currentAlgTile: {
-      x: number;
-      y: number;
-      color: string;
-    };
-    currentNeighboursTile: {
-      x: number;
-      y: number;
-      color: string;
-    };
+    currentAlgTile?: ColorOverride;
+    currentNeighboursTile?: ColorOverride;
+    startTile?: ColorOverride;
+    targetTile?: ColorOverride;
   };
 }
 
@@ -60,7 +60,6 @@ export function Grid({
   matrix = DEFAULT_MATRIX,
   tileSize = DEFAULT_TILE_SIZE,
   strokeWidth = DEFAULT_STROKE_WIDTH,
-  strokeColor = DEFAULT_STROKE_COLOR,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
@@ -79,6 +78,20 @@ export function Grid({
         tileColorOverride.currentAlgTile.y === rowI
       ) {
         return tileColorOverride.currentAlgTile.color;
+      }
+      if (
+        tileColorOverride.startTile &&
+        tileColorOverride.startTile.x === colI &&
+        tileColorOverride.startTile.y === rowI
+      ) {
+        return tileColorOverride.startTile.color;
+      }
+      if (
+        tileColorOverride.targetTile &&
+        tileColorOverride.targetTile.x === colI &&
+        tileColorOverride.targetTile.y === rowI
+      ) {
+        return tileColorOverride.targetTile.color;
       }
     }
   };
@@ -104,7 +117,6 @@ export function Grid({
                     key={`${rowIndex}-${colIndex}`}
                     onClick={() => {
                       // TODO:
-                      console.log({ y: rowIndex, x: colIndex });
                       onTileClick({ y: rowIndex, x: colIndex });
                     }}
                   >
@@ -119,7 +131,7 @@ export function Grid({
                           tile,
                           overrideTileColor(rowIndex, colIndex),
                         ),
-                        `${strokeColor}`,
+                        DEFAULT_STROKE_COLOR,
                       ])}
                     />
                     <text

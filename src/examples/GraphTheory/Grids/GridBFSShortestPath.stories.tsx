@@ -6,6 +6,17 @@ import { useEffect, useState } from "react";
 import type { Coordinates } from ".";
 import { Grid, bfsShortestPath, generateTestMatrix } from ".";
 
+import { GraphKey } from "../GraphKey";
+import {
+  BG_PLAYER_PATH_COLOR,
+  BG_PLAYER_START_COLOR,
+  BG_TARGET_COLOR,
+  BG_TERRAIN_COLOR,
+  PLAYER_START_FILL_COLOR,
+  TARGET_FILL_COLOR,
+  TRANSPARENT_FILL_COLOR,
+} from "./constants";
+
 const meta: Meta<typeof Grid> = {
   component: Grid,
   title: "Examples/Grids & Graphs/Grid BFS Shortest Path",
@@ -28,17 +39,42 @@ const meta: Meta<typeof Grid> = {
         useState<Coordinates | null>(null);
       const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
 
+      const [tileColorOverride, settileColorOverride] = useState({
+        startTile: { x: 0, y: 0, color: TRANSPARENT_FILL_COLOR },
+        targetTile: {
+          x: 0,
+          y: 1,
+          color: TRANSPARENT_FILL_COLOR,
+        },
+      });
+
       const pickPathTile = (tile: Coordinates) => {
         if (nextClickTileType === "start") {
           setStartCoordinates(() => tile);
           // toggle so next click sets target
           setNextClickTileType(() => "target");
+
+          settileColorOverride((prev) => ({
+            ...prev,
+            startTile: {
+              ...tile,
+              color: PLAYER_START_FILL_COLOR,
+            },
+          }));
         }
 
         if (nextClickTileType === "target") {
           setTargetCoordinates(() => tile);
           // toggle so next click sets start
           setNextClickTileType(() => "start");
+
+          settileColorOverride((prev) => ({
+            ...prev,
+            targetTile: {
+              ...tile,
+              color: TARGET_FILL_COLOR,
+            },
+          }));
         }
       };
 
@@ -147,6 +183,7 @@ const meta: Meta<typeof Grid> = {
             "p-4",
             "place-items-center",
             "overflow-hidden",
+            "relative",
           ])}
         >
           <div className={clsx(["h-2/3", "flex", "w-full"])}>
@@ -154,7 +191,26 @@ const meta: Meta<typeof Grid> = {
               args={{
                 onTileClick: pickPathTile,
                 matrix: testMatrix,
+                tileColorOverride,
               }}
+            />
+          </div>
+          <div className={clsx(["h-2/3", "w-full"])}>
+            <GraphKey
+              className={clsx(["absolute", "top-2", "right-2"])}
+              keyTable={[
+                {
+                  color: "border border-white",
+                  description: "traversable",
+                },
+                {
+                  color: BG_TERRAIN_COLOR,
+                  description: "terrain (impassable)",
+                },
+                { color: BG_PLAYER_START_COLOR, description: "start" },
+                { color: BG_TARGET_COLOR, description: "target" },
+                { color: BG_PLAYER_PATH_COLOR, description: "path" },
+              ]}
             />
           </div>
         </div>

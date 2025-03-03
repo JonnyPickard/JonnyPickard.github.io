@@ -1,11 +1,5 @@
 import type { Coordinates } from "../GridTypes";
 
-interface BFSArgs {
-  grid: number[][];
-  startCoordinates: Coordinates;
-  targetCoordinates: Coordinates;
-}
-
 // 1. Queue starts with tile your on (start node)
 // 2. pop start node off of queue
 // 3. check for neighbours from said node
@@ -22,40 +16,53 @@ interface BFSArgs {
 // 9. next loop iteration pass in parent[targetx, targety] = parent node
 // 10. repeat untill no more parent nodes
 // 11. return path array but reversed because walk backwards from the target
+interface bfsShortestPathArgs {
+  grid: number[][];
+  startCoordinates: Coordinates;
+  targetCoordinates: Coordinates;
+}
 
 export function bfsShortestPath({
   grid,
-  startCoordinates: { x: startX, y: startY },
-  targetCoordinates: { x: targetX, y: targetY },
-}: BFSArgs): Coordinates[] | null {
+  startCoordinates,
+  targetCoordinates,
+}: bfsShortestPathArgs): Coordinates[] | null {
   if (!grid.length) return null;
   const rows = grid.length;
   const cols = grid[0].length;
   const directions = [
-    [0, 1],
-    [1, 0],
-    [0, -1],
-    [-1, 0],
+    [0, 1], // right
+    [1, 0], // down
+    [0, -1], // left
+    [-1, 0], // up
   ];
-  const queue: [number, number][] = [[startX, startY]];
+
+  const { x: startX, y: startY } = startCoordinates;
+  const { x: targetX, y: targetY } = targetCoordinates;
+
+  const queue: Coordinates[] = [startCoordinates];
+
   const visited = new Set<string>();
-  const parent: { [key: string]: string | null } = {}; // To reconstruct the path
+  // To reconstruct the path
+  const parent: { [key: string]: Coordinates | null } = {};
+
+  // Initialising
   visited.add(`${startX},${startY}`);
   parent[`${startX},${startY}`] = null;
 
-  function bfsRecursive() {
+  // Recursive vs while incase I want to add delays while drawing path finding
+  function bfsRecursive(): Coordinates[] | null {
     if (queue.length === 0) return null;
 
-    const [x, y] = queue.shift()!;
+    const { x, y } = queue.shift()!;
 
     // If we reached the target, reconstruct path
     if (x === targetX && y === targetY) {
       let path: Coordinates[] = [];
-      let current: string | null = `${x},${y}`;
+      let current: Coordinates | null = { x, y };
       while (current !== null) {
-        const [px, py] = current.split(",").map(Number);
-        path.push({ x: px, y: py });
-        current = parent[current];
+        path.push(current);
+        current = parent[`${current.x},${current.y}`];
       }
       return path.reverse(); // Reverse to get path from start to goal
     }
@@ -72,9 +79,10 @@ export function bfsShortestPath({
         grid[newY][newX] !== 1 &&
         !visited.has(`${newX},${newY}`)
       ) {
-        queue.push([newX, newY]);
+        const newCoordinates: Coordinates = { x: newX, y: newY };
+        queue.push(newCoordinates);
         visited.add(`${newX},${newY}`);
-        parent[`${newX},${newY}`] = `${x},${y}`; // Store parent
+        parent[`${newX},${newY}`] = { x, y }; // Store parent
       }
     }
 
