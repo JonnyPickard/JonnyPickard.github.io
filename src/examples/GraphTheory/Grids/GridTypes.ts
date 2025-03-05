@@ -4,3 +4,5 @@ export interface Coordinates {
 }
 
 export type Direction = "R" | "D" | "L" | "U";
+
+export type GridMatrix = number[][];

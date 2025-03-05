@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Coordinates } from "../GridTypes";
+import type { Coordinates, GridMatrix } from "../GridTypes";
 
 // For now dont do:
 // - walls
@@ -23,7 +23,7 @@ export const generateMatrix = (
   rows: number,
   columns: number,
   playerStartPosition: Coordinates,
-): number[][] => {
+): GridMatrix => {
   // Set an empty multidimensional array full of 0's
   const matrix = Array.from({ length: rows }, () => Array(columns).fill(0));
 
@@ -45,7 +45,7 @@ export const useMatrix = (
   columns: number,
   playerStartPosition: Coordinates,
 ) => {
-  const [matrix, setMatrix] = useState<number[][]>(
+  const [matrix, setMatrix] = useState<GridMatrix>(
     generateMatrix(rows, columns, playerStartPosition),
   );
 

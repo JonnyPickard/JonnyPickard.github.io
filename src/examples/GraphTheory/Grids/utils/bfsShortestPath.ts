@@ -1,4 +1,4 @@
-import type { Coordinates } from "../GridTypes";
+import type { Coordinates, GridMatrix } from "../GridTypes";
 
 // 1. Queue starts with tile your on (start node)
 // 2. pop start node off of queue
@@ -17,7 +17,7 @@ import type { Coordinates } from "../GridTypes";
 // 10. repeat untill no more parent nodes
 // 11. return path array but reversed because walk backwards from the target
 interface bfsShortestPathArgs {
-  grid: number[][];
+  grid: GridMatrix;
   startCoordinates: Coordinates;
   targetCoordinates: Coordinates;
 }

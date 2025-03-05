@@ -9,9 +9,10 @@ import {
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TILE_SIZE,
 } from "./constants";
+import type { GridMatrix } from "./GridTypes";
 
 interface GridWithPathingProps {
-  matrix?: number[][];
+  matrix?: GridMatrix;
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;

@@ -1,3 +1,4 @@
+import type { GridMatrix } from "../Grids/GridTypes";
 import { listGridNodes } from "./listGridNodes";
 
 describe("listGridNodes", () => {
@@ -93,7 +94,7 @@ describe("listGridNodes", () => {
   });
 
   test("should handle an empty matrix", () => {
-    const matrix: number[][] = [];
+    const matrix: GridMatrix = [];
     const expectedNodes: number[] = [];
 
     expect(listGridNodes(0, 0, matrix)).toEqual(expectedNodes);

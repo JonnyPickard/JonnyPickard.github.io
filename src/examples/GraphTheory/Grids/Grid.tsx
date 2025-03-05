@@ -6,6 +6,8 @@ import {
   DEFAULT_TILE_SIZE,
 } from "./constants";
 import { useGridStore } from "./gridStore";
+
+import type { GridMatrix } from "./GridTypes";
 import { pickTileColor } from "./utils";
 
 type ColorOverride = {
@@ -15,7 +17,7 @@ type ColorOverride = {
 };
 
 interface GridProps {
-  matrix?: number[][];
+  matrix?: GridMatrix;
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;

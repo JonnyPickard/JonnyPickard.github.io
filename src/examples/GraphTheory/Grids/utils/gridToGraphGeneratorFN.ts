@@ -1,3 +1,4 @@
+import type { GridMatrix } from "../GridTypes";
 import {
   ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
@@ -18,7 +19,7 @@ export type Graph = {
 // Makes an adjacency list graph representation
 // Uneccessary for 2D Map grids as its extra looping to making the list first
 // For 2D Map pathfinding you should do BFS etc as you work out neighbours
-export function* gridToGraphGenerator(matrix: number[][]): Generator<
+export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
   {
     tileOverrides: {
       currentAlgTile: { x: number; y: number; color: string };
@@ -121,7 +122,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
 }
 
 interface GraphGenerationOptions {
-  matrix: number[][];
+  matrix: GridMatrix;
   setTileColorOverrides: React.Dispatch<
     React.SetStateAction<{
       currentAlgTile: { x: number; y: number; color: string };
@@ -130,17 +131,17 @@ interface GraphGenerationOptions {
   >;
   setGraph: (graph: Graph) => void;
   /* 0 - 1000 higher being slower */
-  tickSpeed?: number;
+  stepInterval?: number;
 }
 
 export const runGraphGeneration = async ({
   matrix,
   setTileColorOverrides,
   setGraph,
-  tickSpeed = 200,
+  stepInterval = 200,
 }: GraphGenerationOptions) => {
-  if (tickSpeed < 0 || tickSpeed > 1000) {
-    throw new Error("tickSpeed must be between 0 and 1000");
+  if (stepInterval < 0 || stepInterval > 1000) {
+    throw new Error("stepInterval must be between 0 and 1000");
   }
 
   const generator = gridToGraphGenerator(matrix);
@@ -154,7 +155,7 @@ export const runGraphGeneration = async ({
     setGraph(graphStep);
 
     // Delay visualization
-    await new Promise((resolve) => setTimeout(resolve, tickSpeed));
+    await new Promise((resolve) => setTimeout(resolve, stepInterval));
 
     // Move to next step
     result = generator.next();
@@ -165,7 +166,7 @@ export const runGraphGeneration = async ({
 };
 
 interface SimpleGraphGenerationOptions {
-  matrix: number[][];
+  matrix: GridMatrix;
   setGraph: React.Dispatch<React.SetStateAction<Graph>>;
 }
 

@@ -4,8 +4,9 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 import type { Coordinates } from ".";
-import { Grid, bfsShortestPath, generateTestMatrix } from ".";
+import { Grid, dfsPath as findDfsPath, generateTestMatrix } from ".";
 
+import { NumericLiteral } from "typescript";
 import { GraphKey } from "../GraphKey";
 import {
   BG_PLAYER_PATH_COLOR,
@@ -20,7 +21,7 @@ import type { GridMatrix } from "./GridTypes";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Grid BFS Shortest Path",
+  title: "Examples/Grids & Graphs/Grid DFS Shortest Path",
   parameters: {
     layout: "fullscreen",
   },
@@ -38,9 +39,11 @@ const meta: Meta<typeof Grid> = {
         useState<Coordinates | null>(null);
       const [targetCoordinates, setTargetCoordinates] =
         useState<Coordinates | null>(null);
-      const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
+      const [gridVisualisationMatrix, setGridVisualisationMatrix] =
+        useState<GridMatrix | null>([]);
 
       const [tileColorOverride, setTileColorOverride] = useState({});
+      const [path, setPath] = useState<Coordinates[]>([]);
 
       const pickPathTile = (tile: Coordinates) => {
         // If wall tile you can't pick it
@@ -141,31 +144,18 @@ const meta: Meta<typeof Grid> = {
       // When coordinates are locked in find/ set path
       useEffect(() => {
         if (startCoordinates && targetCoordinates) {
-          const bfsSPath = bfsShortestPath({
+          findDfsPath({
             grid: testMatrix,
             startCoordinates,
             targetCoordinates,
+            setGridVisualisation: setGridVisualisationMatrix,
+          }).then((dfsPath) => {
+            if (dfsPath) {
+              setPath(dfsPath);
+            }
           });
-
-          if (bfsSPath) {
-            setShortestPath(bfsSPath);
-          }
         }
       }, [startCoordinates, targetCoordinates]);
-
-      // Draw path
-      useEffect(() => {
-        if (
-          !shortestPath ||
-          !shortestPath.length ||
-          nextClickTileType === "target"
-        )
-          return;
-        // Tiles from start to target
-        shortestPath.forEach(({ x, y }) => {
-          updateTestMatrix({ x, y, tileIdentifier: 4 });
-        });
-      }, [shortestPath]);
 
       return (
         <div
@@ -224,4 +214,4 @@ export default meta;
 
 type Story = StoryObj<typeof Grid>;
 
-export const GridBFSShortestPath: Story = {};
+export const GridDFSPath: Story = {};

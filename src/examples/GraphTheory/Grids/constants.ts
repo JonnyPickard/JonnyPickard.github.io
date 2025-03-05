@@ -1,4 +1,6 @@
-export const DEFAULT_MATRIX = [
+import type { GridMatrix } from "./GridTypes";
+
+export const DEFAULT_MATRIX: GridMatrix = [
   [0, 0, 0, 0],
   [0, 0, 1, 0],
   [0, 0, 0, 2],

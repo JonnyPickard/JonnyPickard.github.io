@@ -37,7 +37,7 @@ const meta: Meta<typeof Grid> = {
           matrix: testMatrix,
           setTileColorOverrides,
           setGraph,
-          tickSpeed: 150,
+          stepInterval: 150,
         });
       }, [testMatrix]);
 
