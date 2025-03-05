@@ -10,7 +10,7 @@ import {
   Terrain,
 } from ".";
 
-import { useMemo } from "react";
+import { JSX, useMemo } from "react";
 import { calculateTileRotation, getTileOverlayColor } from "../utils";
 
 interface HexTileProps {

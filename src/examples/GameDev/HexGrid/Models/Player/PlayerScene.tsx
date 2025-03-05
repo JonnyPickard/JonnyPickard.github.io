@@ -1,22 +1,33 @@
-import { Suspense, useMemo } from "react";
 import {
-  OrbitControls,
   GizmoHelper,
   GizmoViewport,
+  OrbitControls,
+  PerspectiveCamera,
   Stats,
 } from "@react-three/drei";
-import { Player } from ".";
-// NOTE: https://www.framer.com/motion/layoutcamera/ = perspective camera
-import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
-import { extend } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
+import { Suspense, useMemo } from "react";
 import * as THREE from "three";
+import { Player } from ".";
+
+import { useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+
+const AnimatedLight = () => {
+  const lightRef = useRef<THREE.AmbientLight>(null);
+
+  useFrame(({ clock }) => {
+    if (lightRef.current) {
+      lightRef.current.intensity = 3 + Math.sin(clock.elapsedTime) * 0.5;
+    }
+  });
+
+  return <ambientLight ref={lightRef} intensity={3.4} position={[0, 30, 10]} />;
+};
 
 export const PlayerScene = () => {
-  // https://github.com/framer/motion/issues/2074#issuecomment-1724813108
-  useMemo(() => extend(THREE), []);
-
   return (
-    <MotionCanvas
+    <Canvas
       dpr={[1, 2]}
       shadows
       style={{
@@ -28,8 +39,8 @@ export const PlayerScene = () => {
       <Suspense fallback={null}>
         <Player />
       </Suspense>
-      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
-      <LayoutCamera position={[0, 2, 4]} />
+      <AnimatedLight />
+      <PerspectiveCamera position={[0, 2, 4]} />
       <OrbitControls makeDefault />
 
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
@@ -38,11 +49,8 @@ export const PlayerScene = () => {
           labelColor="black"
         />
       </GizmoHelper>
-      <motion.gridHelper
-        position={[0, 0, 0]}
-        args={[10, 20, "#6f6f6f", "#9d4b4b"]}
-      />
+      <gridHelper position={[0, 0, 0]} args={[10, 20, "#6f6f6f", "#9d4b4b"]} />
       <Stats />
-    </MotionCanvas>
+    </Canvas>
   );
 };

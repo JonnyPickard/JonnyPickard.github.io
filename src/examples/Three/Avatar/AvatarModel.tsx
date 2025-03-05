@@ -1,9 +1,9 @@
-import * as THREE from "three";
-import { useRef, useEffect, useState } from "react";
-import { useGLTF, useAnimations } from "@react-three/drei";
-import { GLTF } from "three-stdlib";
-import GUI from "lil-gui";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
+import GUI from "lil-gui";
+import { JSX, useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { GLTF } from "three-stdlib";
 import { useInterval } from "usehooks-ts";
 
 type GLTFResult = GLTF & {

@@ -17,6 +17,8 @@ type LoggerImpl = <T>(
 
 const loggerImpl: LoggerImpl = (f, name) => (set, get, store) => {
   const loggedSet: typeof set = (...a) => {
+    // TODO: look into how to type this properly when time allows
+    // @ts-ignore
     set(...a);
     console.log(...(name ? [`${name}:`] : []), get());
   };

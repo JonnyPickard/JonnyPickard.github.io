@@ -1,21 +1,17 @@
-import { Suspense, useMemo, ReactNode } from "react";
 import {
-  OrbitControls,
   GizmoHelper,
   GizmoViewport,
+  OrbitControls,
+  PerspectiveCamera,
   Stats,
 } from "@react-three/drei";
-// NOTE: https://www.framer.com/motion/layoutcamera/ = perspective camera
-import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
-import { extend } from "@react-three/fiber";
-import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+
+import { ReactNode, Suspense, useMemo } from "react";
 
 export const Scene = ({ children }: { children: ReactNode }) => {
-  // https://github.com/framer/motion/issues/2074#issuecomment-1724813108
-  useMemo(() => extend(THREE), []);
-
   return (
-    <MotionCanvas
+    <Canvas
       dpr={[1, 2]}
       shadows
       style={{
@@ -25,8 +21,8 @@ export const Scene = ({ children }: { children: ReactNode }) => {
       }}
     >
       <Suspense fallback={null}>{children}</Suspense>
-      <motion.ambientLight intensity={3.4} position={[0, 30, 10]} />
-      <LayoutCamera position={[0, 2, 4]} />
+      <ambientLight intensity={3.4} position={[0, 30, 10]} />
+      <PerspectiveCamera position={[0, 2, 4]} />
       <OrbitControls makeDefault />
 
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
@@ -35,11 +31,8 @@ export const Scene = ({ children }: { children: ReactNode }) => {
           labelColor="black"
         />
       </GizmoHelper>
-      <motion.gridHelper
-        position={[0, 0, 0]}
-        args={[10, 20, "#6f6f6f", "#9d4b4b"]}
-      />
+      <gridHelper position={[0, 0, 0]} args={[10, 20, "#6f6f6f", "#9d4b4b"]} />
       <Stats />
-    </MotionCanvas>
+    </Canvas>
   );
 };
