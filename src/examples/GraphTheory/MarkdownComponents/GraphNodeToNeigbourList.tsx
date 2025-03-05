@@ -86,7 +86,7 @@ export const GraphNodeToNeigbourList: React.FC<
           "py-2",
           "bg-blue-500",
           "text-white",
-          "rounded",
+          "rounded-sm",
           "self-center",
           "flex",
           "items-center",
