@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import React, { useEffect, useRef, useState } from "react";
 import { EdgeToNode } from "./EdgeToNode";
 import { Node } from "./Node";
 
-import type { Graph } from "../Grids";
 import { HiArrowDown, HiArrowUp } from "react-icons/hi";
+import type { Graph } from "../Grids";
 
 interface GraphNodeToNeigbourListProps {
   graph: Graph;
@@ -47,7 +47,7 @@ export const GraphNodeToNeigbourList: React.FC<
           "space-y-3",
           "max-h-full",
           "overflow-y-auto",
-          "flex-grow",
+          "grow",
         ])}
       >
         {Object.entries(graph).map(([node, connections]) => (
@@ -97,13 +97,9 @@ export const GraphNodeToNeigbourList: React.FC<
       >
         {autoScroll ? "Disable Auto-Scroll" : "Enable Auto-Scroll"}
         {autoScroll ? (
-          <HiArrowDown
-            className="w-4 h-4 ml-2 rotate-180 transition-transform ease-in"
-          />
+          <HiArrowDown className="w-4 h-4 ml-2 rotate-180 transition-transform ease-in" />
         ) : (
-          <HiArrowDown
-            className="w-4 h-4 ml-2 rotate-0 transition-transform ease-in"
-          />
+          <HiArrowDown className="w-4 h-4 ml-2 rotate-0 transition-transform ease-in" />
         )}
       </button>
     </div>
