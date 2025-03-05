@@ -10,6 +10,7 @@ import {
   ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
 } from "./constants";
+import { useGridStore } from "./gridStore";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
@@ -29,7 +30,7 @@ const meta: Meta<typeof Grid> = {
           color: FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
         },
       });
-      const [graph, setGraph] = useState<Graph>({});
+      const { setGraph, graph } = useGridStore();
 
       useEffect(() => {
         runGraphGeneration({

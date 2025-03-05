@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Outline as HighlightOutline } from "./Outline";
 import { Scene } from "..";
 import { TILE_COLORS } from "../../constants";
+import { Outline as HighlightOutline } from "./Outline";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Overlays",
@@ -31,7 +31,7 @@ export const Outline: Story = {
       control: {
         type: "select",
       },
-      options: TILE_COLORS,
+      options: [TILE_COLORS],
       defaultValue: TILE_COLORS.PLAYER,
     },
   },

@@ -7,6 +7,8 @@ import {
   offsetToCubePointy,
 } from "honeycomb-grid";
 
+import type { Color } from "@react-three/fiber";
+
 export const GRID_SIZE = 9;
 export const GRID_HEIGHT = GRID_SIZE;
 export const GRID_WIDTH = GRID_SIZE;
@@ -51,12 +53,14 @@ export const CHARACTER_START_CAM_POSITION = {
   camZ: charStart.y,
 };
 
-export enum TILE_COLORS {
-  PATH = "#bb00a7",
-  OFFSET_ROW = "#186cb1",
-  HOVERED = "#67a250",
-  HOVERED_EMISSIVE_LIGHT = "limegreen",
-  PLAYER = "#00bb9f",
-  ORIGIN = "#3564ff",
-  TARGET = "#ff4dff",
-}
+export const TILE_COLORS: {
+  [color: string]: Color;
+} = {
+  PATH: "#bb00a7",
+  OFFSET_ROW: "#186cb1",
+  HOVERED: "#67a250",
+  HOVERED_EMISSIVE_LIGHT: "limegreen",
+  PLAYER: "#00bb9f",
+  ORIGIN: "#3564ff",
+  TARGET: "#ff4dff",
+};

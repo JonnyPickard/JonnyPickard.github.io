@@ -1,10 +1,7 @@
-// import { clsx } from "clsx";
-// import { pickTileColor } from "./utils";
-
+import { useEffect, useMemo, useState } from "react";
 import { useTimer } from "../../../hooks";
 import { Grid } from "./Grid";
-
-import { useEffect, useMemo, useState } from "react";
+import { useGridStore } from "./gridStore";
 
 import {
   DEFAULT_MATRIX,
@@ -33,13 +30,16 @@ export function GridWithPathing({
   strokeColor = DEFAULT_STROKE_COLOR,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: GridWithPathingProps) {
-  const [playerLocation, setPlayerLocation] = useState<Coordinate>({
-    x: 0,
-    y: 0,
-  });
-  const [playerStart, setPlayerStart] = useState<Coordinate | null>(null);
-  const [target, setTarget] = useState<Coordinate | null>(null);
-  const [playerPath, setPlayerPath] = useState<Coordinate[] | null>(null);
+  const {
+    playerLocation,
+    playerStart,
+    target,
+    playerPath,
+    setPlayerLocation,
+    setPlayerStart,
+    setTarget,
+    setPlayerPath,
+  } = useGridStore();
 
   const activePath = useMemo(() => {
     if (playerPath) {

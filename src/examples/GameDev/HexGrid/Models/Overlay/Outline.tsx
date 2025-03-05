@@ -1,7 +1,9 @@
-import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 import { TILE_COLORS } from "../..";
+
+import type { Color } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -13,7 +15,7 @@ type GLTFResult = GLTF & {
 };
 
 interface OutlineProps {
-  tileOverlayColor: TILE_COLORS;
+  tileOverlayColor: Color;
 }
 
 /**

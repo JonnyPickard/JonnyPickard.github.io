@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OverlayText } from "./Text";
 import { Scene } from "..";
 import { TILE_COLORS } from "../../constants";
+import { OverlayText } from "./Text";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Overlays",
@@ -33,7 +33,7 @@ export const Text: Story = {
       control: {
         type: "select",
       },
-      options: TILE_COLORS,
+      options: [TILE_COLORS],
       defaultValue: TILE_COLORS.PLAYER,
     },
   },

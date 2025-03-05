@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Node } from "./Node";
 import { Edge } from "./Edge";
+import { Node } from "./Node";
 
 interface EdgeToNodeProps {
   from: string;
@@ -19,7 +19,6 @@ export function EdgeToNode({
   nodeSize,
   edgeSize,
   direction,
-  className,
   edgeClassName,
   nodeClassName,
 }: EdgeToNodeProps) {

@@ -128,7 +128,7 @@ interface GraphGenerationOptions {
       currentNeighboursTile: { x: number; y: number; color: string };
     }>
   >;
-  setGraph: React.Dispatch<React.SetStateAction<Graph>>;
+  setGraph: (graph: Graph) => void;
   /* 0 - 1000 higher being slower */
   tickSpeed?: number;
 }

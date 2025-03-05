@@ -5,6 +5,7 @@ import {
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TILE_SIZE,
 } from "./constants";
+import { useGridStore } from "./gridStore";
 import { pickTileColor } from "./utils";
 
 type ColorOverride = {
@@ -63,6 +64,8 @@ export function Grid({
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
+  const { setPlayerLocation } = useGridStore();
+
   const overrideTileColor = (rowI: number, colI: number) => {
     if (tileColorOverride) {
       if (
@@ -116,8 +119,8 @@ export function Grid({
                   <g
                     key={`${rowIndex}-${colIndex}`}
                     onClick={() => {
-                      // TODO:
                       onTileClick({ y: rowIndex, x: colIndex });
+                      setPlayerLocation({ x: colIndex, y: rowIndex });
                     }}
                   >
                     <rect
