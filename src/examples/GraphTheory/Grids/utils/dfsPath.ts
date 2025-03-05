@@ -9,7 +9,10 @@ interface DfsPathArgs {
   grid: GridMatrix;
   startCoordinates: Coordinates;
   targetCoordinates: Coordinates;
-  setGridVisualisation?: (grid: GridMatrix) => void;
+  setGridVisualisationMatrix?: React.Dispatch<
+    React.SetStateAction<GridMatrix | null>
+  >;
+
   // default: false
   logToConsole?: boolean;
   /* 
@@ -23,10 +26,11 @@ export function dfsPath({
   grid,
   startCoordinates,
   targetCoordinates,
-  setGridVisualisation,
+  setGridVisualisationMatrix,
   logToConsole = false,
   stepInterval = 200,
 }: DfsPathArgs): Promise<Coordinates[] | null> {
+  console.log("here");
   if (stepInterval < 0 || stepInterval > 1000) {
     throw new Error("stepInterval must be between 0 and 1000");
   }
@@ -35,6 +39,7 @@ export function dfsPath({
     const { x: sc, y: sr } = startCoordinates;
     const { x: tc, y: tr } = targetCoordinates;
 
+    console.log("here");
     const rows = grid.length;
     const cols = grid[0].length;
     const stack: [number, number, Coordinates[]][] = [
@@ -68,8 +73,11 @@ export function dfsPath({
         console.table(displayGrid);
       }
 
-      if (setGridVisualisation) {
-        setGridVisualisation(displayGrid);
+      if (setGridVisualisationMatrix) {
+        setGridVisualisationMatrix(() => {
+          return displayGrid;
+        });
+        // setGridVisualisationMatrix(() => displayGrid);
       }
 
       // Update grid visualization
