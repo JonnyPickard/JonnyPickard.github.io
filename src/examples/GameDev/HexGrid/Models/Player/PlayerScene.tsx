@@ -6,7 +6,7 @@ import {
   Stats,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import * as THREE from "three";
 import { Player } from ".";
 

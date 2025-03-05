@@ -22,7 +22,7 @@ export const Scene = ({ children }: { children: ReactNode }) => {
     >
       <Suspense fallback={null}>{children}</Suspense>
       <ambientLight intensity={3.4} position={[0, 30, 10]} />
-      <PerspectiveCamera position={[0, 2, 4]} />
+      <PerspectiveCamera position={[0, 2, 4]} makeDefault />
       <OrbitControls makeDefault />
 
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
