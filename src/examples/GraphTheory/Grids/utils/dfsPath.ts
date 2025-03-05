@@ -30,7 +30,6 @@ export function dfsPath({
   logToConsole = false,
   stepInterval = 200,
 }: DfsPathArgs): Promise<Coordinates[] | null> {
-  console.log("here");
   if (stepInterval < 0 || stepInterval > 1000) {
     throw new Error("stepInterval must be between 0 and 1000");
   }
@@ -39,7 +38,6 @@ export function dfsPath({
     const { x: sc, y: sr } = startCoordinates;
     const { x: tc, y: tr } = targetCoordinates;
 
-    console.log("here");
     const rows = grid.length;
     const cols = grid[0].length;
     const stack: [number, number, Coordinates[]][] = [

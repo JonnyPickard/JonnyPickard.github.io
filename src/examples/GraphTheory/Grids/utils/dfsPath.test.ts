@@ -84,7 +84,7 @@ testCases.forEach(
         grid,
         startCoordinates,
         targetCoordinates,
-        logToConsole: true,
+        // logToConsole: true,
       });
       expect(result).toEqual(expectedPath);
     });
