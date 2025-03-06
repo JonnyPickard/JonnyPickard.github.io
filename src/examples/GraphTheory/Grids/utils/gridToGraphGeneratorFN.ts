@@ -1,9 +1,9 @@
 import type { GridMatrix } from "../GridTypes";
 import {
-  ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_FAILURE_COLOR,
   FIND_NEIGHBOURS_SUCCESS_COLOR,
+  PROCESSING_TILE_COLOR,
 } from "../constants";
 
 type Direction = "R" | "D" | "L" | "U";
@@ -48,7 +48,7 @@ export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
       // Step 1: Highlight current tile
       yield {
         tileOverrides: {
-          currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+          currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
           currentNeighboursTile: { x: -1, y: -1, color: "" }, // Reset
         },
         graphStep: structuredClone(graph),
@@ -65,7 +65,7 @@ export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
           // Step 2: Highlight neighbour check
           yield {
             tileOverrides: {
-              currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+              currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
               currentNeighboursTile: {
                 x: newX,
                 y: newY,
@@ -81,7 +81,7 @@ export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
 
             yield {
               tileOverrides: {
-                currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+                currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
                 currentNeighboursTile: {
                   x: newX,
                   y: newY,
@@ -94,7 +94,7 @@ export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
             // Step 4: Neighbour failure
             yield {
               tileOverrides: {
-                currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+                currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
                 currentNeighboursTile: {
                   x: newX,
                   y: newY,
@@ -110,7 +110,7 @@ export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
       // Step 5: Graph update after all neighbours are checked
       yield {
         tileOverrides: {
-          currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+          currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
           currentNeighboursTile: { x: -1, y: -1, color: "" }, // Reset
         },
         graphStep: structuredClone(graph),

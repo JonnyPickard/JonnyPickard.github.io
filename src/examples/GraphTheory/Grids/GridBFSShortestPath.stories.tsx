@@ -10,8 +10,10 @@ import { GraphKey } from "../GraphKey";
 import {
   BG_PLAYER_PATH_COLOR,
   BG_PLAYER_START_COLOR,
+  BG_PROCESSING_TILE_COLOR,
   BG_TARGET_COLOR,
   BG_TERRAIN_COLOR,
+  BG_VISITED_TILE_COLOR,
   PLAYER_START_FILL_COLOR,
   TARGET_FILL_COLOR,
   TRANSPARENT_FILL_COLOR,
@@ -20,15 +22,16 @@ import type { GridMatrix } from "./GridTypes";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Grid BFS Shortest Path",
+  title: "Examples/Grids & Graphs/Breadth First Search",
   parameters: {
     layout: "fullscreen",
   },
   decorators: [
     (Story) => {
-      const [testMatrix, setTestMatrix] = useState<GridMatrix>([]);
-      const [originalMatrix, setOriginalMatrix] = useState(
-        generateTestMatrix({ placePlayer: false, placeTargetTile: false }),
+      const [gridVisualisationMatrix, setGridVisualisationMatrix] =
+        useState<GridMatrix | null>(null);
+      const [originalMatrix, setOriginalMatrix] = useState<GridMatrix | null>(
+        null,
       );
 
       const [nextClickTileType, setNextClickTileType] = useState<
@@ -41,12 +44,18 @@ const meta: Meta<typeof Grid> = {
       const [shortestPath, setShortestPath] = useState<Coordinates[]>([]);
 
       const [tileColorOverride, setTileColorOverride] = useState({});
+      const [isRunning, setIsRunning] = useState(false);
 
       const pickPathTile = (tile: Coordinates) => {
         // If wall tile you can't pick it
-        if (testMatrix[tile.y][tile.x] === 1) return;
+        if (
+          !gridVisualisationMatrix ||
+          gridVisualisationMatrix[tile.y][tile.x] === 1
+        )
+          return;
 
         if (nextClickTileType === "start") {
+          setTargetCoordinates(() => null);
           setStartCoordinates(() => tile);
           // toggle so next click sets target
           setNextClickTileType(() => "target");
@@ -60,53 +69,22 @@ const meta: Meta<typeof Grid> = {
       };
 
       useEffect(() => {
-        const originalMatrix = generateTestMatrix({
+        const newMatrix = generateTestMatrix({
           placePlayer: false,
           placeTargetTile: false,
         });
 
-        setTestMatrix(structuredClone(originalMatrix));
-        setOriginalMatrix(originalMatrix);
+        setOriginalMatrix(() => newMatrix);
+        setGridVisualisationMatrix(() => structuredClone(newMatrix));
       }, []);
-
-      type UpdateTestMatrix = (args: {
-        x: number;
-        y: number;
-        tileIdentifier?: number;
-      }) => void;
-
-      const updateTestMatrix: UpdateTestMatrix = ({
-        x,
-        y,
-        tileIdentifier /* 0 - 5 */,
-      }) => {
-        setTestMatrix((prevMatrix) => {
-          const newMatrix = prevMatrix.map((row) => row.slice());
-
-          // Don't allow pathing on wall
-          if (newMatrix[y][x] === 1) {
-            return prevMatrix;
-          }
-
-          // 5 = will be used to demonstrate all processed tiles as the alg steps still WIP though
-          // 0 = reset
-          newMatrix[y][x] =
-            tileIdentifier || tileIdentifier === 0 ? tileIdentifier : 5;
-          return newMatrix;
-        });
-      };
 
       // Handle state updates
       // Handle setting the start/ target coordinates after user clicks
       useEffect(() => {
-        if (!startCoordinates && !targetCoordinates) return;
+        if ((!startCoordinates && !targetCoordinates) || isRunning) return;
 
         // Target tile was clicked
         if (nextClickTileType === "start" && targetCoordinates) {
-          const { x, y } = targetCoordinates;
-
-          updateTestMatrix({ x, y, tileIdentifier: 3 });
-
           setTileColorOverride((prev) => ({
             ...prev,
             targetTile: {
@@ -121,12 +99,8 @@ const meta: Meta<typeof Grid> = {
           // Reset override colors colors
           setTileColorOverride(() => ({}));
 
-          const { x, y } = startCoordinates;
-
-          updateTestMatrix({ x, y, tileIdentifier: 2 });
-
           // Reset to original UI colors to start picking tiles again
-          setTestMatrix(() => structuredClone(originalMatrix));
+          setGridVisualisationMatrix(() => structuredClone(originalMatrix));
 
           setTileColorOverride((prev) => ({
             ...prev,
@@ -138,21 +112,63 @@ const meta: Meta<typeof Grid> = {
         }
       }, [startCoordinates, targetCoordinates, nextClickTileType]);
 
-      // When coordinates are locked in find/ set path
       useEffect(() => {
-        if (startCoordinates && targetCoordinates) {
-          const bfsSPath = bfsShortestPath({
-            grid: testMatrix,
-            startCoordinates,
-            targetCoordinates,
-          });
+        if (
+          startCoordinates &&
+          targetCoordinates &&
+          !isRunning &&
+          originalMatrix
+        ) {
+          setIsRunning(() => true);
+          if (gridVisualisationMatrix) {
+            console.log("startCoodinates", startCoordinates);
+            bfsShortestPath({
+              grid: originalMatrix,
+              startCoordinates,
+              targetCoordinates,
+              setGridVisualisationMatrix,
+              stepInterval: 200,
+            })
+              .then((path) => {
+                if (path) console.log("✅ Path found:", path);
 
-          if (bfsSPath) {
-            setShortestPath(bfsSPath);
+                setShortestPath(path || []);
+                setIsRunning(false);
+              })
+              .catch(() => {
+                setIsRunning(false);
+              });
           }
         }
       }, [startCoordinates, targetCoordinates]);
 
+      type UpdateTestMatrix = (args: {
+        x: number;
+        y: number;
+        tileIdentifier?: number;
+      }) => void;
+
+      const updateTestMatrix: UpdateTestMatrix = ({
+        x,
+        y,
+        tileIdentifier /* 0 - 5 */,
+      }) => {
+        setGridVisualisationMatrix((prevMatrix) => {
+          if (prevMatrix === null) return prevMatrix;
+          const newMatrix = prevMatrix.map((row) => row.slice());
+
+          // Don't allow pathing on wall
+          if (newMatrix[y][x] === 1) {
+            return prevMatrix;
+          }
+
+          // 5 = will be used to demonstrate all processed tiles as the alg steps still WIP though
+          // 0 = reset
+          newMatrix[y][x] =
+            tileIdentifier || tileIdentifier === 0 ? tileIdentifier : 5;
+          return newMatrix;
+        });
+      };
       // Draw path
       useEffect(() => {
         if (
@@ -192,7 +208,9 @@ const meta: Meta<typeof Grid> = {
             <Story
               args={{
                 onTileClick: pickPathTile,
-                matrix: testMatrix,
+                matrix: gridVisualisationMatrix
+                  ? gridVisualisationMatrix
+                  : originalMatrix,
                 tileColorOverride,
               }}
             />
@@ -211,6 +229,8 @@ const meta: Meta<typeof Grid> = {
                 { color: BG_PLAYER_START_COLOR, description: "start" },
                 { color: BG_TARGET_COLOR, description: "target" },
                 { color: BG_PLAYER_PATH_COLOR, description: "path" },
+                { color: BG_PROCESSING_TILE_COLOR, description: "processing" },
+                { color: BG_VISITED_TILE_COLOR, description: "visited" },
               ]}
             />
           </div>
@@ -224,4 +244,6 @@ export default meta;
 
 type Story = StoryObj<typeof Grid>;
 
-export const GridBFSShortestPath: Story = {};
+export const GridBFSShortestPath: Story = {
+  name: "Breadth First Search",
+};

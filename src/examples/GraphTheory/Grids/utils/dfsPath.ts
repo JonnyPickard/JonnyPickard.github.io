@@ -4,7 +4,8 @@ import type { Coordinates, GridMatrix } from "../GridTypes";
 // 1 = wall
 // 3 = target
 // 4 = path
-// 5 = explored
+// 5 = processing
+// 6 = visited
 interface DfsPathArgs {
   grid: GridMatrix;
   startCoordinates: Coordinates;
@@ -119,9 +120,9 @@ function gridToUI(
 ): GridMatrix {
   return grid.map((row, r) =>
     row.map((cell, c) => {
-      if (r === target.y && c === target.x) return 3; // Target position
-      if (path.some(({ x, y }) => y === r && x === c)) return 4; // Path
-      if (visited.has(`${r},${c}`)) return 5; // Explored cells
+      if (r === target.y && c === target.x) return 3; // Target
+      if (path.some(({ x, y }) => y === r && x === c)) return 5; // Processing
+      if (visited.has(`${r},${c}`)) return 6; // Visited cells
       return cell; // Original value
     }),
   );

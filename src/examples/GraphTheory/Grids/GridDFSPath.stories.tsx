@@ -10,9 +10,10 @@ import { GraphKey } from "../GraphKey";
 import {
   BG_PLAYER_PATH_COLOR,
   BG_PLAYER_START_COLOR,
-  BG_PROCESSED_TILE_COLOR,
+  BG_PROCESSING_TILE_COLOR,
   BG_TARGET_COLOR,
   BG_TERRAIN_COLOR,
+  BG_VISITED_TILE_COLOR,
   PLAYER_START_FILL_COLOR,
   TARGET_FILL_COLOR,
   TRANSPARENT_FILL_COLOR,
@@ -27,8 +28,8 @@ const meta: Meta<typeof Grid> = {
   },
   decorators: [
     (Story) => {
-      const [originalMatrix, setOriginalMatrix] = useState(
-        generateTestMatrix({ placePlayer: false, placeTargetTile: false }),
+      const [originalMatrix, setOriginalMatrix] = useState<GridMatrix | null>(
+        null,
       );
       const [gridVisualisationMatrix, setGridVisualisationMatrix] =
         useState<GridMatrix | null>(null);
@@ -68,13 +69,13 @@ const meta: Meta<typeof Grid> = {
       };
 
       useEffect(() => {
-        const originalMatrix = generateTestMatrix({
+        const newMatrix = generateTestMatrix({
           placePlayer: false,
           placeTargetTile: false,
         });
 
-        setGridVisualisationMatrix(structuredClone(originalMatrix));
-        setOriginalMatrix(originalMatrix);
+        setOriginalMatrix(() => newMatrix);
+        setGridVisualisationMatrix(() => structuredClone(newMatrix));
       }, []);
 
       // Handle state updates
@@ -84,8 +85,6 @@ const meta: Meta<typeof Grid> = {
 
         // Target tile was clicked
         if (nextClickTileType === "start" && targetCoordinates) {
-          const { x, y } = targetCoordinates;
-
           setTileColorOverride((prev) => ({
             ...prev,
             targetTile: {
@@ -99,8 +98,6 @@ const meta: Meta<typeof Grid> = {
           // Start tile was clicked
           // Reset override colors colors
           setTileColorOverride(() => ({}));
-
-          const { x, y } = startCoordinates;
 
           // Reset to original UI colors to start picking tiles again
           setGridVisualisationMatrix(() => structuredClone(originalMatrix));
@@ -116,7 +113,12 @@ const meta: Meta<typeof Grid> = {
       }, [startCoordinates, targetCoordinates, nextClickTileType]);
 
       useEffect(() => {
-        if (startCoordinates && targetCoordinates && !isRunning) {
+        if (
+          startCoordinates &&
+          targetCoordinates &&
+          !isRunning &&
+          originalMatrix
+        ) {
           setIsRunning(() => true);
           findDfsPath({
             grid: originalMatrix,
@@ -137,9 +139,9 @@ const meta: Meta<typeof Grid> = {
         }
       }, [startCoordinates, targetCoordinates]);
 
-      useEffect(() => {
-        console.log("gridVisualisationMatrix", gridVisualisationMatrix);
-      }, [gridVisualisationMatrix]);
+      // useEffect(() => {
+      //   console.log("gridVisualisationMatrix", gridVisualisationMatrix);
+      // }, [gridVisualisationMatrix]);
 
       return (
         <div
@@ -187,7 +189,8 @@ const meta: Meta<typeof Grid> = {
                 { color: BG_PLAYER_START_COLOR, description: "start" },
                 { color: BG_TARGET_COLOR, description: "target" },
                 { color: BG_PLAYER_PATH_COLOR, description: "path" },
-                { color: BG_PROCESSED_TILE_COLOR, description: "visited" },
+                { color: BG_PROCESSING_TILE_COLOR, description: "processing" },
+                { color: BG_VISITED_TILE_COLOR, description: "visited" },
               ]}
             />
           </div>

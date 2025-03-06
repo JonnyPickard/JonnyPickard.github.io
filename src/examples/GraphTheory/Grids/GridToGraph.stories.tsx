@@ -7,8 +7,8 @@ import type { Graph } from ".";
 import { Grid, generateTestMatrix, runGraphGeneration } from ".";
 import { GraphNodeToNeigbourList } from "../MarkdownComponents";
 import {
-  ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
+  PROCESSING_TILE_COLOR,
 } from "./constants";
 import { useGridStore } from "./gridStore";
 
@@ -23,7 +23,7 @@ const meta: Meta<typeof Grid> = {
       // TODO: button to generate new grid
       const [testMatrix] = useState(generateTestMatrix({ placePlayer: false }));
       const [tileColorOverrides, setTileColorOverrides] = useState({
-        currentAlgTile: { x: 0, y: 0, color: ALGORITH_CURRENT_TILE_COLOR },
+        currentAlgTile: { x: 0, y: 0, color: PROCESSING_TILE_COLOR },
         currentNeighboursTile: {
           x: 0,
           y: 1,

@@ -17,7 +17,7 @@ type ColorOverride = {
 };
 
 interface GridProps {
-  matrix?: GridMatrix;
+  matrix?: GridMatrix | null;
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
@@ -102,6 +102,7 @@ export function Grid({
   };
 
   return (
+    matrix &&
     matrix.length && (
       <div className={clsx(["flex", "items-center", "justify-center", "m-4"])}>
         <svg
@@ -111,12 +112,12 @@ export function Grid({
           {matrix.map(
             (
               row,
-              rowIndex, // x
+              rowIndex, // y
             ) =>
               row.map(
                 (
                   tile,
-                  colIndex, // y
+                  colIndex, // x
                 ) => (
                   <g
                     key={`${rowIndex}-${colIndex}`}

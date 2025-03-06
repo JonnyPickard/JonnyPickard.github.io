@@ -1,6 +1,7 @@
 import {
   PLAYER_PATH_FILL_COLOR,
   PLAYER_START_FILL_COLOR,
+  PROCESSING_TILE_COLOR,
   TARGET_FILL_COLOR,
   TERRAIN_FILL_COLOR,
   TRANSPARENT_FILL_COLOR,
@@ -25,6 +26,8 @@ export const pickTileColor = (
     case 4:
       return PLAYER_PATH_FILL_COLOR;
     case 5:
+      return PROCESSING_TILE_COLOR;
+    case 6:
       return VISITED_TILE_COLOR;
     default:
       return TRANSPARENT_FILL_COLOR;
