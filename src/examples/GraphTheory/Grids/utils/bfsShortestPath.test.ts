@@ -72,11 +72,12 @@ const testCases: TestCase[] = [
 
 testCases.forEach(
   ({ grid, startCoordinates, targetCoordinates, expectedPath }, index) => {
-    test(`Test case ${index + 1}`, () => {
-      const result = bfsShortestPath({
+    test(`BFS Test Case: ${index + 1}`, async () => {
+      const result = await bfsShortestPath({
         grid,
         startCoordinates,
         targetCoordinates,
+        stepInterval: 0,
       });
       expect(result).toEqual(expectedPath);
     });

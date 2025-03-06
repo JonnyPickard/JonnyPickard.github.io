@@ -9,6 +9,7 @@ export default defineConfig({
   // eslint-disable-next-line
   // @ts-ignore
   test: {
+    passWithNoTests: true,
     globals: true,
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts", "vitest-canvas-mock"],

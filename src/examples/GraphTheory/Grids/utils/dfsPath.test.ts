@@ -79,12 +79,12 @@ const testCases: TestCase[] = [
 
 testCases.forEach(
   ({ grid, startCoordinates, targetCoordinates, expectedPath }, index) => {
-    return test(`DFS Test case: ${index + 1}`, async () => {
+    return test(`DFS Test Case: ${index + 1}`, async () => {
       const result = await dfsPath({
         grid,
         startCoordinates,
         targetCoordinates,
-        // logToConsole: true,
+        stepInterval: 0,
       });
       expect(result).toEqual(expectedPath);
     });
