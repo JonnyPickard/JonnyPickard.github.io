@@ -16,7 +16,6 @@ import {
   BG_VISITED_TILE_COLOR,
   PLAYER_START_FILL_COLOR,
   TARGET_FILL_COLOR,
-  TRANSPARENT_FILL_COLOR,
 } from "./constants";
 import type { GridMatrix } from "./GridTypes";
 
@@ -142,13 +141,13 @@ const meta: Meta<typeof Grid> = {
         }
       }, [startCoordinates, targetCoordinates]);
 
-      type UpdateTestMatrix = (args: {
+      type UpdateGridVisualisationMatrix = (args: {
         x: number;
         y: number;
         tileIdentifier?: number;
       }) => void;
 
-      const updateTestMatrix: UpdateTestMatrix = ({
+      const updateGridVisualisationMatrix: UpdateGridVisualisationMatrix = ({
         x,
         y,
         tileIdentifier /* 0 - 5 */,
@@ -169,6 +168,7 @@ const meta: Meta<typeof Grid> = {
           return newMatrix;
         });
       };
+
       // Draw path
       useEffect(() => {
         if (
@@ -179,7 +179,7 @@ const meta: Meta<typeof Grid> = {
           return;
         // Tiles from start to target
         shortestPath.forEach(({ x, y }) => {
-          updateTestMatrix({ x, y, tileIdentifier: 4 });
+          updateGridVisualisationMatrix({ x, y, tileIdentifier: 4 });
         });
       }, [shortestPath]);
 

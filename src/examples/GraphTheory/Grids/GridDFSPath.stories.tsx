@@ -16,7 +16,6 @@ import {
   BG_VISITED_TILE_COLOR,
   PLAYER_START_FILL_COLOR,
   TARGET_FILL_COLOR,
-  TRANSPARENT_FILL_COLOR,
 } from "./constants";
 import type { GridMatrix } from "./GridTypes";
 
@@ -138,6 +137,43 @@ const meta: Meta<typeof Grid> = {
             });
         }
       }, [startCoordinates, targetCoordinates]);
+
+      type UpdateGridVisualisationMatrix = (args: {
+        x: number;
+        y: number;
+        tileIdentifier?: number;
+      }) => void;
+
+      const updateGridVisualisationMatrix: UpdateGridVisualisationMatrix = ({
+        x,
+        y,
+        tileIdentifier /* 0 - 5 */,
+      }) => {
+        setGridVisualisationMatrix((prevMatrix) => {
+          if (prevMatrix === null) return prevMatrix;
+          const newMatrix = prevMatrix.map((row) => row.slice());
+
+          // Don't allow pathing on wall
+          if (newMatrix[y][x] === 1) {
+            return prevMatrix;
+          }
+
+          // 5 = will be used to demonstrate all processed tiles as the alg steps still WIP though
+          // 0 = reset
+          newMatrix[y][x] =
+            tileIdentifier || tileIdentifier === 0 ? tileIdentifier : 5;
+          return newMatrix;
+        });
+      };
+
+      // Draw path
+      useEffect(() => {
+        if (!path || !path.length || nextClickTileType === "target") return;
+        // Tiles from start to target
+        path.forEach(({ x, y }) => {
+          updateGridVisualisationMatrix({ x, y, tileIdentifier: 4 });
+        });
+      }, [path]);
 
       // useEffect(() => {
       //   console.log("gridVisualisationMatrix", gridVisualisationMatrix);
