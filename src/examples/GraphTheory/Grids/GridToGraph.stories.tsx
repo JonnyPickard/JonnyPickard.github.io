@@ -14,7 +14,7 @@ import { useGridStore } from "./gridStore";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Grid To Graph",
+  title: "Examples/Grids & Graphs/Convert To Graph (Adjacency List)",
   parameters: {
     layout: "fullscreen",
   },
@@ -75,4 +75,6 @@ export default meta;
 
 type Story = StoryObj<typeof Grid>;
 
-export const GridToGraph: Story = {};
+export const GridToGraph: Story = {
+  name: "Convert To Graph (Adjacency List)",
+};
