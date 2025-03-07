@@ -3,18 +3,22 @@ import clsx from "clsx";
 
 import { useEffect, useState } from "react";
 
-import type { Graph } from ".";
 import { Grid, generateTestMatrix, runGraphGeneration } from ".";
 import { GraphNodeToNeigbourList } from "../MarkdownComponents";
 import {
-  ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
+  PROCESSING_TILE_COLOR,
 } from "./constants";
+import { useGridStore } from "./gridStore";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Grid To Graph",
+  title: "Examples/Grids & Graphs/Convert To Graph (Adjacency List)",
+
   parameters: {
+    controls: {
+      disable: true,
+    },
     layout: "fullscreen",
   },
   decorators: [
@@ -22,22 +26,25 @@ const meta: Meta<typeof Grid> = {
       // TODO: button to generate new grid
       const [testMatrix] = useState(generateTestMatrix({ placePlayer: false }));
       const [tileColorOverrides, setTileColorOverrides] = useState({
-        currentAlgTile: { x: 0, y: 0, color: ALGORITH_CURRENT_TILE_COLOR },
+        currentAlgTile: { x: 0, y: 0, color: PROCESSING_TILE_COLOR },
         currentNeighboursTile: {
           x: 0,
           y: 1,
           color: FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
         },
       });
-      const [graph, setGraph] = useState<Graph>({});
+      const { setGraph, graph } = useGridStore();
 
       useEffect(() => {
+        const controller = new AbortController();
         runGraphGeneration({
           matrix: testMatrix,
           setTileColorOverrides,
           setGraph,
-          tickSpeed: 150,
+          stepInterval: 150,
+          signal: controller.signal,
         });
+        return () => controller.abort();
       }, [testMatrix]);
 
       return (
@@ -74,4 +81,6 @@ export default meta;
 
 type Story = StoryObj<typeof Grid>;
 
-export const GridToGraph: Story = {};
+export const GridToGraph: Story = {
+  name: "Convert To Graph (Adjacency List)",
+};

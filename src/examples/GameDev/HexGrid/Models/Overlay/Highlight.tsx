@@ -1,7 +1,8 @@
-import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
+import type { Color } from "@react-three/fiber";
+import { JSX } from "react";
+import * as THREE from "three";
 import { GLTF } from "three-stdlib";
-import { TILE_COLORS } from "../..";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -14,7 +15,7 @@ type GLTFResult = GLTF & {
 
 export function HighlightTile(
   props: JSX.IntrinsicElements["mesh"] & {
-    tileOverlayColor: TILE_COLORS;
+    tileOverlayColor: Color;
   },
 ) {
   const { nodes } = useGLTF(

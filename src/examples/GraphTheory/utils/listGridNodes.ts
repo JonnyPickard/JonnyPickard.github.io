@@ -1,10 +1,11 @@
+import type { GridMatrix } from "../Grids/GridTypes";
 /**
  * List all node coordinates for a given grid
  */
 export const listGridNodes = (
   rows: number,
   columns: number,
-  matrix?: number[][],
+  matrix?: GridMatrix,
 ) => {
   let r = rows;
   let c = columns;

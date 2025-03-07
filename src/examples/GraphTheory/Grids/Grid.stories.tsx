@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import clsx from "clsx";
 
 import { Grid } from ".";
@@ -29,14 +29,14 @@ const meta: Meta<typeof Grid> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Grid>;
+// type Story = StoryObj<typeof Grid>;
 
-const defaultMatrix = [
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [0, 1, 0, 2],
-  [0, 1, 0, 0],
-];
+// const defaultMatrix = [
+//   [0, 1, 0, 0],
+//   [0, 0, 1, 0],
+//   [0, 1, 0, 2],
+//   [0, 1, 0, 0],
+// ];
 
 // export const Grid2D: Story = {
 //   name: "2D Grid",

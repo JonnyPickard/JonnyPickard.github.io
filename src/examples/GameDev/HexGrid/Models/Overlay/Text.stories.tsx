@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OverlayText } from "./Text";
 import { Scene } from "..";
 import { TILE_COLORS } from "../../constants";
+import { OverlayText } from "./Text";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Overlays",
@@ -27,14 +27,14 @@ export const Text: Story = {
     coordinates: { q: 1, r: 2, s: 3 },
     isTerrainTile: false,
     isHoveredTile: false,
+    color: "#ffffff",
   },
   argTypes: {
     color: {
       control: {
-        type: "select",
+        type: "color",
+        presetColors: Object.values(TILE_COLORS),
       },
-      options: TILE_COLORS,
-      defaultValue: TILE_COLORS.PLAYER,
     },
   },
 };

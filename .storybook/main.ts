@@ -8,7 +8,6 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-controls",
     "@storybook/addon-toolbars",
-    "@storybook/addon-mdx-gfm",
   ],
   framework: {
     name: "@storybook/react-vite",

@@ -1,12 +1,9 @@
+import type { GridMatrix } from "../GridTypes";
+
 /**
  * NOTE: this was originally implementation and have left it as it's useful
  * I decided to switch to a generator function to have more control over ui color updates for each step
  */
-const KEY = {
-  0: "traversable",
-  1: "wall",
-  2: "player",
-};
 
 // Replace the testMatrix with the generated one
 // const testMatrix = generateTestMatrix(ROWS, COLUMNS);
@@ -24,7 +21,7 @@ type Graph = { [node_key: string]: CoordinatesString[] };
 /**
  * Turns a matrix grid into an adjacency list
  */
-export const gridToGraph = async (matrix: number[][]) => {
+export const gridToGraph = async (matrix: GridMatrix) => {
   const rows = matrix.length;
   // Assume rectangular for now
   const columns = matrix[0].length;

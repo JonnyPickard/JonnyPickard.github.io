@@ -65,19 +65,9 @@ export default meta;
 
 type Story = StoryObj<typeof Graphs>;
 
-const defaultMatrix = [
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [0, 1, 0, 2],
-  [0, 1, 0, 0],
-];
-
 export const MatrixGrid: Story = {
   name: "2D Grid With Key",
   parameters: {
     layout: "fullscreen",
-  },
-  args: {
-    matrix: defaultMatrix,
   },
 };

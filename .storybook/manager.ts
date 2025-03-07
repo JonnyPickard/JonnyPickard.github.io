@@ -15,7 +15,7 @@ link.setAttribute("href", favicon);
 document.head.appendChild(link);
 
 // Remember the last opened story
-const LAST_STORY_KEY = "lastViewedStoryIds";
+// const LAST_STORY_KEY = "lastViewedStoryIds";
 
 // window.addEventListener("load", () => {
 //   const lastStory = localStorage.getItem(LAST_STORY_KEY);

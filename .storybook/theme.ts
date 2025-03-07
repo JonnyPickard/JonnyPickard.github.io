@@ -1,4 +1,3 @@
-import "../src/styles/global.css";
 import logo from "../src/assets/logo.svg";
 
 import { create } from "@storybook/theming/create";

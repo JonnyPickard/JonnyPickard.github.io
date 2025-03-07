@@ -1,6 +1,6 @@
+import { useAnimations, useGLTF } from "@react-three/drei";
+import { JSX, useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { useRef, useState, useLayoutEffect } from "react";
-import { useGLTF, useAnimations } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { usePlayerStore } from "../../store";
 

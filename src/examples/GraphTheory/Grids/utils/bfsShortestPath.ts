@@ -1,4 +1,4 @@
-import type { Coordinates } from "../GridTypes";
+import type { Coordinates, GridMatrix } from "../GridTypes";
 
 // 1. Queue starts with tile your on (start node)
 // 2. pop start node off of queue
@@ -16,74 +16,114 @@ import type { Coordinates } from "../GridTypes";
 // 9. next loop iteration pass in parent[targetx, targety] = parent node
 // 10. repeat untill no more parent nodes
 // 11. return path array but reversed because walk backwards from the target
+
 interface bfsShortestPathArgs {
-  grid: number[][];
+  grid: GridMatrix;
   startCoordinates: Coordinates;
   targetCoordinates: Coordinates;
+  setGridVisualisationMatrix?: React.Dispatch<
+    React.SetStateAction<GridMatrix | null>
+  >;
+  stepInterval?: number;
 }
 
 export function bfsShortestPath({
   grid,
   startCoordinates,
   targetCoordinates,
-}: bfsShortestPathArgs): Coordinates[] | null {
-  if (!grid.length) return null;
-
-  const rows = grid.length;
-  const cols = grid[0].length;
-  const directions = [
-    [0, 1], // right
-    [1, 0], // down
-    [0, -1], // left
-    [-1, 0], // up
-  ];
-
-  const { x: startX, y: startY } = startCoordinates;
-  const { x: targetX, y: targetY } = targetCoordinates;
-
-  // 🛑 Edge Case: If start == target, return immediately
-  if (startX === targetX && startY === targetY) {
-    return [{ x: startX, y: startY }];
+  setGridVisualisationMatrix,
+  stepInterval = 200,
+}: bfsShortestPathArgs): Promise<Coordinates[] | null> {
+  if (stepInterval < 0 || stepInterval > 1000) {
+    throw new Error("stepInterval must be between 0 and 1000");
   }
 
-  const queue: Coordinates[] = [{ x: startX, y: startY }];
-  const visited = new Set<string>([`${startX},${startY}`]);
-  const parent: Record<string, Coordinates | null> = {};
-  parent[`${startX},${startY}`] = null;
+  return new Promise((resolve) => {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const directions = [
+      [0, 1], // right
+      [1, 0], // down
+      [0, -1], // left
+      [-1, 0], // up
+    ];
 
-  while (queue.length > 0) {
-    const { x, y } = queue.shift()!; // Safe to use `!` because queue is not empty
+    const { x: startX, y: startY } = startCoordinates;
+    const { x: targetX, y: targetY } = targetCoordinates;
 
-    // If we reached the target, reconstruct the path
-    if (x === targetX && y === targetY) {
-      const path: Coordinates[] = [];
-      let current: Coordinates | null = { x, y };
-      while (current !== null) {
-        path.push(current);
-        current = parent[`${current.x},${current.y}`]; // Move backwards
-      }
-      return path.reverse(); // Reverse to get the path from start to goal
+    if (startX === targetX && startY === targetY) {
+      resolve([{ x: startX, y: startY }]);
+      return;
     }
 
-    // Explore all valid directions
-    for (const [dx, dy] of directions) {
-      const newX = x + dx;
-      const newY = y + dy;
+    const queue: Coordinates[] = [{ x: startX, y: startY }];
+    const visited = new Set<string>([`${startX},${startY}`]);
+    const parent: Record<string, Coordinates | null> = {};
+    parent[`${startX},${startY}`] = null;
 
-      if (
-        newX >= 0 &&
-        newX < cols &&
-        newY >= 0 &&
-        newY < rows &&
-        grid[newY][newX] !== 1 && // Ensure it's walkable
-        !visited.has(`${newX},${newY}`)
-      ) {
-        queue.push({ x: newX, y: newY });
-        visited.add(`${newX},${newY}`);
-        parent[`${newX},${newY}`] = { x, y }; // Store parent to reconstruct path
+    function step() {
+      if (queue.length === 0) {
+        resolve(null);
+        return;
       }
-    }
-  }
 
-  return null; // No path found
+      const { x, y } = queue.shift()!; // Dequeue the first element
+
+      if (x === targetX && y === targetY) {
+        const path: Coordinates[] = [];
+        let current: Coordinates | null = { x, y };
+        while (current !== null) {
+          path.push(current);
+          current = parent[`${current.x},${current.y}`];
+        }
+
+        resolve(path.reverse());
+        return;
+      }
+
+      for (const [dx, dy] of directions) {
+        const newX = x + dx;
+        const newY = y + dy;
+
+        if (
+          newY >= 0 &&
+          newY < rows && // Ensure within row bounds
+          newX >= 0 &&
+          newX < cols && // Ensure within col bounds
+          grid[newY][newX] !== 1 && // Not a wall
+          !visited.has(`${newX},${newY}`) // Not visited
+        ) {
+          queue.push({ x: newX, y: newY });
+          visited.add(`${newX},${newY}`);
+          parent[`${newX},${newY}`] = { x, y };
+        }
+      }
+
+      if (setGridVisualisationMatrix) {
+        setGridVisualisationMatrix(
+          gridToUI(grid, visited, queue, { x: targetX, y: targetY }),
+        );
+      }
+
+      setTimeout(step, stepInterval);
+    }
+
+    step();
+  });
+}
+
+function gridToUI(
+  grid: GridMatrix,
+  visited: Set<string>,
+  queue: Coordinates[],
+  target: Coordinates,
+): GridMatrix {
+  return grid.map((row, r) =>
+    row.map((cell, c) => {
+      if (r === target.y && c === target.x) return 3; // 🎯 Target
+      if (queue.some(({ x, y }) => y === r && x === c)) return 5; // 📌 Queue (current frontier) - processing
+      if (visited.has(`${c},${r}`)) return 6; // visited/ processed
+      return cell;
+    }),
+  );
 }

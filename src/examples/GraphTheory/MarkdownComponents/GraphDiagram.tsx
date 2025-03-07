@@ -3,7 +3,7 @@ export function GraphDiagram() {
     <svg
       viewBox="0 0 600 600"
       xmlns="http://www.w3.org/2000/svg"
-      className="max-w-screen-sm h-fit"
+      className="max-w-(--breakpoint-sm) h-fit"
     >
       <g transform="scale(100, 100) translate(-0.75, -0.5)">
         <line

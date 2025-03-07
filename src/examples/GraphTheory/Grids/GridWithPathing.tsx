@@ -1,10 +1,10 @@
-// import { clsx } from "clsx";
-// import { pickTileColor } from "./utils";
-
+import {
+  // useEffect,
+  useMemo,
+} from "react";
 import { useTimer } from "../../../hooks";
 import { Grid } from "./Grid";
-
-import { useEffect, useMemo, useState } from "react";
+import { useGridStore } from "./gridStore";
 
 import {
   DEFAULT_MATRIX,
@@ -12,19 +12,15 @@ import {
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TILE_SIZE,
 } from "./constants";
+import type { GridMatrix } from "./GridTypes";
 
 interface GridWithPathingProps {
-  matrix?: number[][];
+  matrix?: GridMatrix;
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
   onTileClick?: ({ x, y }: { x: number; y: number }) => void;
 }
-
-type Coordinate = {
-  x: number;
-  y: number;
-};
 
 export function GridWithPathing({
   matrix = DEFAULT_MATRIX,
@@ -33,13 +29,7 @@ export function GridWithPathing({
   strokeColor = DEFAULT_STROKE_COLOR,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: GridWithPathingProps) {
-  const [playerLocation, setPlayerLocation] = useState<Coordinate>({
-    x: 0,
-    y: 0,
-  });
-  const [playerStart, setPlayerStart] = useState<Coordinate | null>(null);
-  const [target, setTarget] = useState<Coordinate | null>(null);
-  const [playerPath, setPlayerPath] = useState<Coordinate[] | null>(null);
+  const { playerPath } = useGridStore();
 
   const activePath = useMemo(() => {
     if (playerPath) {

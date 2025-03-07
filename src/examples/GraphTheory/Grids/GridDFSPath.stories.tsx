@@ -14,7 +14,7 @@ import useGridState from "./hooks/useGridState";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Breadth First Search",
+  title: "Examples/Grids & Graphs/Depth First Search",
   parameters: {
     layout: "fullscreen",
     controls: {
@@ -28,7 +28,7 @@ const meta: Meta<typeof Grid> = {
         gridVisualisationMatrix,
         tileColorOverride,
         pickPathTile,
-      } = useGridState("bfs");
+      } = useGridState("dfs");
 
       return (
         <div
@@ -91,6 +91,6 @@ export default meta;
 
 type Story = StoryObj<typeof Grid>;
 
-export const GridBFSShortestPath: Story = {
-  name: "Breadth First Search",
+export const GridDFSPath: Story = {
+  name: "Depth First Search",
 };

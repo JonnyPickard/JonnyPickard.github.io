@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Terrain as TerrainModel } from "./Terrain";
 import { Scene } from "..";
+import { Terrain as TerrainModel } from "./Terrain";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Terrain",

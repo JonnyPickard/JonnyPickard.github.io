@@ -1,3 +1,4 @@
+export * from "../../../../utils";
 export * from "./calculateDirection";
 export * from "./calculateRotation";
 export * from "./calculateTileRotation";
@@ -7,4 +8,3 @@ export * from "./getRandomInt";
 export * from "./getRandomItemIndex";
 export * from "./getTileOverlayColor";
 export * from "./isTile";
-export * from "./storeLogger";

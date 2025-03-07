@@ -1,3 +1,5 @@
+import type { GridMatrix } from "../GridTypes";
+
 const COLUMNS = 10;
 const ROWS = 10;
 
@@ -15,7 +17,7 @@ export const generateTestMatrix = ({
   placePlayer = true,
   placeTargetTile = false,
   placeWalls = true,
-}: TestMatrixOptions = {}): number[][] => {
+}: TestMatrixOptions = {}): GridMatrix => {
   const matrix = Array.from({ length: rows }, () => Array(columns).fill(0));
 
   if (placeWalls) {

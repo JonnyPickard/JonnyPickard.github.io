@@ -5,6 +5,9 @@ import {
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TILE_SIZE,
 } from "./constants";
+import { useGridStore } from "./gridStore";
+
+import type { GridMatrix } from "./GridTypes";
 import { pickTileColor } from "./utils";
 
 type ColorOverride = {
@@ -14,7 +17,7 @@ type ColorOverride = {
 };
 
 interface GridProps {
-  matrix?: number[][];
+  matrix?: GridMatrix | null;
   tileSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
@@ -63,6 +66,8 @@ export function Grid({
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
   tileColorOverride,
 }: GridProps) {
+  const { setPlayerLocation } = useGridStore();
+
   const overrideTileColor = (rowI: number, colI: number) => {
     if (tileColorOverride) {
       if (
@@ -97,6 +102,7 @@ export function Grid({
   };
 
   return (
+    matrix &&
     matrix.length && (
       <div className={clsx(["flex", "items-center", "justify-center", "m-4"])}>
         <svg
@@ -106,18 +112,18 @@ export function Grid({
           {matrix.map(
             (
               row,
-              rowIndex, // x
+              rowIndex, // y
             ) =>
               row.map(
                 (
                   tile,
-                  colIndex, // y
+                  colIndex, // x
                 ) => (
                   <g
                     key={`${rowIndex}-${colIndex}`}
                     onClick={() => {
-                      // TODO:
                       onTileClick({ y: rowIndex, x: colIndex });
+                      setPlayerLocation({ x: colIndex, y: rowIndex });
                     }}
                   >
                     <rect

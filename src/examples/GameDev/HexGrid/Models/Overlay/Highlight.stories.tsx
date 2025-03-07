@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { HighlightTile } from "./Highlight";
 import { Scene } from "..";
 import { TILE_COLORS } from "../../constants";
+import { HighlightTile } from "./Highlight";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Overlays",
@@ -29,10 +29,9 @@ export const Highlight: Story = {
   argTypes: {
     tileOverlayColor: {
       control: {
-        type: "select",
+        type: "color",
+        presetColors: Object.values(TILE_COLORS),
       },
-      options: TILE_COLORS,
-      defaultValue: TILE_COLORS.PLAYER,
     },
   },
 };

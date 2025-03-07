@@ -1,18 +1,17 @@
-import { Suspense, useMemo } from "react";
 import {
-  MapControls,
+  Environment,
   GizmoHelper,
   GizmoViewport,
-  Stats,
-  Environment,
+  MapControls,
+  PerspectiveCamera,
   Sky,
+  Stats,
 } from "@react-three/drei";
-import { HexGridManager } from "./HexGridManager";
-import { motion, MotionCanvas, LayoutCamera } from "framer-motion-3d";
-import { extend, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-import { CHARACTER_START_CAM_POSITION } from "./constants";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Suspense } from "react";
 import { useInterval } from "usehooks-ts";
+import { CHARACTER_START_CAM_POSITION } from "./constants";
+import { HexGridManager } from "./HexGridManager";
 import { usePlayerStore } from "./store";
 
 /**
@@ -32,13 +31,11 @@ const LimitFPS = () => {
 };
 
 export const HexGridScene = () => {
-  // https://github.com/framer/motion/issues/2074#issuecomment-1724813108
-  useMemo(() => extend(THREE), []);
   const { camX, camZ } = CHARACTER_START_CAM_POSITION;
   const isRunning = usePlayerStore((state) => state.isRunning);
 
   return (
-    <MotionCanvas
+    <Canvas
       frameloop={isRunning ? "always" : "demand"}
       shadows
       style={{
@@ -50,13 +47,9 @@ export const HexGridScene = () => {
       {/* Allow natural rendering during movement as it seemed more janky without */}
       {!isRunning && <LimitFPS />}
       {/* Cool front facing light */}
-      <motion.ambientLight
-        intensity={2}
-        position={[0, 5, 10]}
-        color={"#89ceff"}
-      />
+      <ambientLight intensity={2} position={[0, 5, 10]} color={"#89ceff"} />
       {/* Shadow casting sun type light */}
-      <motion.directionalLight
+      <directionalLight
         color={"#b5a92a"}
         /* Trying to position inline with sun */
         position={[camX * 2, 5, camZ * 2]}
@@ -82,7 +75,7 @@ export const HexGridScene = () => {
         <HexGridManager />
       </Suspense>
 
-      <LayoutCamera position={[camX, 20, camZ + 6]} makeDefault />
+      <PerspectiveCamera position={[camX, 20, camZ + 6]} makeDefault />
       <MapControls target={[camX, 0, camZ]} makeDefault />
       <GizmoHelper alignment="top-right" margin={[80, 80]}>
         <GizmoViewport
@@ -90,13 +83,8 @@ export const HexGridScene = () => {
           labelColor="black"
         />
       </GizmoHelper>
-      {/* <motion.axesHelper args={[3]} /> */}
-      {/* <motion.gridHelper
-        position={[0, 0.2, 0]}
-        args={[0.7348821301486452 * 10, 10, "#6f6f6f", "#9d4b4b"]}
-      /> */}
       <Stats />
-    </MotionCanvas>
+    </Canvas>
   );
 };
 //

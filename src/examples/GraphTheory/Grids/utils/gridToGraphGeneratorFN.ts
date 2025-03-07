@@ -1,8 +1,9 @@
+import type { GridMatrix } from "../GridTypes";
 import {
-  ALGORITH_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_CURRENT_TILE_COLOR,
   FIND_NEIGHBOURS_FAILURE_COLOR,
   FIND_NEIGHBOURS_SUCCESS_COLOR,
+  PROCESSING_TILE_COLOR,
 } from "../constants";
 
 type Direction = "R" | "D" | "L" | "U";
@@ -18,7 +19,7 @@ export type Graph = {
 // Makes an adjacency list graph representation
 // Uneccessary for 2D Map grids as its extra looping to making the list first
 // For 2D Map pathfinding you should do BFS etc as you work out neighbours
-export function* gridToGraphGenerator(matrix: number[][]): Generator<
+export function* gridToGraphGenerator(matrix: GridMatrix): Generator<
   {
     tileOverrides: {
       currentAlgTile: { x: number; y: number; color: string };
@@ -47,7 +48,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
       // Step 1: Highlight current tile
       yield {
         tileOverrides: {
-          currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+          currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
           currentNeighboursTile: { x: -1, y: -1, color: "" }, // Reset
         },
         graphStep: structuredClone(graph),
@@ -64,7 +65,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
           // Step 2: Highlight neighbour check
           yield {
             tileOverrides: {
-              currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+              currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
               currentNeighboursTile: {
                 x: newX,
                 y: newY,
@@ -80,7 +81,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
 
             yield {
               tileOverrides: {
-                currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+                currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
                 currentNeighboursTile: {
                   x: newX,
                   y: newY,
@@ -93,7 +94,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
             // Step 4: Neighbour failure
             yield {
               tileOverrides: {
-                currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+                currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
                 currentNeighboursTile: {
                   x: newX,
                   y: newY,
@@ -109,7 +110,7 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
       // Step 5: Graph update after all neighbours are checked
       yield {
         tileOverrides: {
-          currentAlgTile: { x, y, color: ALGORITH_CURRENT_TILE_COLOR },
+          currentAlgTile: { x, y, color: PROCESSING_TILE_COLOR },
           currentNeighboursTile: { x: -1, y: -1, color: "" }, // Reset
         },
         graphStep: structuredClone(graph),
@@ -121,32 +122,36 @@ export function* gridToGraphGenerator(matrix: number[][]): Generator<
 }
 
 interface GraphGenerationOptions {
-  matrix: number[][];
+  matrix: GridMatrix;
   setTileColorOverrides: React.Dispatch<
     React.SetStateAction<{
       currentAlgTile: { x: number; y: number; color: string };
       currentNeighboursTile: { x: number; y: number; color: string };
     }>
   >;
-  setGraph: React.Dispatch<React.SetStateAction<Graph>>;
+  setGraph: (graph: Graph) => void;
   /* 0 - 1000 higher being slower */
-  tickSpeed?: number;
+  stepInterval?: number;
+  signal?: AbortSignal;
 }
 
 export const runGraphGeneration = async ({
   matrix,
   setTileColorOverrides,
   setGraph,
-  tickSpeed = 200,
+  stepInterval = 200,
+  signal,
 }: GraphGenerationOptions) => {
-  if (tickSpeed < 0 || tickSpeed > 1000) {
-    throw new Error("tickSpeed must be between 0 and 1000");
+  if (stepInterval < 0 || stepInterval > 1000) {
+    throw new Error("stepInterval must be between 0 and 1000");
   }
 
   const generator = gridToGraphGenerator(matrix);
   let result = generator.next();
 
   while (!result.done) {
+    if (signal?.aborted) return;
+
     const { tileOverrides, graphStep } = result.value;
 
     // Update UI
@@ -154,7 +159,7 @@ export const runGraphGeneration = async ({
     setGraph(graphStep);
 
     // Delay visualization
-    await new Promise((resolve) => setTimeout(resolve, tickSpeed));
+    await new Promise((resolve) => setTimeout(resolve, stepInterval));
 
     // Move to next step
     result = generator.next();
@@ -165,7 +170,7 @@ export const runGraphGeneration = async ({
 };
 
 interface SimpleGraphGenerationOptions {
-  matrix: number[][];
+  matrix: GridMatrix;
   setGraph: React.Dispatch<React.SetStateAction<Graph>>;
 }
 

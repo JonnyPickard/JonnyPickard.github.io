@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { HexTileGrass as HexTileGrassModel } from "./HexTileGrass";
 import { Scene } from "..";
+import { HexTileGrass as HexTileGrassModel } from "./HexTileGrass";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid",

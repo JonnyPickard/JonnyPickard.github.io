@@ -1,9 +1,10 @@
 import { clsx } from "clsx";
+import type { GridMatrix } from "./Grids/GridTypes";
 
 const defaultMatrix = [
   [0, 0, 0, 0],
   [0, 0, 1, 0],
-  [0, 0, 0, 2],
+  [0, 0, 0, 0],
   [1, 0, 0, 0],
 ];
 
@@ -32,7 +33,7 @@ const pickCellColor = (cellTypeInt: number) => {
 };
 
 interface MatrixGridProps {
-  matrix?: number[][];
+  matrix?: GridMatrix;
   cellSize?: number;
   strokeWidth?: number;
   strokeColor?: string;

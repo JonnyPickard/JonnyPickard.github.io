@@ -24,7 +24,7 @@ interface OverlayTextProps {
  */
 export function OverlayText({
   coordinates: { q, r, s },
-  color = "white",
+  color = "#ffffff",
   isTerrainTile = false,
   isHoveredTile = false,
 }: OverlayTextProps) {
