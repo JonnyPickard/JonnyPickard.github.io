@@ -33,12 +33,15 @@ const meta: Meta<typeof Grid> = {
       const { setGraph, graph } = useGridStore();
 
       useEffect(() => {
+        const controller = new AbortController();
         runGraphGeneration({
           matrix: testMatrix,
           setTileColorOverrides,
           setGraph,
           stepInterval: 150,
+          signal: controller.signal,
         });
+        return () => controller.abort();
       }, [testMatrix]);
 
       return (

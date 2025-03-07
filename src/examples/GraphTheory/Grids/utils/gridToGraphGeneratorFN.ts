@@ -132,6 +132,7 @@ interface GraphGenerationOptions {
   setGraph: (graph: Graph) => void;
   /* 0 - 1000 higher being slower */
   stepInterval?: number;
+  signal?: AbortSignal;
 }
 
 export const runGraphGeneration = async ({
@@ -139,6 +140,7 @@ export const runGraphGeneration = async ({
   setTileColorOverrides,
   setGraph,
   stepInterval = 200,
+  signal,
 }: GraphGenerationOptions) => {
   if (stepInterval < 0 || stepInterval > 1000) {
     throw new Error("stepInterval must be between 0 and 1000");
@@ -148,6 +150,8 @@ export const runGraphGeneration = async ({
   let result = generator.next();
 
   while (!result.done) {
+    if (signal?.aborted) return;
+
     const { tileOverrides, graphStep } = result.value;
 
     // Update UI
