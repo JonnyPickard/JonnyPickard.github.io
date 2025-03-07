@@ -29,10 +29,9 @@ export const Outline: Story = {
   argTypes: {
     tileOverlayColor: {
       control: {
-        type: "select",
+        type: "color",
+        presetColors: Object.values(TILE_COLORS),
       },
-      options: [TILE_COLORS],
-      defaultValue: TILE_COLORS.PLAYER,
     },
   },
 };
