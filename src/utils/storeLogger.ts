@@ -16,10 +16,8 @@ type LoggerImpl = <T>(
 ) => StateCreator<T, [], []>;
 
 const loggerImpl: LoggerImpl = (f, name) => (set, get, store) => {
-  const loggedSet: typeof set = (...a) => {
-    // TODO: look into how to type this properly when time allows
-    // @ts-ignore
-    set(...a);
+  const loggedSet: typeof set = (partial, replace) => {
+    set(partial, replace as false | undefined);
     console.log(...(name ? [`${name}:`] : []), get());
   };
   store.setState = loggedSet;

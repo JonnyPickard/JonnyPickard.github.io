@@ -10,14 +10,6 @@ import type { Coordinates, GridMatrix } from "../GridTypes";
 // Do I do a create inital matrix for the map?
 // Then update that matrix on each render?
 
-interface GenerateMatrixProps {
-  rows: number;
-  columns: number;
-  playerStartPosition: Coordinates;
-  playerPosition: Coordinates;
-  activePath: Coordinates[];
-}
-
 // Note: this controls what the UI displays
 export const generateMatrix = (
   rows: number,
@@ -33,8 +25,6 @@ export const generateMatrix = (
   };
 
   matrix[clampPlayerStartPosition.y][clampPlayerStartPosition.x] = 2;
-
-  console.log("matrix", matrix);
 
   return matrix;
 };

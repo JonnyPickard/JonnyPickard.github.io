@@ -1,11 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 import clsx from "clsx";
 import { useState } from "react";
 
 import { GraphKey } from "../GraphKey";
 import { GridWithPathing } from "./";
 import { useGridControls } from "./hooks/useGridControls";
-import { generateMatrix, useMatrix } from "./hooks/useMatrix";
+import {
+  // generateMatrix,
+  useMatrix,
+} from "./hooks/useMatrix";
 import { usePlayerStartPosition } from "./hooks/usePlayerStartPosition";
 
 const PLAYER_START = { x: 0, y: 0 };
@@ -70,7 +73,7 @@ const meta: Meta<typeof GridWithPathing> = {
 
 export default meta;
 
-type Story = StoryObj<typeof GridWithPathing>;
+// type Story = StoryObj<typeof GridWithPathing>;
 
 // TODO: commented out until worked finished
 // export const GridWithPathingStory: Story = {

@@ -7,7 +7,7 @@ import {
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 
-import { ReactNode, Suspense, useMemo } from "react";
+import { ReactNode, Suspense } from "react";
 
 export const Scene = ({ children }: { children: ReactNode }) => {
   return (

@@ -3,7 +3,6 @@ import clsx from "clsx";
 
 import { useEffect, useState } from "react";
 
-import type { Graph } from ".";
 import { Grid, generateTestMatrix, runGraphGeneration } from ".";
 import { GraphNodeToNeigbourList } from "../MarkdownComponents";
 import {

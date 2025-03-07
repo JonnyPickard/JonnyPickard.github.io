@@ -4,11 +4,6 @@ import type { GridMatrix } from "../GridTypes";
  * NOTE: this was originally implementation and have left it as it's useful
  * I decided to switch to a generator function to have more control over ui color updates for each step
  */
-const KEY = {
-  0: "traversable",
-  1: "wall",
-  2: "player",
-};
 
 // Replace the testMatrix with the generated one
 // const testMatrix = generateTestMatrix(ROWS, COLUMNS);

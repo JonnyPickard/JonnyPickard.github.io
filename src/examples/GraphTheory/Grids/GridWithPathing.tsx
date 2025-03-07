@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  // useEffect,
+  useMemo,
+} from "react";
 import { useTimer } from "../../../hooks";
 import { Grid } from "./Grid";
 import { useGridStore } from "./gridStore";
@@ -19,11 +22,6 @@ interface GridWithPathingProps {
   onTileClick?: ({ x, y }: { x: number; y: number }) => void;
 }
 
-type Coordinate = {
-  x: number;
-  y: number;
-};
-
 export function GridWithPathing({
   matrix = DEFAULT_MATRIX,
   tileSize = DEFAULT_TILE_SIZE,
@@ -31,16 +29,7 @@ export function GridWithPathing({
   strokeColor = DEFAULT_STROKE_COLOR,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: GridWithPathingProps) {
-  const {
-    playerLocation,
-    playerStart,
-    target,
-    playerPath,
-    setPlayerLocation,
-    setPlayerStart,
-    setTarget,
-    setPlayerPath,
-  } = useGridStore();
+  const { playerPath } = useGridStore();
 
   const activePath = useMemo(() => {
     if (playerPath) {

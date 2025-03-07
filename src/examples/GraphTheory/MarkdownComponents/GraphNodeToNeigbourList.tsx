@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { EdgeToNode } from "./EdgeToNode";
 import { Node } from "./Node";
 
-import { HiArrowDown, HiArrowUp } from "react-icons/hi";
+import { HiArrowDown } from "react-icons/hi";
 import type { Graph } from "../Grids";
 
 interface GraphNodeToNeigbourListProps {
