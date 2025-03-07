@@ -76,7 +76,6 @@ export function dfsPath({
         setGridVisualisationMatrix(() => {
           return displayGrid;
         });
-        // setGridVisualisationMatrix(() => displayGrid);
       }
 
       // Update grid visualization
