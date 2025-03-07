@@ -11,7 +11,7 @@ import {
 
 const meta: Meta<typeof Graphs> = {
   component: Graphs,
-  title: "Examples/Grids & Graphs/2D Grid With Key",
+  title: "Grids & Graphs/2D Grid With Key",
   parameters: {
     layout: "fullscreen",
   },

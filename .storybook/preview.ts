@@ -4,30 +4,10 @@ import theme from "./theme";
 
 const preview: Preview = {
   parameters: {
-    options: {
-      storySort: {
-        includeNames: true,
-        method: "configure",
-        order: [
-          "Introduction",
-          "Examples",
-          [
-            "Game Dev",
-            [
-              "Hex Grid",
-              ["Notes", "Grid", "Tile", "Player", "Terrain", "Overlays", "*"],
-            ],
-            "ReactThreeJs",
-            ["Avatar"],
-          ],
-          "Notes",
-          ["Overview", "Data Fetching & Caching", ["Introduction", "*"]],
-        ],
-      },
-    },
+    options: {},
     docs: {
       theme,
-      toc: true,
+      toc: false,
     },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {

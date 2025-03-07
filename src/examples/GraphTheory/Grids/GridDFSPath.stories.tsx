@@ -14,7 +14,7 @@ import useGridState from "./hooks/useGridState";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Depth First Search",
+  title: "Grids & Graphs/Depth First Search",
   parameters: {
     layout: "fullscreen",
     controls: {
