@@ -1,16 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { HexGridScene } from "./HexGridScene";
+import { HexGridDisplayScene } from "./HexGridDisplayScene";
+import { HexGridGameScene } from "./HexGridGameScene";
 
 const meta = {
   title: "Hexagonal Grids",
-  component: HexGridScene,
   parameters: {
     layout: "fullscreen",
   },
-} satisfies Meta<typeof HexGridScene>;
+} satisfies Meta<typeof HexGridGameScene>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Grid: Story = {};
+export const GameGrid: Story = {
+  name: "Interactive Grid with A* Pathfinding",
+  render: () => <HexGridGameScene />,
+};
+
+export const DisplayGrid: Story = {
+  name: "Simple Hexagonal Grid Display",
+  render: () => <HexGridDisplayScene />,
+};
