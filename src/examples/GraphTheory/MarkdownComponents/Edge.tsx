@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 import React from "react";
+import { LiaLongArrowAltRightSolid } from "react-icons/lia";
 
 interface EdgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   // right, down, left, up

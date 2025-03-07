@@ -1,5 +1,5 @@
-import { Dispatch, useEffect, useRef } from "react";
 import GUI from "lil-gui";
+import { Dispatch, useEffect, useRef } from "react";
 
 import { Coordinates } from "../GridTypes";
 

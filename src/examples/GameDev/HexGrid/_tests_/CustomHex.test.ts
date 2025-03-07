@@ -1,5 +1,5 @@
-import { defineCustomHex } from "..";
 import { Hex, Orientation } from "honeycomb-grid";
+import { defineCustomHex } from "..";
 
 describe("Custom Hex", () => {
   it("should be instantiated with default options", () => {

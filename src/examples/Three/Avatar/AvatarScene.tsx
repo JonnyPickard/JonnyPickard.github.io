@@ -1,11 +1,11 @@
-import { Suspense } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
 import {
-  OrbitControls,
   CubeCamera,
-  useCubeTexture,
+  OrbitControls,
   Stats,
+  useCubeTexture,
 } from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Suspense } from "react";
 import { AvatarModel } from "./AvatarModel";
 
 const skyboxAssetPath = "/3d-models/textures/space-skybox/";

@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import { Node } from "./Node";
 import { Edge } from "./Edge";
+import { Node } from "./Node";
 
 interface NodeToNodeProps {
   from: string;

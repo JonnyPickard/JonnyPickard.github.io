@@ -1,4 +1,4 @@
-import { defineHex, HexOptions, Hex } from "honeycomb-grid";
+import { defineHex, Hex, HexOptions } from "honeycomb-grid";
 import { getRandomInt } from "./utils";
 
 // Note: I ended up extending default Hex types at src/types/honeycomb.d.ts to allow for custom properties

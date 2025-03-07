@@ -1,8 +1,8 @@
-import { devtools } from "zustand/middleware";
 import type {} from "@redux-devtools/extension"; // required for devtools typing
-import { create } from "zustand";
-import { calculateRotation, DIRECTION } from "./utils";
 import { Hex } from "honeycomb-grid";
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { calculateRotation, DIRECTION } from "./utils";
 
 import { logger } from "./utils";
 

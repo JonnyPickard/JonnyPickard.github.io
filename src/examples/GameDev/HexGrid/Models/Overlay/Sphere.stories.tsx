@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { OverlaySphere } from "./Sphere";
 import { Scene } from "..";
+import { OverlaySphere } from "./Sphere";
 
 const meta = {
   title: "Examples/Game Dev/Hex Grid/Overlays",

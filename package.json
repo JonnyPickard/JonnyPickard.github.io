@@ -12,6 +12,8 @@
     "test": "vitest",
     "gltftojsx": "npx gltfjsx",
     "upgrade-interactive": "npx npm-check-updates -i",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "vite": "vite"
   },
   "dependencies": {

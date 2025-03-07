@@ -1,13 +1,13 @@
 import {
-  Grid,
-  OffsetCoordinates,
   createHexOrigin,
+  Grid,
+  hexToOffset,
+  OffsetCoordinates,
   Orientation,
   rectangle,
-  hexToOffset,
 } from "honeycomb-grid";
-import { generateTerrainTiles, isTile } from "../../utils";
 import { defineCustomHex } from "../../CustomHex";
+import { generateTerrainTiles, isTile } from "../../utils";
 
 describe("generateTerrainTiles", () => {
   // NOTE: If I do more rigourous testing. Might be worth extracting these into testing utils.

@@ -1,5 +1,5 @@
-import { calculateDirection } from "../../utils/calculateDirection";
 import { Hex } from "honeycomb-grid";
+import { calculateDirection } from "../../utils/calculateDirection";
 
 describe("calculateDirection", () => {
   it("should return the correct direction when moving NE", () => {
