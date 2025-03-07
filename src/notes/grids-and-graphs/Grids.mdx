@@ -2,25 +2,26 @@ import { Meta } from "@storybook/blocks";
 
 import { MatrixGrid } from "../../examples/GraphTheory";
 
-<Meta name="Notes/Grids & Graphs/Grids" title="Notes/Grids & Graphs/Grids" />
+<Meta name="Grids & Graphs/Grids" title="Grids & Graphs/Grids" />
 
 # Grids
 
 <time dateTime="2025-02-23">Feb 23, 2025</time>
 
 <hr />
-
 <br />
 
 ## Introduction
 
-Rectangular grids are a common way to represent 2D space in various applications, including games, simulations, and more. Each cell in the grid can hold a value or represent a state.
+Rectangular grids are fundamental structures for representing 2D space in applications ranging from video games and simulations to data visualization and algorithmic challenges. Each cell in the grid can store a value or represent a state, allowing for efficient spatial organization.
 
 ## Representing a Grid in Code
 
+There are several approaches to representing grids programmatically, each with their own advantages and use cases:
+
 ### 2D Array Matrix Representation
 
-We can represent a grid in code using a 2D array. This array can contain any data type but for simplicity, we'll use integers.
+The most straightforward approach is using a 2D array, where the first index typically represents rows and the second represents columns:
 
 ```js
 const grid = [
@@ -31,15 +32,81 @@ const grid = [
 ];
 ```
 
+This representation is intuitive and provides O(1) access time to any cell using coordinates. It's most efficient when the grid is dense (most cells contain meaningful data) and has a fixed size.
+
 ### Object Representation (Sparse Representation)
+
+For sparse grids where most cells are empty, an object-based approach can be more memory-efficient:
+
+```js
+const sparseGrid = {
+  "1,2": { type: "wall", color: "gray" },
+  "3,4": { type: "player", name: "Hero" },
+  // Only populated cells are stored
+};
+```
+
+This approach uses significantly less memory for sparse grids but requires string manipulation for lookups.
 
 ### 1D Array (Flat Representation)
 
+A 1D array can be used with index calculation to represent a 2D grid:
+
+```js
+const width = 4;
+const height = 4;
+const flatGrid = new Array(width * height).fill(0);
+
+// To access cell at (x, y):
+const getIndex = (x, y) => y * width + x;
+const getValue = (x, y) => flatGrid[getIndex(x, y)];
+const setValue = (x, y, value) => {
+  flatGrid[getIndex(x, y)] = value;
+};
+
+setValue(2, 1, 5); // Set value 5 at position (2,1)
+console.log(getValue(2, 1)); // Output: 5
+```
+
+This approach can offer performance benefits due to improved cache locality and is commonly used in graphics programming and game development.
+
 ### Chunking for Large Grids
+
+For extremely large grids, a chunking approach divides the grid into manageable sections:
+
+```js
+const chunks = {};
+
+const getChunkCoord = (x, y) => {
+  const chunkSize = 16;
+  return {
+    chunkX: Math.floor(x / chunkSize),
+    chunkY: Math.floor(y / chunkSize),
+    localX: x % chunkSize,
+    localY: y % chunkSize,
+  };
+};
+
+const setValue = (x, y, value) => {
+  const { chunkX, chunkY, localX, localY } = getChunkCoord(x, y);
+  const chunkKey = `${chunkX},${chunkY}`;
+
+  // Create chunk if it doesn't exist
+  if (!chunks[chunkKey]) {
+    chunks[chunkKey] = Array(16)
+      .fill()
+      .map(() => Array(16).fill(0));
+  }
+
+  chunks[chunkKey][localY][localX] = value;
+};
+```
+
+This approach is essential for games with procedurally generated worlds like Minecraft.
 
 ## Navigating the Grid
 
-To navigate the grid, we can define directions and use them to move from one cell to another.
+To traverse a grid, we define direction vectors that represent movements from one cell to another:
 
 ```js
 const directions = {
@@ -47,6 +114,11 @@ const directions = {
   east: { x: 0, y: 1 },
   south: { x: 1, y: 0 },
   west: { x: 0, y: -1 },
+  // For diagonal movement:
+  northEast: { x: -1, y: 1 },
+  southEast: { x: 1, y: 1 },
+  southWest: { x: 1, y: -1 },
+  northWest: { x: -1, y: -1 },
 };
 
 const move = (start, direction) => {
@@ -58,6 +130,21 @@ const newPosition = move(start, directions.north);
 console.log(newPosition); // { x: 0, y: 1 }
 ```
 
+When navigating grids, always validate that the new position remains within bounds before accessing it:
+
+```js
+const isInBounds = (position, width, height) => {
+  return (
+    position.x >= 0 &&
+    position.y >= 0 &&
+    position.x < height &&
+    position.y < width
+  );
+};
+```
+
 ## Links
 
-- [Grid-Based Movement](https://example.com/grid-based-movement)
+- [Red Blob Games: Grids and Graphs](https://www.redblobgames.com/pathfinding/grids/graphs.html)
+- [Grid-Based Game Design](https://gamedev.stackexchange.com/questions/tagged/grid)
+- [2D Grid Movement in Unity](https://learn.unity.com/tutorial/2d-movement)

@@ -1,0 +1,65 @@
+import { Meta } from "@storybook/blocks";
+import LinkTo from "@storybook/addon-links/react";
+
+<Meta name="Hexagonal Grids" title="Hexagonal Grids" />
+
+# Hexagonal Grids
+
+<time dateTime="2024-02-08">Feb 8, 2024</time>
+
+<hr />
+<br />
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Mapping Hex Mesh Geometry to Honeycomb](#mapping-hex-mesh-geometry-to-honeycomb)
+- [Pathfinding](#pathfinding)
+
+## Overview
+
+This project explores the integration of [Three.js][1] with [Honeycomb][2] to render and manipulate hexagonal grids. Much of the underlying logic draws from Amit Patel's comprehensive guide: [RedBlobGames Hexagonal Grids][3], widely regarded as the definitive resource on the subject.
+
+**DISCLAIMER:** This implementation serves as a learning exercise and proof-of-concept for hexagonal grid coordinate systems and pathfinding algorithms. It should not be considered production-ready code but rather a foundation for further development.
+
+## Mapping Hex Mesh Geometry to Honeycomb
+
+[Custom Hexes](https://abbekeultjes.nl/honeycomb/guide/custom-hexes.html#custom-hexes) in Honeycomb provide the foundation for creating specialized hex tiles. When implementing these with Three.js geometry:
+
+- My hex tile mesh uses `POINTY TOP` orientation (in Three.js, `Y` represents the vertical axis)
+- The bounding box's Z dimension corresponds to the outer circumference of the hex
+- The outer circumference dimension is expressed as a `Size` value
+- Width and height are defined relative to the diameters of two circles:
+  - **Flat Top Variant:**
+    - Width = `2 × Size`
+    - Height = `√3 × Size`
+  - **Pointy Top Variant:**
+    - Width = `√3 × Size`
+    - Height = `2 × Size`
+
+This correlation between geometric properties ensures that hex coordinates in Honeycomb properly map to Three.js mesh positions.
+
+## Pathfinding
+
+Hexagonal grid pathfinding typically employs one of three main algorithms:
+
+- **A\* Algorithm** - The standard approach balancing path optimality and performance
+- **Biased A\*** - A variant where the heuristic function favors certain directions
+  - _Note: A heuristic function ranks alternatives at each branching step to determine which path to explore next_
+- **Dijkstra's Algorithm** - Guarantees optimal paths but explores more nodes than A\*
+
+For static map layouts, more performant algorithms like [Jump Point Search (JPS)][5] can dramatically improve efficiency by skipping redundant nodes and caching sections of the graph.
+
+[Rory Sullivan's Hexagonal Path Finding Visualizer][4] provides an excellent interactive demonstration of these algorithms in action.
+
+[1]: https://threejs.org/ "Three.js - JavaScript 3D Library"
+[2]: https://abbekeultjes.nl/honeycomb/guide/getting-started.html "Honeycomb - Hexagonal Grid Library for JavaScript"
+[3]: https://www.redblobgames.com/grids/hexagons/#basics "Hexagonal Grids - Red Blob Games"
+[4]: https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/ "Hexagonal Path Finding Visualiser"
+[5]: http://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter14_JPS_Plus_An_Extreme_A_Star_Speed_Optimization_for_Static_Uniform_Cost_Grids.pdf "JPS+ - An Extreme A* Speed Optimization"
+
+{/* Additional resources for implementation */}
+{/* a* https://github.com/anvaka/ngraph.path/blob/main/a-star/a-star.js */}
+{/* a* https://github.com/AlurienFlame/Honeycomb/blob/master/sketch.js#L257 */}
+{/* a* https://rory-sullivan.github.io/Hexagonal-Path-Finding-Visualiser/ */}
+{/* a* https://github.com/Rory-Sullivan/Hexagonal-Path-Finding-Visualiser */}

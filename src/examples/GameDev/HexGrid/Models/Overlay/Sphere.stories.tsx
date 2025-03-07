@@ -4,7 +4,7 @@ import { Scene } from "..";
 import { OverlaySphere } from "./Sphere";
 
 const meta = {
-  title: "Examples/Game Dev/Hex Grid/Overlays",
+  title: "Hexagonal Grids/Overlays",
   decorators: [
     (Story) => (
       <Scene>

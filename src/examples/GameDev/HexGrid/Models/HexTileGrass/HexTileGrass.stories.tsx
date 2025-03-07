@@ -4,7 +4,7 @@ import { Scene } from "..";
 import { HexTileGrass as HexTileGrassModel } from "./HexTileGrass";
 
 const meta = {
-  title: "Examples/Game Dev/Hex Grid",
+  title: "Hexagonal Grids",
   decorators: [
     (Story) => (
       <Scene>

@@ -5,7 +5,7 @@ import { Grid } from ".";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/2D Grid",
+  title: "Grids & Graphs/2D Grid",
   parameters: {
     layout: "fullscreen",
   },

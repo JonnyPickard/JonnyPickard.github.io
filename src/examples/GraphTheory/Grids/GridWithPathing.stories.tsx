@@ -21,7 +21,7 @@ const MIN_COLUMNS = 1;
 
 const meta: Meta<typeof GridWithPathing> = {
   component: GridWithPathing,
-  title: "Examples/Grids & Graphs/Grid With Pathing",
+  title: "Grids & Graphs/Grid With Pathing",
   parameters: {
     layout: "fullscreen",
   },

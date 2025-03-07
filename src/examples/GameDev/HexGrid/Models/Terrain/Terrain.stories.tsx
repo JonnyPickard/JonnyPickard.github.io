@@ -4,7 +4,7 @@ import { Scene } from "..";
 import { Terrain as TerrainModel } from "./Terrain";
 
 const meta = {
-  title: "Examples/Game Dev/Hex Grid/Terrain",
+  title: "Hexagonal Grids/Terrain",
   decorators: [
     (Story) => (
       <Scene>

@@ -1,0 +1,312 @@
+import {
+  GraphDiagram,
+  Node,
+  NodeToNode,
+  MatrixGrid,
+} from "../../examples/GraphTheory";
+
+import { Meta } from "@storybook/blocks";
+import LinkTo from "@storybook/addon-links/react";
+
+<Meta name="Grids & Graphs/Graph Theory" title="Grids & Graphs/Graph Theory" />
+
+# Graph Theory
+
+<time dateTime="2024-05-05">May 5, 2024</time>
+
+<hr />
+<br />
+
+## Introduction to Graph Theory
+
+<br />
+
+A mathematical graph consists of <span className="text-indigo-500">nodes</span> connected by <span className="text-emerald-500">edges</span>.
+
+<div className="flex h-96 w-full justify-center">
+  <GraphDiagram />
+</div>
+
+<span className="text-indigo-500">Nodes</span> (also called
+<span className="text-indigo-500">vertices</span> or
+<span className="text-indigo-500">objects</span>) are connected by
+<span className="text-emerald-500">edges</span> (also called
+<span className="text-emerald-500">links</span>,
+<span className="text-emerald-500">connections</span>, or
+<span className="text-emerald-500">arcs</span>).
+
+To define any graph, we need two essential components:
+
+<ol className="sb-unstyled text-slate-50">
+  <li className="pb-2">
+    <span className="text-indigo-500">Set of nodes</span>:
+    <ul className="flex justify-evenly align-middle">
+      <li>
+        <Node name={"A"} />
+      </li>
+      <li>
+        <Node name={"B"} />
+      </li>
+      <li>
+        <Node name={"C"} />
+      </li>
+      <li>
+        <Node name={"D"} />
+      </li>
+      <li>
+        <Node name={"E"} />
+      </li>
+      <li>
+        <Node name={"F"} />
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span className="text-emerald-500">Set of edges</span> from each node:
+    <ul className="list-disc">
+      <li className="flex items-center">
+        <span className="text-emerald-500">A</span>:{" "}
+        <NodeToNode from="A" to="B" />
+        <NodeToNode from="A" to="D" />
+        <NodeToNode from="A" to="G" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">B</span>:{" "}
+        <NodeToNode from="B" to="A" />
+        <NodeToNode from="B" to="C" />
+        <NodeToNode from="B" to="F" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">C</span>:{" "}
+        <NodeToNode from="C" to="B" />
+        <NodeToNode from="C" to="D" />
+        <NodeToNode from="C" to="E" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">D</span>:{" "}
+        <NodeToNode from="D" to="C" />
+        <NodeToNode from="D" to="A" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">E</span>:{" "}
+        <NodeToNode from="E" to="C" />
+        <NodeToNode from="E" to="F" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">F</span>:{" "}
+        <NodeToNode from="F" to="B" />
+        <NodeToNode from="F" to="E" />
+      </li>
+      <li className="flex items-center">
+        <span className="text-emerald-500">G</span>:{" "}
+        <NodeToNode from="G" to="A" />
+      </li>
+    </ul>
+  </li>
+</ol>
+
+An important concept to understand is that graph search algorithms operate solely on connectivity between nodes, without inherent awareness of spatial layout or grid properties.
+
+## Representing a Grid in Code
+
+> **Note:** In graphics programming and computing generally, grid coordinates typically originate from the top-left corner of the screen. This convention follows familiar patterns seen in spreadsheets and text documents, making coordinate systems more intuitive for human readers.
+
+The most straightforward way to represent a grid programmatically is using a 2D array:
+
+```js
+const grid = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+];
+```
+
+Integer values within the grid can represent different tile properties:
+
+- `0` might indicate a walkable tile
+- `1` could represent terrain or an impassable obstacle
+
+For more complex scenarios, you can use objects as nodes to store additional data such as movement cost, terrain type, or special properties.
+
+<br />
+
+**The first index (depth 1) represents rows or x-coordinates:**
+
+```js
+const grid = [
+  [0, 0, 0, 0], // x0
+  [0, 0, 0, 0], // x1
+  [0, 0, 0, 0], // x2
+  [0, 0, 0, 0], // x3
+];
+```
+
+**The second index (depth 2) represents columns or y-coordinates:**
+
+```js
+const grid = [
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+  [y0, y1, y2, y3],
+];
+```
+
+**The resulting grid visualization:**
+
+<p align="center" className="p-2">
+  <MatrixGrid
+    matrix={[
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ]}
+  />
+</p>
+
+<br />
+
+## Encoding a Grid in Graph Form
+
+To properly traverse a graph structure, we need two key components:
+
+1. All <span className="text-indigo-500">nodes</span> in the graph
+2. All <span className="text-emerald-500">edges</span> (connections between nodes, or <span className="text-emerald-500">neighbors</span>)
+
+<br />
+
+### Listing Nodes
+
+To generate a comprehensive list of all <span className="text-indigo-500">nodes</span> in a grid-based graph, we can iterate through the coordinates:
+
+```js
+/**
+ * Generate a list of all node coordinates for a given grid
+ * @param {number} rows - Number of rows in the grid
+ * @param {number} columns - Number of columns in the grid
+ * @param {number[][]} [matrix] - Optional 2D array representing the grid
+ * @returns {Array<[number, number]>} List of [x, y] coordinate pairs
+ */
+export const listGridNodes = (
+  rows: number,
+  columns: number,
+  matrix?: number[][],
+) => {
+  let r = rows;
+  let c = columns;
+
+  if (matrix && matrix.length > 0) {
+    r = matrix.length;
+    c = matrix[0].length;
+  }
+
+  const nodes = [];
+
+  for (let x = 0; x < r; x++) {
+    for (let y = 0; y < c; y++) {
+      nodes.push([x, y]);
+    }
+  }
+
+  return nodes;
+};
+```
+
+> This function accepts either explicit dimensions or derives them from a provided matrix, offering flexibility for different use cases.
+
+<br />
+
+### Finding Edges or Neighbors
+
+Rather than enumerating all possible <span className="text-emerald-500">edges</span>, a more practical approach is to implement a function that identifies all connections (neighbors) from a specific <span className="text-indigo-500">node</span>.
+
+#### Grid Directions
+
+Understanding directional movement is essential for grid traversal algorithms.
+
+In the example below, we start at the <span className="text-emerald-700">center point (x1, y1)</span> and want to move north to the <span className="text-violet-700">top middle point (x0, y1)</span>:
+
+<p align="center" className="p-2">
+  <MatrixGrid
+    matrix={[
+      [0, 3, 0],
+      [0, 2, 0],
+      [0, 0, 0],
+    ]}
+  />
+</p>
+
+Moving north by one cell always results in a position change of `x - 1, y + 0` (the y-coordinate remains unchanged).
+
+In code, moving north one grid space is implemented as:
+
+```js
+const start = { x: 1, y: 1 };
+const north = { x: -1, y: 0 };
+
+// Adding a negative number performs subtraction
+const end = { x: start.x + north.x, y: start.y + north.y };
+```
+
+This same principle extends to all eight possible directions:
+
+```js
+const north = { x: -1, y: 0 };
+const northEast = { x: -1, y: 1 };
+const east = { x: 0, y: 1 };
+const southEast = { x: 1, y: 1 };
+const south = { x: 1, y: 0 };
+const southWest = { x: 1, y: -1 };
+const west = { x: 0, y: -1 };
+const northWest = { x: -1, y: -1 };
+```
+
+#### Finding Neighbors Implementation
+
+The following algorithm identifies valid neighbors for a given node:
+
+```js
+/**
+ * Find all valid neighboring nodes for a given node
+ * @param {GraphNode} node - The current node coordinates [x, y]
+ * @param {GraphNode[]} nodes - List of all valid nodes in the graph
+ * @returns {Neighbors} Array of neighboring node coordinates
+ */
+const findNeighbors = (node: GraphNode, nodes: GraphNode[]) => {
+  // Using only cardinal directions (N, E, S, W) for simplicity
+  // Add diagonals (NE, SE, SW, NW) for 8-directional movement
+  const directions = [
+    [-1, 0], // North
+    [0, 1],  // East
+    [1, 0],  // South
+    [0, -1], // West
+  ];
+  const neighbors: Neighbors = [];
+
+  directions.forEach((dir) => {
+    const neighbor: GraphNode = [node[0] + dir[0], node[1] + dir[1]];
+
+    // Verify the neighbor exists within the grid boundaries
+    // This prevents attempting to access out-of-bounds coordinates
+    if (
+      nodes.findIndex((n) => {
+        return n[0] === neighbor[0] && n[1] === neighbor[1];
+      }) !== -1
+    ) {
+      neighbors.push(neighbor);
+    }
+  });
+
+  return neighbors;
+};
+```
+
+This implementation ensures that only valid neighbors within the grid boundaries are included in the result.
+
+## Related Resources
+
+- [Red Blob Games: Introduction to Graph Theory](https://www.redblobgames.com/pathfinding/grids/graphs.html)
+- [Stanford CS Theory: Graph Algorithms](https://web.stanford.edu/class/cs97si/06-basic-graph-algorithms.pdf)
+- [Khan Academy: Graph Representation](https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs)

@@ -1,0 +1,434 @@
+import { Source, Meta } from "@storybook/blocks";
+import ReduxDataFlow from "../../assets/diagrams/ReduxDataFlowDiagram.gif";
+import ReduxDataFlowAsync from "../../assets/diagrams/ReduxAsyncDataFlowDiagram.gif";
+
+<Meta name="State Management/Redux" title="State Management/Redux" />
+
+# Redux
+
+<time dateTime="2023-11-05">Nov 5, 2023</time>
+
+<hr />
+<br />
+
+## Table of Contents
+
+- [Overview](#overview)
+- [One-Way Data Flow](#one-way-data-flow)
+- [Actions](#actions)
+- [Reducers](#reducers)
+- [Selectors](#selectors)
+  - [Optimizing Selectors with Memoization](#optimizing-selectors-with-memoization)
+- [Slice](#slice)
+- [Middleware](#middleware)
+  - [Redux Thunk Middleware](#redux-thunk-middleware)
+  - [Async Thunk](#async-thunk)
+- [Store Normalization](#store-normalization)
+- [RTK Query](#rtk-query)
+- [Usefull Links](#usefull-links)
+
+## Overview
+
+Redux is a predictable state management library that implements a global store using a variation of the publish/subscribe pattern.
+
+The store serves as a single source of truth: a centralized location where all application data exists only once and is the exclusive place where state can be updated or retrieved.
+
+View components are restricted to dispatching events (representing UI interactions) and cannot modify state directly.
+
+Redux is particularly valuable when:
+
+- Your application has substantial state that needs to be accessed across multiple components
+- State updates occur frequently throughout the application
+- State update logic becomes complex
+- The codebase is medium to large and may involve multiple developers
+- You need to track state changes over time for debugging
+
+## One-Way Data Flow
+
+One-way data flow is a fundamental concept in Redux where data always flows in a unidirectional cycle:
+
+<p align="center">
+  <img src={ReduxDataFlow} alt="Redux Data Flow" width="320px" />
+</p>
+
+Following the diagram above:
+
+1. A view component (UI) subscribes to the store, enabling it to:
+
+   - Request necessary data (e.g., bank balance: $0)
+   - Receive updates when data changes, triggering re-renders
+   - Dispatch events back to the store
+
+2. When a user interacts with the UI (e.g., depositing $10):
+   - An action is created (an object containing event data)
+
+```ts
+const depositAction = {
+  type: "bank/deposit",
+  payload: 10,
+};
+```
+
+3. The action is dispatched to the store, which determines how to update its state:
+
+   - `Current bank balance: $0` + `$10` = `New bank balance: $10`
+
+4. The UI receives the updated bank balance of `$10` and re-renders accordingly.
+
+## Actions
+
+An `Action` is a plain JavaScript object with a mandatory `type` field that describes the event that occurred.
+
+- Actions can include additional fields with information about what happened
+- By convention, this additional data is placed in a field called `payload`
+
+```js
+const addTodoAction = {
+  type: "todos/todoAdded",
+  payload: "Buy milk",
+};
+```
+
+## Reducers
+
+A `Reducer` is a pure function that receives the current `state` and an `action` object, then determines how to update the state if necessary.
+
+- The store registers reducer functions during initialization/configuration
+
+```js
+const store = configureStore({ reducer: counterReducer });
+```
+
+Reducers must follow these rules:
+
+- Calculate the new state value based solely on the `current state` + `action`
+- Never modify existing state directly; always make `immutable updates` by copying the existing state
+- Avoid asynchronous logic or side effects (like API calls or browser interactions)
+
+## Selectors
+
+Selectors are functions that extract specific pieces of data from the store.
+
+Benefits of selectors include:
+
+- **Reusability**: They provide a consistent way to access the same piece of derived data across different components
+- **Maintainability**: They decouple components from the store structure, facilitating easier testing and refactoring
+
+Basic example:
+
+```ts
+import React from "react";
+import { useSelector } from "react-redux";
+
+export const TodoListItem = (props) => {
+  const todo = useSelector((state) => state.todos[props.id]);
+  return <div>{todo.text}</div>;
+};
+```
+
+For maintainability, it's best to define selectors as reusable functions when:
+
+- Multiple components need to access the same piece of state
+- The store structure might change in the future
+
+It's often recommended to define reusable selectors directly in slice files rather than within components.
+
+<br />
+
+### Optimizing Selectors with Memoization
+
+[Optimizing Selectors with Memoization](https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization)
+
+#### Context
+
+1. Selectors used with `useSelector` or `mapState` run after every dispatched action
+2. `useSelector` and `mapState` use `===` reference equality checks on selector return values to determine if a component needs to re-render
+
+```ts
+// Example 1. Causing unnecessary re-renders
+function TodoList() {
+  const completedTodos = useSelector((state) =>
+    state.todos.map((todo) => todo.completed),
+  );
+}
+```
+
+> Example 1: The `map` function always returns a new array, causing the reference equality check (`===`) to fail and the component to re-render after every dispatched action, even when the todos haven't changed!
+
+```ts
+// Example 2. Re-running expensive calculations
+function ExampleComplexComponent() {
+  const data = useSelector((state) => {
+    const initialData = state.data;
+    const filteredData = expensiveFiltering(initialData);
+
+    return filteredData;
+  });
+}
+```
+
+> Example 2: This expensive filtering logic will run after every dispatched action when it should only run when `state.data` changes.
+
+#### Solution
+
+We can use `memoization`, a caching technique, to optimize selector performance. Memoization stores the inputs and results of a function call. When the function is called again:
+
+- If the inputs are identical to a previous call, it returns the cached result without re-executing the function
+- If the inputs differ, it re-executes the function and stores the new inputs and results
+
+The standard library for memoizing selectors is [Reselect](https://github.com/reduxjs/reselect), which exports a [createSelector](https://github.com/reduxjs/reselect#createselectorinputselectors--inputselectors-resultfunc-selectoroptions) API for generating memoized selectors.
+
+```ts
+// `createSelector` accepts one or more "input" selectors
+// and an "output" selector that transforms the input values
+// An output selector should always contain transformation logic!
+const selectUsersOver30 = createSelector(
+  // Input selector
+  (state) => state.usersList,
+  // Output selector
+  (usersList) => usersList.filter((user) => user.age > 30),
+);
+```
+
+## Slice
+
+A slice is a function that accepts initial state, an object of reducer functions, and a slice name. It `automatically generates action creators and action types` corresponding to the reducers and state.
+
+```typescript
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+interface CounterState {
+  value: number;
+}
+
+const initialState = { value: 0 } as CounterState;
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState,
+  reducers: {
+    increment(state) {
+      state.value++;
+    },
+    decrement(state) {
+      state.value--;
+    },
+    incrementByAmount(state, action: PayloadAction<number>) {
+      state.value += action.payload;
+    },
+  },
+});
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
+```
+
+## [Middleware](https://redux.js.org/understanding/thinking-in-redux/glossary#middleware)
+
+Redux Middleware is a higher-order function that composes a dispatch function to return a new dispatch function.
+
+```ts
+type Middleware = ({ dispatch: Dispatch; getState: () => State }) => (next: Dispatch) => Dispatch;
+```
+
+<p align="center">
+  <img src={ReduxDataFlowAsync} alt="Redux Data Flow Async" width="320px" />
+</p>
+
+Middleware is primarily used for logic with side effects such as logging, routing, and asynchronous API calls.
+
+Middleware can be composed using [function composition](https://redux.js.org/api/compose): a technique where you combine multiple functions to create a new function. The output of one function becomes the input for another.
+
+```ts
+// Function composition example:
+// 1. slice(bread)
+// 2. toast(slicedBread)
+// 3. spreadButter(slicedToast)
+// 4. addJam(butteredToast)
+
+const makeSandwich = (bread) => addJam(spreadButter(toast(sliceBread(bread))));
+
+makeSandwich("Sourdough Loaf");
+```
+
+### [Redux Thunk Middleware](https://redux.js.org/usage/writing-logic-thunks)
+
+The term "thunk" describes a function that performs delayed work. Redux Thunk middleware allows you to dispatch functions instead of plain action objects.
+
+A thunk function can contain arbitrary logic (synchronous or asynchronous) and can call `dispatch` or `getState` at any time.
+
+```ts
+const thunkFunction = (dispatch, getState) => {
+  // Logic that can dispatch actions or read state
+};
+
+store.dispatch(thunkFunction);
+```
+
+For consistency with dispatching regular action objects, we typically write thunk action creators that return the thunk function. These action creators can accept arguments for use within the thunk.
+
+```ts
+const depositFunds = (amount) => {
+  return (dispatch, getState) => {
+    const balanceBefore = getState().balance;
+    dispatch(incrementByAmount(amount));
+    const balanceAfter = getState().balance;
+  };
+};
+
+store.dispatch(depositFunds(10));
+```
+
+### Async Thunk
+
+[Using Async Thunk](https://redux.js.org/usage/writing-logic-thunks#using-createasyncthunk)
+
+Since writing async logic with thunks can be repetitive (requiring code for pending/fulfilled/rejected states), Redux Toolkit provides `createAsyncThunk` for handling async operations.
+
+`createAsyncThunk` accepts a Redux action type string and a callback function that returns a promise. It automatically generates and dispatches actions based on the promise's status.
+
+```ts
+// todosSlice.js
+
+export const saveNewTodo = createAsyncThunk(
+  "todos/saveNewTodo",
+  async (text) => {
+    const initialTodo = { text };
+    const response = await client.post("/fakeApi/todos", { todo: initialTodo });
+    return response.todo;
+  },
+);
+
+const todosSlice = createSlice({
+  name: "todos",
+  initialState,
+  reducers: {
+    // omit reducer cases
+  },
+  // extraReducers handles actions defined elsewhere (like those from createAsyncThunk)
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveNewTodo.pending, (state, action) => {
+        state.status = "saving";
+      })
+      .addCase(saveNewTodo.fulfilled, (state, action) => {
+        state.todos = [...state.todos, action.payload.newTodo];
+        state.status = "save successful";
+      });
+  },
+});
+```
+
+```ts
+// NewTodoForm.js
+
+const handleSubmit = async () => {
+  await dispatch(saveNewTodo(todoText));
+};
+```
+
+`saveNewTodo.pending` and `saveNewTodo.fulfilled` actions are automatically dispatched and can be handled by the todosSlice reducers.
+
+## [Store Normalization](https://redux.js.org/usage/structuring-reducers/normalizing-state-shape#designing-a-normalized-state)
+
+When working with relational or nested data, the resulting structure can become complex and repetitive.
+
+This creates several issues:
+
+- Duplicate data across the store becomes difficult to update consistently
+- Nested data requires complex reducer logic that becomes harder to maintain
+- Immutable updates of deeply nested objects require copying all ancestor objects in the state tree, potentially causing unrelated UI components to re-render even when their displayed data hasn't changed
+
+```ts
+// 1. Unnormalized state
+
+const blogPosts = [
+  {
+    id: "post1",
+    author: { username: "user1", name: "User 1" },
+    body: "......",
+    comments: [
+      {
+        id: "comment1",
+        author: { username: "user2", name: "User 2" },
+        comment: ".....",
+      },
+      {
+        id: "comment2",
+        author: { username: "user3", name: "User 3" },
+        comment: ".....",
+      },
+    ],
+  },
+];
+```
+
+The principles of normalizing data are:
+
+- Each data type gets its own "table" in the state
+- Each "data table" stores items in an object, using item IDs as keys and the items themselves as values
+- References to individual items use the item's ID
+- Arrays of IDs indicate ordering
+
+Here's how you could normalize the `blogPosts` state:
+
+```ts
+// 2. After Normalization
+
+{
+  posts: {
+    byId: {
+      post1: {
+        id: "post1",
+        author: "user1",
+        body: "......",
+        comments: ["comment1", "comment2"],
+      },
+    },
+    allIds: ["post1"],
+  },
+  comments: {
+    byId: {
+      comment1: {
+        id: "comment1",
+        author: "user2",
+        comment: ".....",
+      },
+      comment2: {
+        id: "comment2",
+        author: "user3",
+        comment: ".....",
+      },
+    },
+    allIds: ["comment1", "comment2"],
+  },
+  users: {
+    byId: {
+      user1: {
+        username: "user1",
+        name: "User 1",
+      },
+      user2: {
+        username: "user2",
+        name: "User 2",
+      },
+      user3: {
+        username: "user3",
+        name: "User 3",
+      },
+    },
+    allIds: ["user1", "user2", "user3"],
+  },
+};
+```
+
+## [RTK Query](https://redux-toolkit.js.org/rtk-query/overview)
+
+> 🚧 This topic will be covered in a separate post due to its extensive features and in-depth concepts.
+
+## Usefull Links
+
+- [Redux](https://redux.js.org/introduction/getting-started)
+- [Redux Core Concepts](https://redux.js.org/tutorials/fundamentals/part-2-concepts-data-flow)
+- [Redux Toolkit](https://redux-toolkit.js.org/introduction/getting-started)

@@ -13,7 +13,7 @@ import { useGridStore } from "./gridStore";
 
 const meta: Meta<typeof Grid> = {
   component: Grid,
-  title: "Examples/Grids & Graphs/Convert To Graph (Adjacency List)",
+  title: "Grids & Graphs/Convert To Graph (Adjacency List)",
 
   parameters: {
     controls: {

@@ -30,7 +30,7 @@ const LimitFPS = () => {
   return <></>;
 };
 
-export const HexGridScene = () => {
+export const HexGridGameScene = () => {
   const { camX, camZ } = CHARACTER_START_CAM_POSITION;
   const isRunning = usePlayerStore((state) => state.isRunning);
 

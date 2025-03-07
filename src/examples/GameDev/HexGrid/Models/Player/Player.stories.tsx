@@ -4,7 +4,7 @@ import { Scene } from "../Scene";
 import { Player as PlayerModel } from "./Player";
 
 const meta = {
-  title: "Examples/Game Dev/Hex Grid/Player",
+  title: "Hexagonal Grids/Player",
   decorators: [
     (Story) => (
       <Scene>

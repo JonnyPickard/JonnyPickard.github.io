@@ -1,0 +1,100 @@
+import { Source, Meta, Canvas } from "@storybook/blocks";
+
+import { Avatar } from "../../examples/Three/Avatar/Avatar.stories";
+
+import UEMannequins from "../../assets/screenshots/UEMannequins.png";
+import MixamoCharacterRigging from "../../assets/screenshots/MixamoCharacterRigging.png";
+import BlenderFlairAnimation from "../../assets/screenshots/BlenderFlairAnimation.png";
+import Paladin from "../../assets/screenshots/Paladin.png";
+
+<Meta
+  name="3D Rendering/Three.js/Three.js & React"
+  title="3D Rendering/Three.js/Three.js & React"
+/>
+
+# Integrating Three.js with React
+
+<time dateTime="2024-01-15">January 15, 2024</time>
+
+<br />
+<hr />
+
+## Essential Resources
+
+- [Three.js][1] - A powerful JavaScript 3D rendering library
+- React Three Ecosystem:
+  - [@react-three/fiber][2] - A React renderer for Three.js
+  - [@react-three/drei][3] - Essential helper components and utilities
+- [Tutorial: 3D Avatar Rendering with React & Three.js][4]
+
+## Introduction
+
+After an extensive exploration of Unreal Engine 5 and Blender, I became interested in bringing 3D development capabilities to the web. [Three.js][1] emerged as the definitive JavaScript library for 3D rendering, providing a sophisticated abstraction layer over the [WebGL][5] API while maintaining excellent performance.
+
+As a React developer, integrating Three.js into my workflow was streamlined by the [@react-three/fiber][2] renderer and [@react-three/drei][3] utility library. To further optimize the workflow, I leveraged [@react-three/gltfjsx][8] to transform 3D models into React components with a simple command:
+
+```bash
+# Converting a GLTF model to a JSX component
+npx gltfjsx src/assets/3DModels/avatar/Paladin.glb -t -r ./src/assets
+```
+
+## Creating an Animated 3D Avatar
+
+My journey into React-based 3D development was inspired by Nourdine Labib's excellent article: [Render yourself in 3D using React & Three.js][4].
+
+### The Character Selection Process
+
+Following the article's guidance, I initially experimented with [Ready Player Me][7] to generate a personalized 3D avatar from a photo. However, I found the customization options somewhat restrictive, particularly regarding hairstyles and clothing options.
+
+I explored several alternatives before finding the right fit:
+
+1. Initially, I worked with an Unreal Engine 5 Mannequin for testing
+2. Ultimately, I selected a Paladin character from [Mixamo][6], which better aligned with my creative vision
+
+To enhance the visual experience, I implemented a skybox using a cube camera/texture, immersing the character in a dynamic environment. For interactive control, I integrated [lil-gui][9] to create an intuitive animation control panel anchored to the top right corner of the viewport.
+
+<p align="center">
+  <img src={UEMannequins} alt="Unreal Engine Mannequins" width="320px" />
+  <em>Unreal Engine Mannequins - Initial test subjects</em>
+</p>
+
+<p align="center">
+  <img
+    src={MixamoCharacterRigging}
+    alt="Rigging and animating characters in Mixamo"
+    width="320px"
+  />
+  <em>Character rigging and animation process in Mixamo</em>
+</p>
+
+<p align="center">
+  <img
+    src={BlenderFlairAnimation}
+    alt="Unreal Engine Mannequin in Blender"
+    width="320px"
+  />
+  <em>
+    Converting the rigged and animated mannequin to .glb format using Blender
+  </em>
+</p>
+
+<p align="center">
+  <img src={Paladin} alt="Paladin Model" width="320px" />
+  <em>The final Paladin model selected for the project</em>
+</p>
+
+## Final Result
+
+The interactive 3D character below demonstrates the seamless integration of Three.js with React, featuring custom animations, environmental mapping, and intuitive controls:
+
+<Canvas of={Avatar} layout="centered" />
+
+[1]: https://threejs.org/ "Three.js - JavaScript 3D Library"
+[2]: https://github.com/pmndrs/react-three-fiber "@react-three/fiber - React renderer for Three.js"
+[3]: https://github.com/pmndrs/drei "@react-three/drei - Useful helpers for react-three-fiber"
+[4]: https://dev.to/nourdinedev/how-to-use-threejs-and-react-to-render-a-3d-model-of-your-self-4kkf "Tutorial: Render yourself in 3D using React & Three.js"
+[5]: https://en.wikipedia.org/wiki/WebGL "WebGL - Web Graphics Library"
+[6]: https://www.mixamo.com "Mixamo - 3D Character Animation Service"
+[7]: https://readyplayer.me/ "Ready Player Me - 3D Avatar Creator"
+[8]: https://github.com/pmndrs/gltfjsx "@react-three/gltfjsx - Convert GLTF models to JSX components"
+[9]: https://github.com/georgealways/lil-gui?tab=readme-ov-file#lil-gui "lil-gui - Lightweight GUI library"

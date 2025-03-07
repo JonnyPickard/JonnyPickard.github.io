@@ -5,7 +5,7 @@ import { TILE_COLORS } from "../../constants";
 import { Outline as HighlightOutline } from "./Outline";
 
 const meta = {
-  title: "Examples/Game Dev/Hex Grid/Overlays",
+  title: "Hexagonal Grids/Overlays",
   decorators: [
     (Story) => (
       <Scene>
