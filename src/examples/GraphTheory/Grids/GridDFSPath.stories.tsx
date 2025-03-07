@@ -17,6 +17,9 @@ const meta: Meta<typeof Grid> = {
   title: "Examples/Grids & Graphs/Depth First Search",
   parameters: {
     layout: "fullscreen",
+    controls: {
+      disable: true,
+    },
   },
   decorators: [
     (Story) => {
