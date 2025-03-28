@@ -3,7 +3,7 @@ import { TechTimeline } from "./TechTimeline";
 import { careerData } from "./careerData";
 
 const meta: Meta<typeof TechTimeline> = {
-  title: "Profile/TechTimeline",
+  title: "Profile Components/TechTimeline",
   component: TechTimeline,
   parameters: {
     layout: "fullscreen",

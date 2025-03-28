@@ -4,7 +4,7 @@ import { Avatar } from "./Avatar";
 import Headshot from "../assets/profile/headshot-700x700.png";
 
 const meta: Meta<typeof Avatar> = {
-  title: "Profile/Avatar",
+  title: "Profile Components/Avatar",
   component: Avatar,
   parameters: {
     layout: "centered",

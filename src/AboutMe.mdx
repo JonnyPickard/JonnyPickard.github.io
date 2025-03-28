@@ -1,0 +1,75 @@
+import { Meta } from "@storybook/blocks";
+import { SkillBars, TechTimeline, careerData } from "./profile";
+import headshot from "./assets/profile/headshot-450x450.png";
+
+import logoText from "./assets/logo-text.svg";
+
+<p align="center">
+  <a
+    title="Github Repository"
+    href="https://github.com/JonnyPickard/JonnyPickard.github.io"
+  >
+    <img src={logoText} alt="Logo" width="320px" />
+  </a>
+</p>
+
+<p align="center">
+  👨‍💻 <b>Senior Frontend Developer</b> | React & Typescript Enthusiast | London,
+  UK
+</p>
+
+<hr />
+
+<Meta name="about-me" title="About Me" />
+
+<br />
+
+<div style={{ display: "flex", alignItems: "center" }}>
+  <img
+    src={headshot}
+    alt="Jonny Pickard"
+    style={{
+      width: "150px",
+      height: "150px",
+      borderRadius: "50%",
+      marginRight: "20px",
+    }}
+  />
+  <p>
+    Senior Frontend Engineer with 8+ years of experience in delivering
+    high-performance web applications at scale. Expertise in React, TypeScript,
+    and AWS. Proven success in leading site redesigns, establishing frontend
+    architecture standards, and building robust testing strategies. Strong
+    leadership and mentoring skills.
+  </p>
+</div>
+
+<br />
+
+## Key Achievements
+
+- Architected and delivered multiple company-wide frontend solutions using React, TypeScript, and AWS, significantly enhancing application performance and scalability.
+- Established comprehensive testing frameworks across diverse codebases, implementing end-to-end strategies (unit, visual regression, integration, accessibility), which led to markedly improved code reliability and a substantial reduction in production issues.
+- Spearheaded the development of multiple React-based component libraries and design systems, resulting in a more consistent UI/UX across large-scale applications and a significant decrease in development time and technical debt.
+- Led infrastructure and site reliability initiatives, including CI/CD pipeline implementation and monitoring solutions, greatly improving system observability and noticeably reducing deployment times.
+- Conducted extensive technical research projects, delivering detailed proposals and proof-of-concepts that effectively guided strategic technical decisions and modernization efforts.
+
+## Skills
+
+<div className="flex w-full justify-center py-4">
+  <SkillBars />
+</div>
+
+<br />
+
+## Career Timeline
+
+<div className="flex w-full justify-center py-4">
+  <TechTimeline careerData={careerData} />
+</div>
+
+## Hobbies & Interests
+
+- Highly creative, with a strong passion for art, design, 3D modeling, and game development, consistently dedicating time to exploring new ideas and pushing creative boundaries.
+- Enthusiastic about health, fitness, and nutrition, with a commitment to regular training, primarily focused on cycling and Olympic lifting.
+- A devoted dog lover, often sharing dog-related content with family, even though space constraints prevent me from having one of my own.
