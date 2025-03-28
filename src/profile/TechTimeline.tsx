@@ -23,12 +23,12 @@ export function TechTimeline({ careerData }: TechTimelineProps) {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="p-6 overflow-x-auto w-full mx-auto">
-      <div className="flex flex-col gap-2 md:flex-row md:gap-x-8 md:gap-y-6">
+    <div className="p-6 overflow-x-auto w-full  bg-gray-900 text-gray-100 rounded-lg">
+      <div className="flex flex-col gap-8 md:flex-row md:gap-x-8 md:gap-y-6">
         {careerData.map((item, index) => (
           <motion.div
             key={index}
-            className="relative flex flex-col items-center cursor-pointer"
+            className="relative flex flex-col items-center cursor-pointer min-w-[200px]"
             whileHover={{ scale: 1.1 }}
           >
             <Popover
@@ -38,7 +38,7 @@ export function TechTimeline({ careerData }: TechTimelineProps) {
             >
               <PopoverTrigger asChild>
                 <div
-                  className="flex items-center gap-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg"
+                  className="flex items-center gap-x-2 bg-gray-800 text-gray-100 px-4 py-2 rounded-lg shadow-lg"
                   onClick={() => setSelected(selected === index ? null : index)}
                 >
                   {item.icon}{" "}
@@ -46,19 +46,19 @@ export function TechTimeline({ careerData }: TechTimelineProps) {
                 </div>
               </PopoverTrigger>
               {selected === index && (
-                <PopoverContent>
+                <PopoverContent className="dark">
                   <motion.div
-                    className="p-4 bg-gray-100 rounded-lg shadow-lg text-sm w-64"
+                    className="p-4 bg-gray-800 text-gray-100 rounded-lg shadow-lg text-sm w-64"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                   >
-                    <p className="text-gray-800">{item.details}</p>
-                    <div className="mt-2 text-xs text-gray-600 flex flex-wrap gap-2">
+                    <p className="text-gray-300">{item.details}</p>
+                    <div className="mt-2 text-xs text-gray-400 flex flex-wrap gap-2">
                       {item.tech.map((tech, i) => (
                         <span
                           key={i}
-                          className="bg-blue-200 text-blue-800 px-2 py-1 rounded-md"
+                          className="bg-blue-500 text-gray-100 px-2 py-1 rounded-md"
                         >
                           {tech}
                         </span>
@@ -68,8 +68,9 @@ export function TechTimeline({ careerData }: TechTimelineProps) {
                 </PopoverContent>
               )}
             </Popover>
-            <div className="mt-1 text-gray-700 text-sm font-semibold">
-              {item.role} @ {item.company}
+            <div className="mt-1 text-gray-300 text-sm font-semibold text-center">
+              <div>{item.role}</div>
+              <div className="text-gray-400">{item.company}</div>
             </div>
           </motion.div>
         ))}

@@ -6,7 +6,7 @@ const meta: Meta<typeof TechTimeline> = {
   title: "Profile/TechTimeline",
   component: TechTimeline,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
 };
 
@@ -18,4 +18,9 @@ export const Default: Story = {
   args: {
     careerData,
   },
+  decorators: (Story) => (
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100">
+      <Story />
+    </div>
+  ),
 };
