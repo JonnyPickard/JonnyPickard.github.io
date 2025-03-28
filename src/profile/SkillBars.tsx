@@ -8,6 +8,8 @@ import {
   SiTypescript,
 } from "react-icons/si";
 
+import { Icon } from "@iconify/react";
+
 type Skill = {
   name: string;
   level: number;
@@ -40,6 +42,13 @@ const skillCategories: SkillCategory[] = [
   {
     category: "Testing",
     skills: [
+      {
+        name: "Vitest",
+        level: 90,
+        icon: ({ className }) => (
+          <Icon className={className} icon="logos:vitest" />
+        ),
+      },
       { name: "Jest", level: 90, icon: SiJest },
       { name: "Cypress", level: 85, icon: SiJest },
       { name: "React Testing Library", level: 80, icon: SiJest },
