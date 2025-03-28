@@ -57,8 +57,8 @@ const skillCategories: SkillCategory[] = [
     skills: [
       { name: "AWS", level: 85, icon: "skill-icons:aws-light" },
       { name: "Docker", level: 80, icon: "logos:docker-icon" },
-      { name: "Git ", level: 85, icon: "devicon:git" },
-      { name: "GitHub ", level: 85, icon: "simple-icons:github" },
+      { name: "Git", level: 85, icon: "devicon:git" },
+      { name: "GitHub", level: 85, icon: "simple-icons:github" },
       { name: "GitHub Actions", level: 75, icon: "logos:github-actions" },
       { name: "Jenkins", level: 80, icon: "logos:jenkins" },
       { name: "CircleCI", level: 75, icon: "cib:circleci" },
