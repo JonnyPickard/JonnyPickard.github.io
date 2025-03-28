@@ -5,11 +5,13 @@ import {
 } from "@/components/shadcn/tooltip";
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
+import ZustandIcon from "../assets/icons/zustand.svg?react";
 
 type Skill = {
   name: string;
   level: number;
-  icon: string; // Iconify icon string
+  icon?: string; // Iconify icon string
+  iconComponent?: React.FC<React.SVGProps<SVGSVGElement>>; // Custom SVG component
 };
 
 type SkillCategory = {
@@ -24,13 +26,13 @@ const skillCategories: SkillCategory[] = [
       { name: "JavaScript", level: 90, icon: "skill-icons:javascript" },
       { name: "TypeScript", level: 90, icon: "logos:typescript-icon" },
       { name: "React", level: 95, icon: "logos:react" },
+      { name: "Zustand", level: 80, iconComponent: ZustandIcon },
       { name: "React Native", level: 70, icon: "devicon:reactnative-wordmark" },
       { name: "React Query", level: 85, icon: "logos:react-query-icon" },
       { name: "Next.js", level: 80, icon: "logos:nextjs-icon" },
       { name: "Redux", level: 85, icon: "logos:redux" },
       { name: "React Router", level: 80, icon: "logos:react-router" },
       { name: "Apollo Client", level: 75, icon: "skill-icons:apollo" },
-      { name: "Zustand", level: 80, icon: "logos:zustand" },
       { name: "Capacitor", level: 75, icon: "logos:capacitorjs-icon" },
       { name: "MUI", level: 85, icon: "logos:material-ui" },
       { name: "Chakra UI", level: 85, icon: "devicon:chakraui" },
@@ -118,20 +120,35 @@ const skillCategories: SkillCategory[] = [
 type SkillBarProps = {
   name: string;
   level: number;
-  icon: string;
+  icon?: string;
+  IconComponent?: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
-const SkillBar: React.FC<SkillBarProps> = ({ name, level, icon }) => {
+const SkillBar: React.FC<SkillBarProps> = ({
+  name,
+  level,
+  icon,
+  IconComponent,
+}) => {
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
           <Tooltip>
             <TooltipTrigger>
-              <Icon
-                className="mr-2 text-xl text-white dark:text-slate-100"
-                icon={icon}
-              />
+              {IconComponent ? (
+                <IconComponent
+                  width={24}
+                  className="mr-2 text-xl text-white dark:text-slate-100"
+                />
+              ) : (
+                icon && (
+                  <Icon
+                    className="mr-2 text-xl text-white dark:text-slate-100"
+                    icon={icon}
+                  />
+                )
+              )}
             </TooltipTrigger>
             <TooltipContent className="bg-gray-800 text-gray-100">
               Proficiency: {level}%
@@ -189,6 +206,7 @@ export const SkillBars: React.FC = () => {
                 key={skillIndex}
                 name={skill.name}
                 level={skill.level}
+                IconComponent={skill.iconComponent}
                 icon={skill.icon}
               />
             ))}
