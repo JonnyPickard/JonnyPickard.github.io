@@ -21,31 +21,66 @@ const skillCategories: SkillCategory[] = [
   {
     category: "Frontend Development",
     skills: [
-      { name: "React", level: 95, icon: "logos:react" },
+      { name: "JavaScript", level: 90, icon: "skill-icons:javascript" },
       { name: "TypeScript", level: 90, icon: "logos:typescript-icon" },
-      { name: "Next.js", level: 85, icon: "logos:nextjs-icon" },
-      { name: "React Query", level: 80, icon: "logos:react-query-icon" },
+      { name: "React", level: 95, icon: "logos:react" },
+      { name: "React Native", level: 70, icon: "devicon:reactnative-wordmark" },
+      { name: "React Query", level: 85, icon: "logos:react-query-icon" },
+      { name: "Next.js", level: 80, icon: "logos:nextjs-icon" },
+      { name: "Redux", level: 85, icon: "logos:redux" },
+      { name: "React Router", level: 80, icon: "logos:react-router" },
+      { name: "Apollo Client", level: 75, icon: "skill-icons:apollo" },
+      { name: "Zustand", level: 80, icon: "logos:zustand" },
+      { name: "Capacitor", level: 75, icon: "logos:capacitorjs-icon" },
+      { name: "MUI", level: 85, icon: "logos:material-ui" },
+      { name: "Chakra UI", level: 85, icon: "devicon:chakraui" },
+      { name: "Storybook", level: 90, icon: "devicon:storybook" },
+    ],
+  },
+  {
+    category: "Styling",
+    skills: [
+      { name: "CSS", level: 90, icon: "simple-icons:css" },
+      { name: "SCSS", level: 85, icon: "devicon:sass" },
+      {
+        name: "Styled Components",
+        level: 90,
+        icon: "devicon:styledcomponents",
+      },
+      { name: "Tailwind", level: 85, icon: "logos:tailwindcss-icon" },
     ],
   },
   {
     category: "Infrastructure & DevOps",
     skills: [
-      { name: "AWS", level: 85, icon: "logos:aws" },
+      { name: "AWS", level: 85, icon: "skill-icons:aws-light" },
       { name: "Docker", level: 80, icon: "logos:docker-icon" },
-      { name: "CI/CD", level: 75, icon: "logos:github-actions" },
+      { name: "Git ", level: 85, icon: "devicon:git" },
+      { name: "GitHub ", level: 85, icon: "simple-icons:github" },
+      { name: "GitHub Actions ", level: 75, icon: "logos:github-actions" },
+      { name: "Jenkins", level: 80, icon: "logos:jenkins" },
+      { name: "CircleCI", level: 75, icon: "cib:circleci" },
+      { name: "Datadog", level: 75, icon: "vscode-icons:file-type-datadog" },
+      { name: "Sentry", level: 70, icon: "skill-icons:sentry" },
+      { name: "CloudWatch", level: 70, icon: "logos:aws-cloudwatch" },
+      { name: "Splunk", level: 50, icon: "simple-icons:splunk" },
     ],
   },
   {
     category: "Testing",
     skills: [
       { name: "Vitest", level: 90, icon: "logos:vitest" },
-      { name: "Jest", level: 90, icon: "logos:jest" },
-      { name: "Cypress", level: 85, icon: "logos:cypress" },
+      { name: "Jest", level: 85, icon: "logos:jest" },
+      { name: "Cypress", level: 80, icon: "skill-icons:cypress-light" },
       {
         name: "React Testing Library",
-        level: 80,
+        level: 90,
         icon: "logos:testing-library",
       },
+      { name: "MSW", level: 85, icon: "logos:msw" },
+      { name: "Percy", level: 75, icon: "logos:percy-icon" },
+      { name: "Chromatic", level: 70, icon: "logos:chromatic-icon" },
+      { name: "BrowserStack", level: 70, icon: "devicon:browserstack" },
     ],
   },
   {
@@ -53,6 +88,29 @@ const skillCategories: SkillCategory[] = [
     skills: [
       { name: "GraphQL", level: 75, icon: "logos:graphql" },
       { name: "Node.js", level: 70, icon: "logos:nodejs-icon" },
+      { name: "Express.js", level: 70, icon: "skill-icons:expressjs-light" },
+      { name: "REST", level: 80, icon: "hugeicons:api" },
+      { name: "OpenAPI", level: 75, icon: "logos:openapi-icon" },
+      { name: "Swagger", level: 75, icon: "logos:swagger" },
+      { name: "Postman", level: 85, icon: "logos:postman-icon" },
+      { name: "PostgreSQL", level: 70, icon: "logos:postgresql" },
+      { name: "MongoDB", level: 75, icon: "logos:mongodb-icon" },
+      { name: "DynamoDB", level: 70, icon: "logos:aws-dynamodb" },
+    ],
+  },
+  {
+    category: "Build Tools",
+    skills: [
+      { name: "Vite", level: 90, icon: "logos:vitejs" },
+      { name: "Webpack", level: 80, icon: "logos:webpack" },
+      { name: "Rollup", level: 75, icon: "logos:rollupjs" },
+    ],
+  },
+  {
+    category: "Analytics",
+    skills: [
+      { name: "Google Analytics", level: 80, icon: "logos:google-analytics" },
+      { name: "Mixpanel", level: 75, icon: "simple-icons:mixpanel" },
     ],
   },
 ];
@@ -71,7 +129,7 @@ const SkillBar: React.FC<SkillBarProps> = ({ name, level, icon }) => {
           <Tooltip>
             <TooltipTrigger>
               <Icon
-                className="mr-2 text-xl text-blue-600 dark:text-blue-400"
+                className="mr-2 text-xl text-white dark:text-slate-100"
                 icon={icon}
               />
             </TooltipTrigger>
@@ -137,15 +195,6 @@ export const SkillBars: React.FC = () => {
           </div>
         </div>
       ))}
-      <div className="text-center mt-8">
-        <a
-          href="/Users/jonny/Documents/Jobhunting/JonnyPickardResume2025.pdf"
-          download
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
-        >
-          Download Resume
-        </a>
-      </div>
     </div>
   );
 };
