@@ -4,6 +4,7 @@ import headshot from "./assets/profile/headshot-450x450.png";
 import { Unstyled } from "@storybook/blocks";
 
 import logoText from "./assets/logo-text.svg";
+import { Collapsible } from "./components/Collapsible";
 
 <div className="flex justify-center">
   <a
@@ -47,13 +48,48 @@ import logoText from "./assets/logo-text.svg";
 
 <br />
 
-## Key Achievements
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Key Achievements
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <ul>
+    <li>
+      Architected and delivered multiple company-wide frontend solutions using
+      React, TypeScript, and AWS, significantly enhancing application
+      performance and scalability.
+    </li>
+    <li>
+      Established comprehensive testing frameworks across diverse codebases,
+      implementing end-to-end strategies (unit, visual regression, integration,
+      accessibility), which led to markedly improved code reliability and a
+      substantial reduction in production issues.
+    </li>
+    <li>
+      Spearheaded the development of multiple React-based component libraries
+      and design systems, resulting in a more consistent UI/UX across
+      large-scale applications and a significant decrease in development time
+      and technical debt.
+    </li>
+    <li>
+      Led infrastructure and site reliability initiatives, including CI/CD
+      pipeline implementation and monitoring solutions, greatly improving system
+      observability and noticeably reducing deployment times.
+    </li>
+    <li>
+      Conducted extensive technical research projects, delivering detailed
+      proposals and proof-of-concepts that effectively guided strategic
+      technical decisions and modernization efforts.
+    </li>
+  </ul>
+</Collapsible>
 
-- Architected and delivered multiple company-wide frontend solutions using React, TypeScript, and AWS, significantly enhancing application performance and scalability.
-- Established comprehensive testing frameworks across diverse codebases, implementing end-to-end strategies (unit, visual regression, integration, accessibility), which led to markedly improved code reliability and a substantial reduction in production issues.
-- Spearheaded the development of multiple React-based component libraries and design systems, resulting in a more consistent UI/UX across large-scale applications and a significant decrease in development time and technical debt.
-- Led infrastructure and site reliability initiatives, including CI/CD pipeline implementation and monitoring solutions, greatly improving system observability and noticeably reducing deployment times.
-- Conducted extensive technical research projects, delivering detailed proposals and proof-of-concepts that effectively guided strategic technical decisions and modernization efforts.
+<br />
 
 ## Skills
 

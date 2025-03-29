@@ -18,12 +18,12 @@ const Cross2Icon = () => (
 );
 
 type CollapsibleProps = {
-  title: string;
+  Title: string | React.ReactNode;
   children: React.ReactNode;
 };
 
 export const Collapsible: React.FC<CollapsibleProps> = ({
-  title,
+  Title,
   children,
 }) => {
   const [open, setOpen] = React.useState(false);
@@ -31,7 +31,11 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   return (
     <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
       <div className="gap-4 flex items-center justify-between p-4 bg-gray-700 shadow-md">
-        <span className="text-sm font-medium text-gray-100">{title}</span>
+        {typeof Title === "string" ? (
+          <span className="text-sm font-medium text-gray-100">{Title}</span>
+        ) : (
+          Title
+        )}
         <CollapsiblePrimitive.Trigger asChild>
           <Button
             variant="rounded"
