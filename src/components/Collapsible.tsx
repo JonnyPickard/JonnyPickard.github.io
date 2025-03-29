@@ -29,11 +29,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <CollapsiblePrimitive.Root
-      className="w-full max-w-md"
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
       <div className="gap-4 flex items-center justify-between p-4 bg-gray-700 shadow-md">
         <span className="text-sm font-medium text-gray-100">{title}</span>
         <CollapsiblePrimitive.Trigger asChild>

@@ -5,9 +5,9 @@ const meta: Meta<typeof Collapsible> = {
   title: "Components/Collapsible",
   component: Collapsible,
   parameters: {
-    layout: "fullscreen",
+    layout: "centered",
   },
-  decorators: [(Story) => Story()],
+  decorators: [(Story) => <div className="size-100">{Story()}</div>],
 };
 
 export default meta;
