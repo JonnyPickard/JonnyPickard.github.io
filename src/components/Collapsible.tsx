@@ -1,22 +1,9 @@
 import { Icon } from "@iconify/react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { Button } from "./Button";
-
-const RowSpacingIcon = () => (
-  <Icon
-    className="text-white dark:text-slate-100"
-    icon={"radix-icons:row-spacing"}
-  />
-);
-
-const Cross2Icon = () => (
-  <Icon
-    className="text-white dark:text-slate-100"
-    icon={"radix-icons:cross-2"}
-  />
-);
 
 type CollapsibleProps = {
   Title: string | React.ReactNode;
@@ -68,13 +55,49 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               "dark:to-emerald-600",
               "dark:hover:from-blue-500",
               "dark:hover:to-emerald-600",
+              "min-h-[24px]",
+              "min-w-[24px]",
             )}
             onClick={(e) => {
               e.stopPropagation();
-              setOpen(!open);
+              setOpen(() => !open);
             }}
           >
-            {open ? <Cross2Icon /> : <RowSpacingIcon />}
+            <AnimatePresence mode="wait" initial={false}>
+              {open ? (
+                <motion.div
+                  key="cross"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Icon
+                    className={clsx(
+                      "text-white dark:text-slate-100",
+                      "size-[24px]",
+                    )}
+                    icon={"radix-icons:cross-2"}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="row-spacing"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Icon
+                    className={clsx(
+                      "text-white dark:text-slate-100",
+                      "size-[24px]",
+                    )}
+                    icon={"radix-icons:row-spacing"}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Button>
         </CollapsiblePrimitive.Trigger>
       </div>
