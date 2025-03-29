@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/blocks";
-import { SkillBars, TechTimeline, careerData } from "./profile";
+import { SkillBars, TechTimeline, careerData, Avatar } from "./profile";
 import headshot from "./assets/profile/headshot-450x450.png";
 import { Unstyled } from "@storybook/blocks";
 
@@ -27,16 +27,9 @@ import { Collapsible } from "./components/Collapsible";
 <br />
 
 <div style={{ display: "flex", alignItems: "center" }}>
-  <img
-    src={headshot}
-    alt="Jonny Pickard"
-    style={{
-      width: "150px",
-      height: "150px",
-      borderRadius: "50%",
-      marginRight: "20px",
-    }}
-  />
+  <Unstyled>
+    <Avatar src={headshot} alt="Jonny Pickard" size="md" className="mr-5" />
+  </Unstyled>
   <div>
     Senior Frontend Engineer with 8+ years of experience in delivering
     high-performance web applications at scale. Expertise in React, TypeScript,
