@@ -41,7 +41,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           "bg-gray-700",
           "shadow-md",
           "cursor-pointer",
-          "min-h-[50px]",
+          "min-h-[56px]",
         )}
         onClick={() => setOpen(!open)}
       >

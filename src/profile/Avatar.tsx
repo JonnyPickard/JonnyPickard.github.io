@@ -5,7 +5,6 @@ import {
 } from "@/components/shadcn/avatar";
 import { Skeleton } from "@/components/shadcn/skeleton";
 import { cn } from "@/lib/utils";
-import clsx from "clsx";
 
 interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
   src?: string;
