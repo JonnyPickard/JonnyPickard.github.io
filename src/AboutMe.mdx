@@ -91,24 +91,63 @@ import { Collapsible } from "./components/Collapsible";
 
 <br />
 
-## Skills
-
-<Unstyled>
-  <div className="flex w-full justify-center py-4">
-    <SkillBars />
-  </div>
-</Unstyled>
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">Skills</h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <Unstyled>
+    <div className="flex w-full justify-center py-4">
+      <SkillBars />
+    </div>
+  </Unstyled>
+</Collapsible>
 
 <br />
 
-## Career Timeline
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Career Timeline
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <div className="flex w-full justify-center py-4">
+    <TechTimeline careerData={careerData} />
+  </div>
+</Collapsible>
 
-<div className="flex w-full justify-center py-4">
-  <TechTimeline careerData={careerData} />
-</div>
+<br />
 
-## Hobbies & Interests
-
-- Highly creative, with a strong passion for art, design, 3D modeling, and game development, consistently dedicating time to exploring new ideas and pushing creative boundaries.
-- Enthusiastic about health, fitness, and nutrition, with a commitment to regular training, primarily focused on cycling and Olympic lifting.
-- A devoted dog lover, often sharing dog-related content with family, even though space constraints prevent me from having one of my own.
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Hobbies & Interests
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <ul>
+    <li>
+      Highly creative, with a strong passion for art, design, 3D modeling, and
+      game development, consistently dedicating time to exploring new ideas and
+      pushing creative boundaries.
+    </li>
+    <li>
+      Enthusiastic about health, fitness, and nutrition, with a commitment to
+      regular training, primarily focused on cycling and Olympic lifting.
+    </li>
+    <li>
+      A devoted dog lover, often sharing dog-related content with family, even
+      though space constraints prevent me from having one of my own.
+    </li>
+  </ul>
+</Collapsible>
