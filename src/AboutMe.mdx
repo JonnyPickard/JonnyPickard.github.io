@@ -1,9 +1,10 @@
 import { Meta } from "@storybook/blocks";
-import { SkillBars, TechTimeline, careerData } from "./profile";
+import { SkillBars, TechTimeline, careerData, Avatar } from "./profile";
 import headshot from "./assets/profile/headshot-450x450.png";
 import { Unstyled } from "@storybook/blocks";
 
 import logoText from "./assets/logo-text.svg";
+import { Collapsible } from "./components/Collapsible";
 
 <div className="flex justify-center">
   <a
@@ -26,16 +27,9 @@ import logoText from "./assets/logo-text.svg";
 <br />
 
 <div style={{ display: "flex", alignItems: "center" }}>
-  <img
-    src={headshot}
-    alt="Jonny Pickard"
-    style={{
-      width: "150px",
-      height: "150px",
-      borderRadius: "50%",
-      marginRight: "20px",
-    }}
-  />
+  <Unstyled>
+    <Avatar src={headshot} alt="Jonny Pickard" size="md" className="mr-5" />
+  </Unstyled>
   <div>
     Senior Frontend Engineer with 8+ years of experience in delivering
     high-performance web applications at scale. Expertise in React, TypeScript,
@@ -47,32 +41,106 @@ import logoText from "./assets/logo-text.svg";
 
 <br />
 
-## Key Achievements
-
-- Architected and delivered multiple company-wide frontend solutions using React, TypeScript, and AWS, significantly enhancing application performance and scalability.
-- Established comprehensive testing frameworks across diverse codebases, implementing end-to-end strategies (unit, visual regression, integration, accessibility), which led to markedly improved code reliability and a substantial reduction in production issues.
-- Spearheaded the development of multiple React-based component libraries and design systems, resulting in a more consistent UI/UX across large-scale applications and a significant decrease in development time and technical debt.
-- Led infrastructure and site reliability initiatives, including CI/CD pipeline implementation and monitoring solutions, greatly improving system observability and noticeably reducing deployment times.
-- Conducted extensive technical research projects, delivering detailed proposals and proof-of-concepts that effectively guided strategic technical decisions and modernization efforts.
-
-## Skills
-
-<Unstyled>
-  <div className="flex w-full justify-center py-4">
-    <SkillBars />
-  </div>
-</Unstyled>
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Key Achievements
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <ul>
+    <li>
+      Architected and delivered multiple company-wide frontend solutions using
+      React, TypeScript, and AWS, significantly enhancing application
+      performance and scalability.
+    </li>
+    <li>
+      Established comprehensive testing frameworks across diverse codebases,
+      implementing end-to-end strategies (unit, visual regression, integration,
+      accessibility), which led to markedly improved code reliability and a
+      substantial reduction in production issues.
+    </li>
+    <li>
+      Spearheaded the development of multiple React-based component libraries
+      and design systems, resulting in a more consistent UI/UX across
+      large-scale applications and a significant decrease in development time
+      and technical debt.
+    </li>
+    <li>
+      Led infrastructure and site reliability initiatives, including CI/CD
+      pipeline implementation and monitoring solutions, greatly improving system
+      observability and noticeably reducing deployment times.
+    </li>
+    <li>
+      Conducted extensive technical research projects, delivering detailed
+      proposals and proof-of-concepts that effectively guided strategic
+      technical decisions and modernization efforts.
+    </li>
+  </ul>
+</Collapsible>
 
 <br />
 
-## Career Timeline
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">Skills</h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <Unstyled>
+    <div className="flex w-full justify-center py-4">
+      <SkillBars />
+    </div>
+  </Unstyled>
+</Collapsible>
 
-<div className="flex w-full justify-center py-4">
-  <TechTimeline careerData={careerData} />
-</div>
+<br />
 
-## Hobbies & Interests
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Career Timeline
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <div className="flex w-full justify-center py-4">
+    <TechTimeline careerData={careerData} />
+  </div>
+</Collapsible>
 
-- Highly creative, with a strong passion for art, design, 3D modeling, and game development, consistently dedicating time to exploring new ideas and pushing creative boundaries.
-- Enthusiastic about health, fitness, and nutrition, with a commitment to regular training, primarily focused on cycling and Olympic lifting.
-- A devoted dog lover, often sharing dog-related content with family, even though space constraints prevent me from having one of my own.
+<br />
+
+<Collapsible
+  Title={
+    <Unstyled>
+      <h2 className="text-sm font-medium text-gray-100 no-underline">
+        Hobbies & Interests
+      </h2>
+    </Unstyled>
+  }
+  defaultOpen={false}
+>
+  <ul>
+    <li>
+      Highly creative, with a strong passion for art, design, 3D modeling, and
+      game development, consistently dedicating time to exploring new ideas and
+      pushing creative boundaries.
+    </li>
+    <li>
+      Enthusiastic about health, fitness, and nutrition, with a commitment to
+      regular training, primarily focused on cycling and Olympic lifting.
+    </li>
+    <li>
+      A devoted dog lover, often sharing dog-related content with family, even
+      though space constraints prevent me from having one of my own.
+    </li>
+  </ul>
+</Collapsible>

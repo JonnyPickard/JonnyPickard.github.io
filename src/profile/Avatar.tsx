@@ -3,12 +3,12 @@ import {
   AvatarImage,
   Avatar as SAvatar,
 } from "@/components/shadcn/avatar";
+import { Skeleton } from "@/components/shadcn/skeleton";
 import { cn } from "@/lib/utils";
 
-interface AvatarProps {
+interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
   src?: string;
   alt?: string;
-  fallback?: React.ReactNode;
   size?: "sm" | "md" | "lg";
 }
 
@@ -18,13 +18,15 @@ const sizeClasses = {
   lg: "w-[300px] h-[300px]",
 };
 
-export function Avatar({ src, alt, fallback, size = "sm" }: AvatarProps) {
+export function Avatar({ src, alt, size = "sm", className }: AvatarProps) {
   return (
-    <SAvatar className={cn(sizeClasses[size])}>
+    <SAvatar className={cn(sizeClasses[size], className)}>
       {src ? (
         <AvatarImage src={src} alt={alt} />
       ) : (
-        <AvatarFallback>{fallback}</AvatarFallback>
+        <AvatarFallback>
+          <Skeleton className={cn(sizeClasses[size], "rounded-full")} />
+        </AvatarFallback>
       )}
     </SAvatar>
   );
