@@ -187,3 +187,37 @@ time {
     @apply border-border outline-ring/50;
   }
 }
+
+/* Collapsible animations */
+.CollapsibleContent {
+  overflow: hidden;
+}
+.CollapsibleContent[data-state="open"] {
+  animation: slideDown 300ms ease-in-out;
+}
+.CollapsibleContent[data-state="closed"] {
+  animation: slideUp 300ms ease-in-out;
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 200px;
+    opacity: 0;
+  }
+
+  to {
+    max-height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    max-height: var(--radix-collapsible-content-height);
+    opacity: 1;
+  }
+  to {
+    max-height: 40px;
+    opacity: 0;
+  }
+}

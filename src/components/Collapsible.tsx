@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+import clsx from "clsx";
 import * as React from "react";
 import { Button } from "./Button";
 
@@ -30,9 +31,24 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
 
   return (
     <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
-      <div className="gap-4 flex items-center justify-between p-4 bg-gray-700 shadow-md">
+      <div
+        className={clsx(
+          "gap-4",
+          "flex",
+          "items-center",
+          "justify-between",
+          "p-4",
+          "bg-gray-700",
+          "shadow-md",
+          "cursor-pointer",
+          "min-h-[50px]",
+        )}
+        onClick={() => setOpen(!open)}
+      >
         {typeof Title === "string" ? (
-          <span className="text-sm font-medium text-gray-100">{Title}</span>
+          <span className={clsx("text-sm", "font-medium", "text-gray-100")}>
+            {Title}
+          </span>
         ) : (
           Title
         )}
@@ -40,15 +56,41 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           <Button
             variant="rounded"
             size="icon"
-            className="bg-gradient-to-r from-blue-500 to-emerald-600 text-white hover:from-blue-400 hover:to-emerald-400 focus:ring-blue-500 dark:from-blue-600 dark:to-emerald-600 dark:hover:from-blue-500 dark:hover:to-emerald-600"
-            onClick={() => setOpen(!open)}
+            className={clsx(
+              "bg-gradient-to-r",
+              "from-blue-500",
+              "to-emerald-600",
+              "text-white",
+              "hover:from-blue-400",
+              "hover:to-emerald-400",
+              "focus:ring-blue-500",
+              "dark:from-blue-600",
+              "dark:to-emerald-600",
+              "dark:hover:from-blue-500",
+              "dark:hover:to-emerald-600",
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(!open);
+            }}
           >
             {open ? <Cross2Icon /> : <RowSpacingIcon />}
           </Button>
         </CollapsiblePrimitive.Trigger>
       </div>
 
-      <CollapsiblePrimitive.Content className="p-4 bg-gray-800 shadow-lg text-gray-200 w-full h-full overflow-hidden">
+      <CollapsiblePrimitive.Content
+        className={clsx(
+          "CollapsibleContent",
+          "p-4",
+          "bg-gray-800",
+          "shadow-lg",
+          "text-gray-200",
+          "w-full",
+          "h-full",
+          "overflow-hidden",
+        )}
+      >
         {children}
       </CollapsiblePrimitive.Content>
     </CollapsiblePrimitive.Root>
