@@ -131,7 +131,7 @@ const SkillBar: React.FC<SkillBarProps> = ({
   IconComponent,
 }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-2 md:mb-0">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center">
           <Tooltip>
@@ -183,7 +183,7 @@ export const SkillBars: React.FC = () => {
   }));
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-900 shadow-lg rounded-lg dark">
+    <div className="w-full p-6 bg-gray-900 shadow-lg rounded-lg dark">
       <h2 className="text-3xl font-bold text-center mb-8 text-gray-100">
         Professional Skills
       </h2>
@@ -195,7 +195,7 @@ export const SkillBars: React.FC = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
       {filteredCategories.map((category, index) => (
-        <div key={index} className="mb-8">
+        <div key={index} className="flex flex-col gap-4 mb-4">
           <h3 className="text-xl font-semibold mb-4 text-gray-300 border-b pb-2 flex items-center">
             <Icon className="mr-2 text-blue-400" icon="mdi:web" />
             {category.category}
