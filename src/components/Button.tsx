@@ -6,9 +6,10 @@ export const Button: React.FC<ButtonProps> = ({
   size = "sm",
   children,
   onClick,
+  ...props
 }) => {
   return (
-    <ShadcnButton variant={variant} size={size} onClick={onClick}>
+    <ShadcnButton variant={variant} size={size} onClick={onClick} {...props}>
       {children}
     </ShadcnButton>
   );

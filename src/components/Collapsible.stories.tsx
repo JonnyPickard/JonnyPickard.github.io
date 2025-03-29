@@ -5,8 +5,9 @@ const meta: Meta<typeof Collapsible> = {
   title: "Components/Collapsible",
   component: Collapsible,
   parameters: {
-    layout: "centered",
+    layout: "fullscreen",
   },
+  decorators: [(Story) => Story()],
 };
 
 export default meta;
@@ -17,10 +18,6 @@ export const Default: Story = {
   name: "Default Collapsible",
   args: {
     title: "Click to Expand",
-    children: (
-      <div style={{ padding: "1rem", backgroundColor: "#f0f0f0" }}>
-        This is the collapsible content.
-      </div>
-    ),
+    children: <div className="p-2">This is the collapsible content.</div>,
   },
 };

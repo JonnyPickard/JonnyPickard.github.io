@@ -1,17 +1,18 @@
 import { Icon } from "@iconify/react";
 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import * as React from "react";
+import { Button } from "./Button";
 
 const RowSpacingIcon = () => (
   <Icon
-    className="mr-2 text-xl text-white dark:text-slate-100"
+    className="text-white dark:text-slate-100"
     icon={"radix-icons:row-spacing"}
   />
 );
 
 const Cross2Icon = () => (
   <Icon
-    className="mr-2 text-xl text-white dark:text-slate-100"
+    className="text-white dark:text-slate-100"
     icon={"radix-icons:cross-2"}
   />
 );
@@ -29,28 +30,27 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
 
   return (
     <CollapsiblePrimitive.Root
-      className="CollapsibleRoot"
+      className="w-full max-w-md"
       open={open}
       onOpenChange={setOpen}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <span className="Text" style={{ color: "white" }}>
-          {title}
-        </span>
+      <div className="gap-4 flex items-center justify-between p-4 bg-gray-700 shadow-md">
+        <span className="text-sm font-medium text-gray-100">{title}</span>
         <CollapsiblePrimitive.Trigger asChild>
-          <button className="IconButton">
+          <Button
+            variant="rounded"
+            size="icon"
+            className="bg-gradient-to-r from-blue-500 to-emerald-600 text-white hover:from-blue-400 hover:to-emerald-400 focus:ring-blue-500 dark:from-blue-600 dark:to-emerald-600 dark:hover:from-blue-500 dark:hover:to-emerald-600"
+            onClick={() => setOpen(!open)}
+          >
             {open ? <Cross2Icon /> : <RowSpacingIcon />}
-          </button>
+          </Button>
         </CollapsiblePrimitive.Trigger>
       </div>
 
-      <CollapsiblePrimitive.Content>{children}</CollapsiblePrimitive.Content>
+      <CollapsiblePrimitive.Content className="p-4 bg-gray-800 shadow-lg text-gray-200 w-full h-full overflow-hidden">
+        {children}
+      </CollapsiblePrimitive.Content>
     </CollapsiblePrimitive.Root>
   );
 };

@@ -20,12 +20,14 @@ const buttonVariants = cva(
         ghost:
           "text-gray-300 hover:bg-gray-700 hover:scale-105 focus-visible:ring-gray-400 dark:text-gray-200 dark:hover:bg-gray-600",
         link: "text-blue-400 underline-offset-4 hover:underline hover:scale-105 focus-visible:ring-blue-500 dark:text-blue-300",
+        rounded:
+          "rounded-full bg-emerald-500 text-white shadow hover:bg-emerald-400 hover:scale-105 focus-visible:ring-green-500 dark:bg-green-600 dark:hover:bg-green-500",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 px-3 py-1.5 text-sm",
         lg: "h-10 px-6 py-3 text-lg",
-        icon: "h-9 w-9 p-0 flex items-center justify-center",
+        icon: "p-1 flex items-center justify-center",
       },
     },
     defaultVariants: {
