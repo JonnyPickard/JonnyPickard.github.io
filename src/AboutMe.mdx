@@ -1,6 +1,7 @@
 import { Meta } from "@storybook/blocks";
 import { SkillBars, TechTimeline, careerData } from "./profile";
 import headshot from "./assets/profile/headshot-450x450.png";
+import { Unstyled } from "@storybook/blocks";
 
 import logoText from "./assets/logo-text.svg";
 
@@ -56,9 +57,11 @@ import logoText from "./assets/logo-text.svg";
 
 ## Skills
 
-<div className="flex w-full justify-center py-4">
-  <SkillBars />
-</div>
+<Unstyled>
+  <div className="flex w-full justify-center py-4">
+    <SkillBars />
+  </div>
+</Unstyled>
 
 <br />
 

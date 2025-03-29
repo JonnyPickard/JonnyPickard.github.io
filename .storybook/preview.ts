@@ -4,7 +4,11 @@ import theme from "./theme";
 
 const preview: Preview = {
   parameters: {
-    options: {},
+    options: {
+      storySort: {
+        order: ["Introduction"], // Sets landing page
+      },
+    },
     docs: {
       theme,
       toc: false,

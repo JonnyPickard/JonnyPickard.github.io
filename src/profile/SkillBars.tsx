@@ -195,7 +195,7 @@ export const SkillBars: React.FC = () => {
         onChange={(e) => setSearch(e.target.value)}
       />
       {filteredCategories.map((category, index) => (
-        <div key={index} className="flex flex-col gap-4 mb-4">
+        <div key={index} className="flex flex-col mb-4">
           <h3 className="text-xl font-semibold mb-4 text-gray-300 border-b pb-2 flex items-center">
             <Icon className="mr-2 text-blue-400" icon="mdi:web" />
             {category.category}
