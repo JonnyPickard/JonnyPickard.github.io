@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import { pickTileColor } from "./Grids";
 import type { GridMatrix } from "./Grids/GridTypes";
 
 const defaultMatrix = [
@@ -10,27 +11,7 @@ const defaultMatrix = [
 
 const defaultCellSize = 60;
 const defaultStrokeWidth = 2;
-const playerPathFillColor = "fill-lime-300";
-const terrainFillColor = "fill-pink-700";
-const playerStartFillColor = "fill-emerald-700";
-const targetFillColor = "fill-violet-700";
-const transparentFillColor = "fill-transparent";
-const defaultStrokeColor = "stroke-slate-50";
-
-const pickCellColor = (cellTypeInt: number) => {
-  switch (cellTypeInt) {
-    case 1:
-      return terrainFillColor;
-    case 2:
-      return playerStartFillColor;
-    case 3:
-      return targetFillColor;
-    case 4:
-      return playerPathFillColor;
-    default:
-      return transparentFillColor;
-  }
-};
+const defaultStrokeColor = "stroke-slate-800";
 
 interface MatrixGridProps {
   matrix?: GridMatrix;
@@ -77,7 +58,7 @@ export function MatrixGrid({
     >
       <svg viewBox={`0 0 ${gridWidth} ${gridHeight}`} className="w-full h-auto">
         {matrix.map((row, rowIndex) =>
-          row.map((cell, colIndex) => (
+          row.map((tile, colIndex) => (
             <g
               key={`${rowIndex}-${colIndex}`}
               onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
@@ -91,8 +72,10 @@ export function MatrixGrid({
                 height={gridHeight / matrix.length}
                 strokeWidth={strokeWidth}
                 className={clsx([
-                  tileColorOverride?.(rowIndex, colIndex) ||
-                    pickCellColor(cell),
+                  pickTileColor(
+                    tile,
+                    tileColorOverride && tileColorOverride(rowIndex, colIndex),
+                  ),
                   strokeColor,
                 ])}
               />

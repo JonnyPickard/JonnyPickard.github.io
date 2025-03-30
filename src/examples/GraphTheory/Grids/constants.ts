@@ -18,7 +18,7 @@ export const FIND_NEIGHBOURS_FAILURE_COLOR = "fill-rose-800";
 export const PROCESSING_TILE_COLOR = "fill-sky-600";
 
 // Processed
-export const VISITED_TILE_COLOR = "fill-teal-700/60";
+export const VISITED_TILE_COLOR = "fill-teal-500/60";
 export const PLAYER_PATH_FILL_COLOR = "fill-lime-500/80";
 export const TERRAIN_FILL_COLOR = "fill-pink-700";
 export const PLAYER_START_FILL_COLOR = "fill-violet-500";
@@ -32,7 +32,7 @@ export const BG_FIND_NEIGHBOURS_FAILURE_COLOR = "bg-rose-800";
 export const BG_PROCESSING_TILE_COLOR = "bg-sky-600";
 
 // Processed
-export const BG_VISITED_TILE_COLOR = "bg-teal-700/60";
+export const BG_VISITED_TILE_COLOR = "bg-teal-500/60";
 export const BG_PLAYER_PATH_COLOR = "bg-lime-500";
 export const BG_TERRAIN_COLOR = "bg-pink-700";
 export const BG_PLAYER_START_COLOR = "bg-violet-500";
