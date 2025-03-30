@@ -1,14 +1,10 @@
-import {
-  // useEffect,
-  useMemo,
-} from "react";
+import { useMemo } from "react";
 import { useTimer } from "../../../hooks";
 import { Grid } from "./Grid";
 import { useGridStore } from "./gridStore";
 
 import {
   DEFAULT_MATRIX,
-  DEFAULT_STROKE_COLOR,
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TILE_SIZE,
 } from "./constants";
@@ -26,7 +22,6 @@ export function GridWithPathing({
   matrix = DEFAULT_MATRIX,
   tileSize = DEFAULT_TILE_SIZE,
   strokeWidth = DEFAULT_STROKE_WIDTH,
-  strokeColor = DEFAULT_STROKE_COLOR,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
 }: GridWithPathingProps) {
   const { playerPath } = useGridStore();
@@ -48,7 +43,6 @@ export function GridWithPathing({
       matrix={matrix}
       tileSize={tileSize}
       strokeWidth={strokeWidth}
-      strokeColor={strokeColor}
       onTileClick={onTileClick}
     />
   );

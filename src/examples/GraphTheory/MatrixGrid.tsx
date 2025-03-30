@@ -39,6 +39,7 @@ interface MatrixGridProps {
   strokeColor?: string;
   containerClassName?: string;
   onTileClick?: ({ x, y }: { x: number; y: number }) => void;
+  tileColorOverride?: (row: number, col: number) => string | undefined;
 }
 
 /**
@@ -55,6 +56,7 @@ export function MatrixGrid({
   strokeColor = defaultStrokeColor,
   containerClassName,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
+  tileColorOverride,
 }: MatrixGridProps) {
   const gridWidth = matrix[0].length * cellSize + strokeWidth * 2;
   const gridHeight = matrix.length * cellSize + strokeWidth * 2;
@@ -88,7 +90,11 @@ export function MatrixGrid({
                 width={gridWidth / matrix[0].length}
                 height={gridHeight / matrix.length}
                 strokeWidth={strokeWidth}
-                className={clsx([pickCellColor(cell), strokeColor])}
+                className={clsx([
+                  tileColorOverride?.(rowIndex, colIndex) ||
+                    pickCellColor(cell),
+                  strokeColor,
+                ])}
               />
               <text
                 x={
