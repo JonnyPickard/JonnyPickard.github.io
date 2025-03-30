@@ -1,33 +1,67 @@
+import { Button } from "@/components";
+import { Collapsible } from "@/components/Collapsible";
+import { Drawer } from "@/components/Drawer";
 import clsx from "clsx";
 
 interface GraphKeyProps {
-  keyTable: {
-    color: string;
-    description: string;
-  }[];
-  className?: React.HTMLAttributes<HTMLTableElement>["className"];
+  keyTable: Array<{ color: string; description: string }>;
+  className?: string;
+  drawerTriggerButton?: React.ReactNode;
+  collapsibleTitle?: string | React.ReactNode;
 }
 
-export const GraphKey = ({ keyTable, className }: GraphKeyProps) => {
+export const GraphKey: React.FC<GraphKeyProps> = ({
+  keyTable,
+  className,
+  collapsibleTitle = "Key",
+}) => {
   return (
-    <table
-      className={clsx(
-        "text-white",
-        "border-separate",
-        "border-spacing-2",
-        "rounded-md",
-        "p-2",
-        className,
-      )}
-    >
-      <tbody>
-        {keyTable?.map(({ color, description }, i) => (
-          <tr key={`keyTable-${i}`}>
-            <td className={clsx([color, "p-4", "w-4", "h-4"])} />
-            <td>{description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      {/* Mobile View: Drawer */}
+      <div className="block md:hidden">
+        <Drawer TriggerButton={<Button>{collapsibleTitle}</Button>}>
+          <table
+            className={clsx(
+              "text-white",
+              "border-separate",
+              "border-spacing-2",
+              "rounded-md",
+              "p-2",
+              className,
+            )}
+          >
+            {keyTable.map((item, index) => (
+              <tr key={index}>
+                <td className={clsx([item.color, "p-4", "w-4", "h-4"])}></td>
+                <td>{item.description}</td>
+              </tr>
+            ))}
+          </table>
+        </Drawer>
+      </div>
+
+      {/* Desktop View: Collapsible */}
+      <div className="hidden md:block">
+        <Collapsible Title={collapsibleTitle}>
+          <table
+            className={clsx(
+              "text-white",
+              "border-separate",
+              "border-spacing-2",
+              "rounded-md",
+              "p-2",
+              className,
+            )}
+          >
+            {keyTable.map((item, index) => (
+              <tr key={index}>
+                <td className={clsx([item.color, "p-4", "w-4", "h-4"])}></td>
+                <td>{item.description}</td>
+              </tr>
+            ))}
+          </table>
+        </Collapsible>
+      </div>
+    </>
   );
 };
