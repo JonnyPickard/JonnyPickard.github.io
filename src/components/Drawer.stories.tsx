@@ -36,8 +36,8 @@ export const Default: Story = {
     }
 
     return (
-      <Drawer>
-        <div className={clsx(["mx-auto", "w-full", "max-w-sm", "dark"])}>
+      <Drawer contentClassName="dark">
+        <div className={clsx(["mx-auto", "w-full", "dark:text-white"])}>
           <DrawerHeader>
             <DrawerTitle>Move Goal</DrawerTitle>
             <DrawerDescription>Set your daily activity goal.</DrawerDescription>
@@ -54,7 +54,14 @@ export const Default: Story = {
               <Button
                 variant="outline"
                 size="icon"
-                className={clsx(["h-8", "w-8", "shrink-0", "rounded-full"])}
+                className={clsx([
+                  "h-8",
+                  "w-8",
+                  "shrink-0",
+                  "rounded-full",
+                  "dark:bg-gray-700",
+                  "dark:border-gray-600",
+                ])}
                 onClick={() => onClick(-10)}
                 disabled={goal <= 200}
               >
@@ -76,6 +83,7 @@ export const Default: Story = {
                     "text-[0.70rem]",
                     "uppercase",
                     "text-muted-foreground",
+                    "dark:text-gray-400",
                   ])}
                 >
                   Calories/day
@@ -84,7 +92,14 @@ export const Default: Story = {
               <Button
                 variant="outline"
                 size="icon"
-                className={clsx(["h-8", "w-8", "shrink-0", "rounded-full"])}
+                className={clsx([
+                  "h-8",
+                  "w-8",
+                  "shrink-0",
+                  "rounded-full",
+                  "dark:bg-gray-700",
+                  "dark:border-gray-600",
+                ])}
                 onClick={() => onClick(10)}
                 disabled={goal >= 400}
               >
@@ -94,9 +109,18 @@ export const Default: Story = {
             </div>
           </div>
           <DrawerFooter>
-            <Button>Submit</Button>
+            <Button
+              className={clsx(["dark:bg-gray-700", "dark:border-gray-600"])}
+            >
+              Submit
+            </Button>
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button
+                variant="outline"
+                className={clsx(["dark:bg-gray-700", "dark:border-gray-600"])}
+              >
+                Cancel
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

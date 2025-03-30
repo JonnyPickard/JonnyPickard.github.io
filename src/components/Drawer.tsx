@@ -27,7 +27,7 @@ export const Drawer: React.FC<DrawerProps> = ({
 }) => {
   return (
     <ShadcnDrawer>
-      <DrawerTrigger asChild>
+      <DrawerTrigger>
         {TriggerButton ?? (
           <Button className={clsx(triggerClassName)}>Open</Button>
         )}
