@@ -12,7 +12,6 @@ const meta: Meta<typeof Avatar> = {
   args: {
     src: Headshot,
     alt: "User Avatar",
-    fallback: "UA",
   },
 };
 
@@ -24,7 +23,6 @@ export const Default: Story = {
   args: {
     src: Headshot,
     alt: "Custom User Avatar",
-    fallback: "CU",
   },
   decorators: (Story) => (
     <div className="min-h-[400px] min-w-[400px] flex items-center justify-center bg-gray-900 text-gray-100 rounded-2xl">

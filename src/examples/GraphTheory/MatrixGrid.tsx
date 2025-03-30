@@ -37,7 +37,9 @@ interface MatrixGridProps {
   cellSize?: number;
   strokeWidth?: number;
   strokeColor?: string;
+  containerClassName?: string;
   onTileClick?: ({ x, y }: { x: number; y: number }) => void;
+  tileColorOverride?: (row: number, col: number) => string | undefined;
 }
 
 /**
@@ -52,8 +54,13 @@ export function MatrixGrid({
   cellSize = defaultCellSize,
   strokeWidth = defaultStrokeWidth,
   strokeColor = defaultStrokeColor,
+  containerClassName,
   onTileClick = ({ x, y }) => console.log("Clicked on", x, y),
+  tileColorOverride,
 }: MatrixGridProps) {
+  const gridWidth = matrix[0].length * cellSize + strokeWidth * 2;
+  const gridHeight = matrix.length * cellSize + strokeWidth * 2;
+
   return (
     <div
       className={clsx([
@@ -63,29 +70,41 @@ export function MatrixGrid({
         "m-4",
         "w-full",
         "h-full",
+        "max-w-screen-md",
+        "mx-auto",
+        containerClassName,
       ])}
     >
-      <svg
-        width={matrix[0].length * cellSize + strokeWidth * 2}
-        height={matrix.length * cellSize + strokeWidth * 2}
-      >
+      <svg viewBox={`0 0 ${gridWidth} ${gridHeight}`} className="w-full h-auto">
         {matrix.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <g
               key={`${rowIndex}-${colIndex}`}
               onClick={() => onTileClick({ y: rowIndex, x: colIndex })}
+              role="button"
+              aria-label={`Grid cell at row ${rowIndex}, column ${colIndex}`}
             >
               <rect
-                x={colIndex * cellSize + strokeWidth}
-                y={rowIndex * cellSize + strokeWidth}
-                width={cellSize}
-                height={cellSize}
+                x={Math.round(colIndex * (gridWidth / matrix[0].length))}
+                y={rowIndex * (gridHeight / matrix.length)}
+                width={gridWidth / matrix[0].length}
+                height={gridHeight / matrix.length}
                 strokeWidth={strokeWidth}
-                className={clsx([pickCellColor(cell), strokeColor])}
+                className={clsx([
+                  tileColorOverride?.(rowIndex, colIndex) ||
+                    pickCellColor(cell),
+                  strokeColor,
+                ])}
               />
               <text
-                x={colIndex * cellSize + cellSize / 2}
-                y={rowIndex * cellSize + cellSize / 2}
+                x={
+                  colIndex * (gridWidth / matrix[0].length) +
+                  gridWidth / matrix[0].length / 2
+                }
+                y={
+                  rowIndex * (gridHeight / matrix.length) +
+                  gridHeight / matrix.length / 2
+                }
                 dominantBaseline="middle"
                 textAnchor="middle"
                 className={clsx(["text-sm", "fill-slate-50"])}

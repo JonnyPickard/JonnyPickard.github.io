@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
-import { GraphKey, Graphs } from ".";
+import { GraphKey, MatrixGrid } from ".";
 import {
   BG_PLAYER_PATH_COLOR,
   BG_PLAYER_START_COLOR,
@@ -9,8 +9,8 @@ import {
   BG_TERRAIN_COLOR,
 } from "./Grids/constants";
 
-const meta: Meta<typeof Graphs> = {
-  component: Graphs,
+const meta: Meta<typeof MatrixGrid> = {
+  component: MatrixGrid,
   title: "Grids & Graphs/2D Grid With Key",
   parameters: {
     layout: "fullscreen",
@@ -63,9 +63,9 @@ const meta: Meta<typeof Graphs> = {
 
 export default meta;
 
-type Story = StoryObj<typeof Graphs>;
+type Story = StoryObj<typeof MatrixGrid>;
 
-export const MatrixGrid: Story = {
+export const Default: Story = {
   name: "2D Grid With Key",
   parameters: {
     layout: "fullscreen",

@@ -55,9 +55,7 @@ const meta: Meta<typeof Grid> = {
             <Story
               args={{
                 onTileClick: pickPathTile,
-                matrix: gridVisualisationMatrix
-                  ? gridVisualisationMatrix
-                  : originalMatrix,
+                matrix: gridVisualisationMatrix ?? originalMatrix,
                 tileColorOverride,
               }}
             />
