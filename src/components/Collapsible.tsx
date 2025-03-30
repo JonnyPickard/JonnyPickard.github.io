@@ -19,7 +19,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   return (
     <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
       <div
-        className={clsx(
+        className={clsx([
           "gap-4",
           "flex",
           "items-center",
@@ -29,11 +29,11 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           "shadow-md",
           "cursor-pointer",
           "min-h-[56px]",
-        )}
+        ])}
         onClick={() => setOpen(!open)}
       >
         {typeof Title === "string" ? (
-          <span className={clsx("text-sm", "font-medium", "text-gray-100")}>
+          <span className={clsx(["text-sm", "font-medium", "text-gray-100"])}>
             {Title}
           </span>
         ) : (
@@ -43,7 +43,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           <Button
             variant="rounded"
             size="icon"
-            className={clsx(
+            className={clsx([
               "bg-gradient-to-r",
               "from-blue-500",
               "to-emerald-600",
@@ -55,9 +55,12 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               "dark:to-emerald-600",
               "dark:hover:from-blue-500",
               "dark:hover:to-emerald-600",
-              "min-h-[24px]",
-              "min-w-[24px]",
-            )}
+              "min-h-[32px]",
+              "min-w-[32px]",
+              "relative",
+              "transition-opacity",
+              "duration-300",
+            ])}
             onClick={(e) => {
               e.stopPropagation();
               setOpen(() => !open);
@@ -71,12 +74,14 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
+                  className={clsx(["absolute"])}
                 >
                   <Icon
-                    className={clsx(
-                      "text-white dark:text-slate-100",
+                    className={clsx([
+                      "text-white",
+                      "dark:text-slate-100",
                       "size-[24px]",
-                    )}
+                    ])}
                     icon={"radix-icons:cross-2"}
                   />
                 </motion.div>
@@ -87,12 +92,14 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
+                  className={clsx(["absolute"])}
                 >
                   <Icon
-                    className={clsx(
-                      "text-white dark:text-slate-100",
+                    className={clsx([
+                      "text-white",
+                      "dark:text-slate-100",
                       "size-[24px]",
-                    )}
+                    ])}
                     icon={"radix-icons:row-spacing"}
                   />
                 </motion.div>
@@ -103,16 +110,15 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
       </div>
 
       <CollapsiblePrimitive.Content
-        className={clsx(
-          "CollapsibleContent",
-          "p-4",
+        className={clsx([
+          "p-2",
           "bg-gray-800",
           "shadow-lg",
           "text-gray-200",
           "w-full",
           "h-full",
           "overflow-hidden",
-        )}
+        ])}
       >
         {children}
       </CollapsiblePrimitive.Content>
