@@ -1,5 +1,9 @@
+import {
+  CollapsibleContent,
+  Collapsible as CollapsibleRoot,
+  CollapsibleTrigger,
+} from "@/components/shadcn/collapsible";
 import { Icon } from "@iconify/react";
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
@@ -17,7 +21,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
+    <CollapsibleRoot open={open} onOpenChange={setOpen}>
       <div
         className={clsx([
           "gap-4",
@@ -39,7 +43,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
         ) : (
           Title
         )}
-        <CollapsiblePrimitive.Trigger asChild>
+        <CollapsibleTrigger asChild>
           <Button
             variant="rounded"
             size="icon"
@@ -47,16 +51,16 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               "bg-gradient-to-r",
               "from-blue-500",
               "to-emerald-600",
-              "text-white",
               "hover:from-blue-400",
               "hover:to-emerald-400",
-              "focus:ring-blue-500",
               "dark:from-blue-600",
               "dark:to-emerald-600",
               "dark:hover:from-blue-500",
               "dark:hover:to-emerald-600",
-              "min-h-[32px]",
-              "min-w-[32px]",
+              "text-white",
+              "focus:ring-blue-500",
+              "min-h-[24px]",
+              "min-w-[24px]",
               "relative",
               "transition-opacity",
               "duration-300",
@@ -106,10 +110,10 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               )}
             </AnimatePresence>
           </Button>
-        </CollapsiblePrimitive.Trigger>
+        </CollapsibleTrigger>
       </div>
 
-      <CollapsiblePrimitive.Content
+      <CollapsibleContent
         className={clsx([
           "p-2",
           "bg-gray-800",
@@ -118,10 +122,12 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           "w-full",
           "h-full",
           "overflow-hidden",
+          "data-[state=closed]:animate-slideUp",
+          "data-[state=open]:animate-slideDown",
         ])}
       >
         {children}
-      </CollapsiblePrimitive.Content>
-    </CollapsiblePrimitive.Root>
+      </CollapsibleContent>
+    </CollapsibleRoot>
   );
 };

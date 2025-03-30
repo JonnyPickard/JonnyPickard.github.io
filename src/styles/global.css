@@ -187,3 +187,20 @@ time {
     @apply border-border outline-ring/50;
   }
 }
+
+/* TODO */
+.gradient-button {
+  @apply bg-gradient-to-r;
+
+  &:hover {
+    @apply from-blue-400 to-emerald-400;
+  }
+
+  &:active {
+    @apply from-blue-500 to-emerald-600;
+  }
+
+  &[data-state="open"] {
+    @apply from-blue-600 to-emerald-500;
+  }
+}

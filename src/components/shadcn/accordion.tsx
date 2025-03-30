@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -32,28 +33,12 @@ function AccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
-        className={cn(
-          [
-            "focus-visible:border-ring",
-            "focus-visible:ring-ring/50",
-            "flex",
-            "flex-1",
-            "items-start",
-            "justify-between",
-            "gap-4",
-            "py-4",
-            "text-left",
-            "text-sm",
-            "font-medium",
-            "transition-all",
-            "outline-none",
-            "focus-visible:ring-[3px]",
-            "disabled:pointer-events-none",
-            "disabled:opacity-50",
-            "[&[data-state=open]>svg]:rotate-180",
-          ],
+        className={cn([
+          "disabled:pointer-events-none",
+          "disabled:opacity-50",
+          "[&[data-state=open]>svg]:rotate-180",
           className,
-        )}
+        ])}
         {...props}
       >
         {children}
@@ -79,24 +64,31 @@ function AccordionTrigger({
 function AccordionContent({
   className,
   children,
-  ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+  isOpen,
+  contentKey,
+}: React.ComponentProps<typeof AccordionPrimitive.Content> & {
+  isOpen: boolean;
+  contentKey: string;
+}) {
   return (
-    <AccordionPrimitive.Content
-      data-slot="accordion-content"
-      className={cn(
-        [
-          "data-[state=closed]:animate-accordion-up",
-          "data-[state=open]:animate-accordion-down",
-          "overflow-hidden",
-          "text-sm",
-        ],
-        className,
+    <AnimatePresence initial={false}>
+      {isOpen && (
+        <motion.div
+          key={contentKey}
+          animate={"open"}
+          variants={{
+            open: { opacity: 1, height: "auto" },
+            collapsed: { opacity: 0, height: 0 },
+          }}
+          transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
+          initial="collapsed"
+          exit="collapsed"
+          className={cn("overflow-hidden")}
+        >
+          <div className={cn([className])}>{children}</div>
+        </motion.div>
       )}
-      {...props}
-    >
-      <div className={cn(["pt-0", "pb-4"], className)}>{children}</div>
-    </AccordionPrimitive.Content>
+    </AnimatePresence>
   );
 }
 
