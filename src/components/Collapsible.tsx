@@ -1,5 +1,4 @@
 import {
-  CollapsibleContent,
   Collapsible as CollapsibleRoot,
   CollapsibleTrigger,
 } from "@/components/shadcn/collapsible";
@@ -59,8 +58,8 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               "dark:hover:to-emerald-600",
               "text-white",
               "focus:ring-blue-500",
-              "min-h-[24px]",
-              "min-w-[24px]",
+              "size-[32px]",
+              "p-inset-0",
               "relative",
               "transition-opacity",
               "duration-300",
@@ -70,7 +69,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               setOpen(() => !open);
             }}
           >
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence initial={false}>
               {open ? (
                 <motion.div
                   key="cross"
@@ -78,13 +77,13 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
-                  className={clsx(["absolute"])}
+                  className={clsx(["absolute", "flex", "place-items-center"])}
                 >
                   <Icon
                     className={clsx([
-                      "text-white",
+                      "text-slate-100",
                       "dark:text-slate-100",
-                      "size-[24px]",
+                      "size-[20px]",
                     ])}
                     icon={"radix-icons:cross-2"}
                   />
@@ -100,9 +99,9 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                 >
                   <Icon
                     className={clsx([
-                      "text-white",
+                      "text-slate-100",
                       "dark:text-slate-100",
-                      "size-[24px]",
+                      "size-[20px]",
                     ])}
                     icon={"radix-icons:row-spacing"}
                   />
@@ -113,21 +112,32 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
         </CollapsibleTrigger>
       </div>
 
-      <CollapsibleContent
-        className={clsx([
-          "p-2",
-          "bg-gray-800",
-          "shadow-lg",
-          "text-gray-200",
-          "w-full",
-          "h-full",
-          "overflow-hidden",
-          "data-[state=closed]:animate-slideUp",
-          "data-[state=open]:animate-slideDown",
-        ])}
-      >
-        {children}
-      </CollapsibleContent>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="collapsible-content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div
+              className={clsx([
+                "py-4",
+                "px-2",
+                "bg-gray-800",
+                "shadow-lg",
+                "text-gray-200",
+                "w-full",
+                "h-full",
+                "overflow-hidden",
+              ])}
+            >
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </CollapsibleRoot>
   );
 };
