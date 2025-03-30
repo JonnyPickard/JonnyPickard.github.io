@@ -15,7 +15,6 @@ export const GraphKey = ({ keyTable, className }: GraphKeyProps) => {
         "text-white",
         "border-separate",
         "border-spacing-2",
-        "bg-secondary-500/40",
         "rounded-md",
         "p-2",
         className,

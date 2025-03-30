@@ -1,3 +1,4 @@
+import { Button, Collapsible, Drawer } from "@/components";
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 import { Grid } from ".";
@@ -37,6 +38,7 @@ const meta: Meta<typeof Grid> = {
             "w-screen",
             "bg-slate-900",
             "flex",
+            "flex-col",
             "gap-4",
             "p-4",
             "overflow-hidden",
@@ -60,24 +62,53 @@ const meta: Meta<typeof Grid> = {
               }}
             />
           </div>
-          <div className={clsx(["absolute", "top-2", "right-2"])}>
-            <GraphKey
-              keyTable={[
-                {
-                  color: "border border-white",
-                  description: "traversable",
-                },
-                {
-                  color: BG_TERRAIN_COLOR,
-                  description: "terrain (impassable)",
-                },
-                { color: BG_PLAYER_START_COLOR, description: "start" },
-                { color: BG_TARGET_COLOR, description: "target" },
-                { color: BG_PLAYER_PATH_COLOR, description: "path" },
-                { color: BG_PROCESSING_TILE_COLOR, description: "processing" },
-                { color: BG_VISITED_TILE_COLOR, description: "visited" },
-              ]}
-            />
+          <div className="block md:hidden">
+            <Drawer TriggerButton={<Button>Show Key</Button>}>
+              <GraphKey
+                keyTable={[
+                  {
+                    color: "border border-white",
+                    description: "traversable",
+                  },
+                  {
+                    color: BG_TERRAIN_COLOR,
+                    description: "terrain (impassable)",
+                  },
+                  { color: BG_PLAYER_START_COLOR, description: "start" },
+                  { color: BG_TARGET_COLOR, description: "target" },
+                  { color: BG_PLAYER_PATH_COLOR, description: "path" },
+                  {
+                    color: BG_PROCESSING_TILE_COLOR,
+                    description: "processing",
+                  },
+                  { color: BG_VISITED_TILE_COLOR, description: "visited" },
+                ]}
+              />
+            </Drawer>
+          </div>
+          <div className="hidden md:block absolute top-2 right-2">
+            <Collapsible Title="Key">
+              <GraphKey
+                keyTable={[
+                  {
+                    color: "border border-white",
+                    description: "traversable",
+                  },
+                  {
+                    color: BG_TERRAIN_COLOR,
+                    description: "terrain (impassable)",
+                  },
+                  { color: BG_PLAYER_START_COLOR, description: "start" },
+                  { color: BG_TARGET_COLOR, description: "target" },
+                  { color: BG_PLAYER_PATH_COLOR, description: "path" },
+                  {
+                    color: BG_PROCESSING_TILE_COLOR,
+                    description: "processing",
+                  },
+                  { color: BG_VISITED_TILE_COLOR, description: "visited" },
+                ]}
+              />
+            </Collapsible>
           </div>
         </div>
       );

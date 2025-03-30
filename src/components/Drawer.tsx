@@ -33,7 +33,7 @@ export const Drawer: React.FC<DrawerProps> = ({
         )}
       </DrawerTrigger>
 
-      <DrawerContent className={clsx(contentClassName)}>
+      <DrawerContent className={clsx(["dark", contentClassName])}>
         {children}
       </DrawerContent>
     </ShadcnDrawer>

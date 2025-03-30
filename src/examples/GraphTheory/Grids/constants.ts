@@ -11,7 +11,6 @@ export const DEFAULT_TILE_SIZE = 60;
 export const DEFAULT_STROKE_WIDTH = 2;
 
 // Fill Colors
-
 export const FIND_NEIGHBOURS_CURRENT_TILE_COLOR = "fill-sky-400";
 export const FIND_NEIGHBOURS_SUCCESS_COLOR = "fill-lime-500";
 export const FIND_NEIGHBOURS_FAILURE_COLOR = "fill-rose-800";

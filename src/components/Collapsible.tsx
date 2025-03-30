@@ -11,11 +11,15 @@ import { Button } from "./Button";
 type CollapsibleProps = {
   Title: string | React.ReactNode;
   children: React.ReactNode;
+  titleClassName?: string;
+  contentClassName?: string;
 };
 
 export const Collapsible: React.FC<CollapsibleProps> = ({
   Title,
   children,
+  titleClassName,
+  contentClassName,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -36,7 +40,15 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
         onClick={() => setOpen(!open)}
       >
         {typeof Title === "string" ? (
-          <span className={clsx(["text-sm", "font-medium", "text-gray-100"])}>
+          <span
+            className={clsx([
+              "text-sm",
+              "font-medium",
+              "text-gray-100",
+              "min-w-[200px]",
+              titleClassName,
+            ])}
+          >
             {Title}
           </span>
         ) : (
@@ -131,6 +143,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                 "w-full",
                 "h-full",
                 "overflow-hidden",
+                contentClassName,
               ])}
             >
               {children}
