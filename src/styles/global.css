@@ -188,37 +188,19 @@ time {
   }
 }
 
-/* Collapsible animations */
-.CollapsibleContent {
-  overflow: hidden;
-}
-.CollapsibleContent[data-state="open"] {
-  animation: slideDown 400ms ease-in;
-}
-.CollapsibleContent[data-state="closed"] {
-  animation: slideUp 300ms ease-in;
-}
+/* TODO */
+.gradient-button {
+  @apply bg-gradient-to-r;
 
-@keyframes slideDown {
-  from {
-    /* Content height - going too low e.g. 0 made it rather janky */
-    max-height: 50px;
-    opacity: 0;
+  &:hover {
+    @apply from-blue-400 to-emerald-400;
   }
 
-  to {
-    max-height: var(--radix-collapsible-content-height);
-    opacity: 1;
+  &:active {
+    @apply from-blue-500 to-emerald-600;
   }
-}
 
-@keyframes slideUp {
-  from {
-    max-height: var(--radix-collapsible-content-height);
-    opacity: 1;
-  }
-  to {
-    max-height: 50px;
-    opacity: 0;
+  &[data-state="open"] {
+    @apply from-blue-600 to-emerald-500;
   }
 }

@@ -1,5 +1,8 @@
+import {
+  Collapsible as CollapsibleRoot,
+  CollapsibleTrigger,
+} from "@/components/shadcn/collapsible";
 import { Icon } from "@iconify/react";
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
@@ -17,9 +20,9 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <CollapsiblePrimitive.Root open={open} onOpenChange={setOpen}>
+    <CollapsibleRoot open={open} onOpenChange={setOpen}>
       <div
-        className={clsx(
+        className={clsx([
           "gap-4",
           "flex",
           "items-center",
@@ -29,41 +32,44 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           "shadow-md",
           "cursor-pointer",
           "min-h-[56px]",
-        )}
+        ])}
         onClick={() => setOpen(!open)}
       >
         {typeof Title === "string" ? (
-          <span className={clsx("text-sm", "font-medium", "text-gray-100")}>
+          <span className={clsx(["text-sm", "font-medium", "text-gray-100"])}>
             {Title}
           </span>
         ) : (
           Title
         )}
-        <CollapsiblePrimitive.Trigger asChild>
+        <CollapsibleTrigger asChild>
           <Button
             variant="rounded"
             size="icon"
-            className={clsx(
+            className={clsx([
               "bg-gradient-to-r",
               "from-blue-500",
               "to-emerald-600",
-              "text-white",
               "hover:from-blue-400",
               "hover:to-emerald-400",
-              "focus:ring-blue-500",
               "dark:from-blue-600",
               "dark:to-emerald-600",
               "dark:hover:from-blue-500",
               "dark:hover:to-emerald-600",
-              "min-h-[24px]",
-              "min-w-[24px]",
-            )}
+              "text-white",
+              "focus:ring-blue-500",
+              "size-[32px]",
+              "p-inset-0",
+              "relative",
+              "transition-opacity",
+              "duration-300",
+            ])}
             onClick={(e) => {
               e.stopPropagation();
               setOpen(() => !open);
             }}
           >
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence initial={false}>
               {open ? (
                 <motion.div
                   key="cross"
@@ -71,12 +77,14 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
+                  className={clsx(["absolute", "flex", "place-items-center"])}
                 >
                   <Icon
-                    className={clsx(
-                      "text-white dark:text-slate-100",
-                      "size-[24px]",
-                    )}
+                    className={clsx([
+                      "text-slate-100",
+                      "dark:text-slate-100",
+                      "size-[20px]",
+                    ])}
                     icon={"radix-icons:cross-2"}
                   />
                 </motion.div>
@@ -87,35 +95,49 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
+                  className={clsx(["absolute"])}
                 >
                   <Icon
-                    className={clsx(
-                      "text-white dark:text-slate-100",
-                      "size-[24px]",
-                    )}
+                    className={clsx([
+                      "text-slate-100",
+                      "dark:text-slate-100",
+                      "size-[20px]",
+                    ])}
                     icon={"radix-icons:row-spacing"}
                   />
                 </motion.div>
               )}
             </AnimatePresence>
           </Button>
-        </CollapsiblePrimitive.Trigger>
+        </CollapsibleTrigger>
       </div>
 
-      <CollapsiblePrimitive.Content
-        className={clsx(
-          "CollapsibleContent",
-          "p-4",
-          "bg-gray-800",
-          "shadow-lg",
-          "text-gray-200",
-          "w-full",
-          "h-full",
-          "overflow-hidden",
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="collapsible-content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div
+              className={clsx([
+                "py-4",
+                "px-2",
+                "bg-gray-800",
+                "shadow-lg",
+                "text-gray-200",
+                "w-full",
+                "h-full",
+                "overflow-hidden",
+              ])}
+            >
+              {children}
+            </div>
+          </motion.div>
         )}
-      >
-        {children}
-      </CollapsiblePrimitive.Content>
-    </CollapsiblePrimitive.Root>
+      </AnimatePresence>
+    </CollapsibleRoot>
   );
 };
