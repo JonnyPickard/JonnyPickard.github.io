@@ -59,7 +59,8 @@ const meta: Meta<typeof Grid> = {
             "p-4",
             "place-items-center",
             "overflow-hidden",
-            "flex-col md:flex-row",
+            "flex-col",
+            "md:flex-row",
           ])}
         >
           <Story
@@ -72,7 +73,13 @@ const meta: Meta<typeof Grid> = {
             initialIsOpen
             direction={window.innerWidth >= 768 ? "right" : "bottom"}
             showHandle={false}
-            contentClassName={clsx(["min-w-1/3", "min-h-1/3", "h-full"])}
+            contentClassName={clsx([
+              "max-h-1/2",
+              "h-1/2",
+              "md:max-h-full",
+              "md:h-full",
+              "md:min-w-1/2",
+            ])}
           >
             <GraphNodeToNeigbourList graph={graph} />
           </Drawer>
