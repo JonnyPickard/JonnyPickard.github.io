@@ -70,9 +70,9 @@ const meta: Meta<typeof Grid> = {
             }}
           />
           <Drawer
-            initialIsOpen
             direction={window.innerWidth >= 768 ? "right" : "bottom"}
             showHandle={false}
+            customOpenIcon="radix-icons:arrow-left"
             contentClassName={clsx([
               "max-h-1/2",
               "h-1/2",
@@ -80,6 +80,8 @@ const meta: Meta<typeof Grid> = {
               "md:h-full",
               "md:min-w-1/2",
             ])}
+            openDrawerTooltip={"Show Graph"}
+            closeDrawerTooltip={"Hide Graph"}
           >
             <GraphNodeToNeigbourList graph={graph} />
           </Drawer>

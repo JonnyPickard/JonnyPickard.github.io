@@ -3,6 +3,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/shadcn/tooltip";
+import clsx from "clsx";
 import React from "react";
 
 /**
@@ -26,14 +27,20 @@ import React from "react";
 export function withTooltip<T extends object>(
   WrappedComponent: React.ComponentType<T>,
 ) {
-  return ({ tooltip, ...props }: T & { tooltip?: string }) => {
+  return ({
+    tooltip,
+    tooltipClassName,
+    ...props
+  }: T & { tooltip?: string; tooltipClassName?: string }) => {
     if (tooltip) {
       return (
         <Tooltip>
           <TooltipTrigger>
             <WrappedComponent {...(props as T)} />
           </TooltipTrigger>
-          <TooltipContent>{tooltip}</TooltipContent>
+          <TooltipContent className={clsx(tooltipClassName)}>
+            {tooltip}
+          </TooltipContent>
         </Tooltip>
       );
     }

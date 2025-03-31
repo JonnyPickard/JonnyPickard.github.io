@@ -96,22 +96,24 @@ function DrawerContent({
         ])}
         {...props}
       >
-        {showHandle && (
-          <DrawerPrimitive.Handle
-            className={clsx([
-              "bg-muted",
-              "mx-auto",
-              "mb-4",
-              "hidden",
-              "h-2",
-              "w-[100px]",
-              "shrink-0",
-              "rounded-full",
-              "group-data-[vaul-drawer-direction=top]/drawer-content:block",
-            ])}
-          />
-        )}
-        {children}
+        <>
+          {showHandle && (
+            <DrawerPrimitive.Handle
+              className={clsx([
+                "bg-muted",
+                "mx-auto",
+                "mb-4",
+                "hidden",
+                "h-2",
+                "w-[100px]",
+                "shrink-0",
+                "rounded-full",
+                "group-data-[vaul-drawer-direction=top]/drawer-content:block",
+              ])}
+            />
+          )}
+          {children}
+        </>
       </DrawerPrimitive.Content>
     </DrawerPortal>
   );

@@ -1,5 +1,6 @@
+import { ToggleButton } from "@/components";
 import clsx from "clsx";
-import { Button } from "./Button";
+import { useState } from "react";
 import {
   DrawerClose,
   DrawerContent,
@@ -7,7 +8,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
   Drawer as ShadcnDrawer,
   DrawerProps as ShadcnDrawerProps,
 } from "./shadcn/drawer";
@@ -25,6 +25,10 @@ interface DrawerProps {
   initialIsOpen?: boolean;
   showHandle?: boolean;
   direction?: ShadcnDrawerProps["direction"];
+  openDrawerTooltip?: string;
+  closeDrawerTooltip?: string;
+  customOpenIcon?: string;
+  customCloseIcon?: string;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -35,38 +39,80 @@ export const Drawer: React.FC<DrawerProps> = ({
   initialIsOpen = false,
   showHandle,
   direction = "right",
+  openDrawerTooltip = "Open",
+  closeDrawerTooltip = "Close",
+  customOpenIcon,
+  customCloseIcon,
   ...props
 }) => {
+  const [isOpen, setIsOpen] = useState(initialIsOpen);
+
+  const handleToggle = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
     <>
-      <ShadcnDrawer direction={direction} {...props}>
-        <DrawerTrigger>
-          {TriggerButton ?? (
-            <Button className={clsx(triggerClassName)}>Open</Button>
-          )}
-        </DrawerTrigger>
-
-        <DrawerContent
-          showHandle={showHandle}
-          className={clsx(["dark", contentClassName])}
-        >
-          <DrawerTrigger
+      <ShadcnDrawer
+        direction={direction}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        {...props}
+      >
+        {direction === "right" ? (
+          <ToggleButton
+            size="lg"
+            isOpen={isOpen}
+            onClick={handleToggle}
+            direction={customOpenIcon ? "vertical" : "horizontal"}
+            tooltipOpen={openDrawerTooltip}
+            tooltipClose={closeDrawerTooltip}
+            customOpenIcon={customOpenIcon}
+            customCloseIcon={customCloseIcon}
             className={clsx([
               "absolute",
               "top-1/2",
               "-translate-y-1/2",
-              direction === "right" ? "-left-12" : "-right-12",
-              "bg-blue-500",
-              "text-white",
-              "p-2",
-              "rounded",
+              "right-0",
               "z-50",
               triggerClassName,
             ])}
-          >
-            Close
-          </DrawerTrigger>
-          {children}
+          />
+        ) : (
+          <ToggleButton
+            size="lg"
+            isOpen={isOpen}
+            onClick={handleToggle}
+            className={clsx(triggerClassName)}
+          />
+        )}
+        <DrawerContent
+          showHandle={showHandle}
+          className={clsx(["dark", contentClassName])}
+        >
+          <>
+            {direction === "right" && (
+              <ToggleButton
+                isOpen={isOpen}
+                onClick={handleToggle}
+                direction={customOpenIcon ? "vertical" : "horizontal"}
+                size="lg"
+                tooltipOpen={openDrawerTooltip}
+                tooltipClose={closeDrawerTooltip}
+                customOpenIcon={customOpenIcon}
+                customCloseIcon={customCloseIcon}
+                className={clsx([
+                  "absolute",
+                  "top-1/2",
+                  "-translate-y-1/2",
+                  "-left-5",
+                  "z-50",
+                  triggerClassName,
+                ])}
+              />
+            )}
+            {children}
+          </>
         </DrawerContent>
       </ShadcnDrawer>
     </>

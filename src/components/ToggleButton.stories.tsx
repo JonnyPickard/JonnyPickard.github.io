@@ -13,13 +13,31 @@ const meta: Meta<typeof ToggleButton> = {
       control: "boolean",
       description: "Controls whether the button is in the open state.",
     },
-    onClick: {
-      action: "clicked",
-      description: "Callback function when the button is clicked.",
-    },
     className: {
       control: "text",
       description: "Additional CSS classes for the button.",
+    },
+    tooltipOpen: {
+      control: "text",
+      description: "Tooltip label when the button is open.",
+    },
+    tooltipClose: {
+      control: "text",
+      description: "Tooltip label when the button is closed.",
+    },
+    size: {
+      control: {
+        type: "radio",
+        options: ["default", "sm", "lg"],
+      },
+      description: "Size of the toggle button.",
+    },
+    direction: {
+      control: {
+        type: "radio",
+        options: ["horizontal", "vertical"],
+      },
+      description: "Direction of the toggle button.",
     },
   },
 };
@@ -31,8 +49,11 @@ type Story = StoryObj<typeof ToggleButton>;
 export const Default: Story = {
   name: "Toggle Button",
   args: {
-    isOpen: false,
     size: "lg",
+    tooltipOpen: "Open",
+    tooltipClose: "Close",
+    direction: "vertical",
+    isOpen: false,
   },
   render: (args) => {
     const [isOpen, setIsOpen] = useState(args.isOpen);
@@ -42,7 +63,7 @@ export const Default: Story = {
         {...args}
         isOpen={isOpen}
         onClick={() => {
-          setIsOpen(!isOpen);
+          setIsOpen(() => !isOpen);
           args.onClick?.();
         }}
       />

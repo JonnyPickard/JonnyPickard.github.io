@@ -10,6 +10,11 @@ interface ToggleButtonProps {
   className?: string;
   direction?: "horizontal" | "vertical";
   size?: "default" | "sm" | "lg";
+  tooltipOpen?: string;
+  tooltipClose?: string;
+  tooltipClassName?: string;
+  customOpenIcon?: string;
+  customCloseIcon?: string;
 }
 
 interface AnimatedIconProps {
@@ -68,12 +73,18 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   className,
   direction = "vertical",
   size = "default",
+  tooltipOpen = "Open",
+  tooltipClose = "Close",
+  tooltipClassName,
+  customOpenIcon,
+  customCloseIcon,
 }) => {
   return (
     <Button
       variant="rounded"
       onClick={onClick}
-      tooltip={isOpen ? "Close" : "Open"}
+      tooltip={isOpen ? tooltipClose : tooltipOpen}
+      tooltipClassName={clsx([tooltipClassName])}
       className={clsx([
         "bg-gradient-to-r",
         "from-blue-500",
@@ -99,13 +110,13 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
         {isOpen ? (
           <AnimatedIcon
             direction={direction}
-            icon="radix-icons:cross-2"
+            icon={customCloseIcon || "radix-icons:cross-2"}
             size={size}
           />
         ) : (
           <AnimatedIcon
             direction={direction}
-            icon="radix-icons:row-spacing"
+            icon={customOpenIcon || "radix-icons:row-spacing"}
             size={size}
           />
         )}
