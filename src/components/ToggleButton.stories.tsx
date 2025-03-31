@@ -4,7 +4,7 @@ import { ToggleButton } from "./ToggleButton";
 
 const meta: Meta<typeof ToggleButton> = {
   component: ToggleButton,
-  title: "Components/ToggleButton",
+  title: "Components/Button/Toggle Button",
   parameters: {
     layout: "centered",
   },
@@ -29,9 +29,10 @@ export default meta;
 type Story = StoryObj<typeof ToggleButton>;
 
 export const Default: Story = {
-  name: "Default",
+  name: "Toggle Button",
   args: {
     isOpen: false,
+    size: "lg",
   },
   render: (args) => {
     const [isOpen, setIsOpen] = useState(args.isOpen);

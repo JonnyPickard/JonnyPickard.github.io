@@ -28,6 +28,7 @@ export default meta;
 type Story = StoryObj<typeof Drawer>;
 
 export const Default: Story = {
+  name: "Drawer",
   render: () => {
     const [goal, setGoal] = useState(350);
 

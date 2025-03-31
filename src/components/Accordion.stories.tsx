@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof Accordion>;
 
 export const Default: Story = {
-  name: "Default Accordion",
+  name: "Accordion",
   args: {
     items: [
       {

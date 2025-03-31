@@ -9,14 +9,35 @@ interface ToggleButtonProps {
   onClick: () => void;
   className?: string;
   direction?: "horizontal" | "vertical";
+  size?: "default" | "sm" | "lg";
 }
 
 interface AnimatedIconProps {
   icon: string;
   direction: ToggleButtonProps["direction"];
+  size: ToggleButtonProps["size"];
 }
 
-const AnimatedIcon: React.FC<AnimatedIconProps> = ({ icon, direction }) => {
+const sizeMap = {
+  sm: {
+    icon: "size-[16px]",
+    button: "size-[24px]",
+  },
+  default: {
+    icon: "size-[24px]",
+    button: "size-[32px]",
+  },
+  lg: {
+    icon: "size-[32px]",
+    button: "size-[40px]",
+  },
+};
+
+const AnimatedIcon: React.FC<AnimatedIconProps> = ({
+  icon,
+  direction,
+  size = "default",
+}) => {
   return (
     <motion.div
       key={icon}
@@ -34,7 +55,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({ icon, direction }) => {
       ])}
     >
       <Icon
-        className={clsx(["size-[24px]", "pointer-events-none"])}
+        className={clsx([sizeMap[size].icon, "pointer-events-none"])}
         icon={icon}
       />
     </motion.div>
@@ -46,11 +67,11 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   onClick,
   className,
   direction = "vertical",
+  size = "default",
 }) => {
   return (
     <Button
       variant="rounded"
-      size="icon"
       onClick={onClick}
       tooltip={isOpen ? "Close" : "Open"}
       className={clsx([
@@ -66,19 +87,27 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
         "text-white",
         "focus:ring-blue-500",
         "p-inset-2",
-        "size-[32px]",
         "transition-opacity",
         "duration-300",
         "text-slate-50",
         "relative",
+        sizeMap[size].button,
         className,
       ])}
     >
       <AnimatePresence initial={false}>
         {isOpen ? (
-          <AnimatedIcon direction={direction} icon="radix-icons:cross-2" />
+          <AnimatedIcon
+            direction={direction}
+            icon="radix-icons:cross-2"
+            size={size}
+          />
         ) : (
-          <AnimatedIcon direction={direction} icon="radix-icons:row-spacing" />
+          <AnimatedIcon
+            direction={direction}
+            icon="radix-icons:row-spacing"
+            size={size}
+          />
         )}
       </AnimatePresence>
     </Button>
