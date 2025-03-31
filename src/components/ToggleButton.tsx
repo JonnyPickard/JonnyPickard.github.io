@@ -52,6 +52,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
       variant="rounded"
       size="icon"
       onClick={onClick}
+      tooltip={isOpen ? "Close" : "Open"}
       className={clsx([
         "bg-gradient-to-r",
         "from-blue-500",

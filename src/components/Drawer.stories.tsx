@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 import { useState } from "react";
-import Button from "./Button";
+import { Button } from "./Button";
 import {
   Drawer,
   DrawerClose,
