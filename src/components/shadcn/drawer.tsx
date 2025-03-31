@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
+export type DrawerProps = React.ComponentProps<typeof DrawerPrimitive.Root>;
+
 import { cn } from "@/lib/utils";
 
 function Drawer({
@@ -46,8 +48,11 @@ function DrawerOverlay({
 function DrawerContent({
   className,
   children,
+  showHandle = true,
   ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: React.ComponentProps<typeof DrawerPrimitive.Content> & {
+  showHandle?: boolean;
+}) {
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
@@ -63,7 +68,9 @@ function DrawerContent({
         )}
         {...props}
       >
-        <DrawerPrimitive.Handle className="bg-muted mx-auto mb-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=top]/drawer-content:block" />
+        {showHandle && (
+          <DrawerPrimitive.Handle className="bg-muted mx-auto mb-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=top]/drawer-content:block" />
+        )}
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>

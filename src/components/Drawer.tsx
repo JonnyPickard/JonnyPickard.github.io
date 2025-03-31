@@ -10,6 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
   Drawer as ShadcnDrawer,
+  DrawerProps as ShadcnDrawerProps,
 } from "./shadcn/drawer";
 
 interface DrawerProps {
@@ -17,7 +18,14 @@ interface DrawerProps {
   triggerClassName?: string;
   contentClassName?: string;
   TriggerButton?: React.ReactNode;
+
+  /**
+   * Remap `defaultOpen` to `initialIsOpen`.
+   * This standardizes the naming of the initial open state prop across the codebase.
+   */
   initialIsOpen?: boolean;
+  showHandle?: boolean;
+  direction?: ShadcnDrawerProps["direction"];
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -26,16 +34,21 @@ export const Drawer: React.FC<DrawerProps> = ({
   contentClassName,
   TriggerButton,
   initialIsOpen = false,
+  showHandle,
+  ...props
 }) => {
   return (
-    <ShadcnDrawer defaultOpen={initialIsOpen}>
+    <ShadcnDrawer defaultOpen={initialIsOpen} {...props}>
       <DrawerTrigger>
         {TriggerButton ?? (
           <Button className={clsx(triggerClassName)}>Open</Button>
         )}
       </DrawerTrigger>
 
-      <DrawerContent className={clsx(["dark", contentClassName])}>
+      <DrawerContent
+        showHandle={showHandle}
+        className={clsx(["dark", contentClassName])}
+      >
         {children}
       </DrawerContent>
     </ShadcnDrawer>

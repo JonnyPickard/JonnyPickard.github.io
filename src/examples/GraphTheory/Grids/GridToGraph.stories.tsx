@@ -1,3 +1,4 @@
+import { Drawer } from "@/components";
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
@@ -68,9 +69,14 @@ const meta: Meta<typeof Grid> = {
               }}
             />
           </div>
-          <div className={clsx(["h-2/3", "w-1/2"])}>
+          <Drawer
+            initialIsOpen
+            direction="right"
+            showHandle={false}
+            contentClassName={clsx(["min-w-1/2"])}
+          >
             <GraphNodeToNeigbourList graph={graph} />
-          </div>
+          </Drawer>
         </div>
       );
     },

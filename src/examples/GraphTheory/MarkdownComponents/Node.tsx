@@ -19,6 +19,7 @@ export function Node({ name, size = 32, className, ...props }: NodeProps) {
         "my-auto",
         "text-xs",
         "text-white",
+        "min-w-[32px]",
         className,
       ])}
       style={{ width: size, height: size }}

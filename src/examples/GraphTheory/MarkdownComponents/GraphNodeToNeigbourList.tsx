@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { EdgeToNode } from "./EdgeToNode";
 import { Node } from "./Node";
 
+import { Button } from "@/components";
 import { HiArrowDown } from "react-icons/hi";
 import type { Graph } from "../Grids";
 
@@ -46,7 +47,7 @@ export const GraphNodeToNeigbourList: React.FC<
           "[&>*:nth-child(even)]:bg-secondary-600/10",
           "space-y-3",
           "max-h-full",
-          "overflow-y-auto",
+          "overflow-auto",
           "grow",
         ])}
       >
@@ -78,22 +79,9 @@ export const GraphNodeToNeigbourList: React.FC<
           </li>
         ))}
       </ul>
-      <button
+      <Button
         onClick={() => setAutoScroll((prev) => !prev)}
-        className={clsx([
-          "m-2",
-          "px-4",
-          "py-2",
-          "bg-blue-500",
-          "text-white",
-          "rounded-sm",
-          "self-center",
-          "flex",
-          "items-center",
-          "hover:bg-blue-600",
-          "transition",
-          "min-w-[200px]",
-        ])}
+        className={clsx(["m-4", "self-center"])}
       >
         {autoScroll ? "Disable Auto-Scroll" : "Enable Auto-Scroll"}
         {autoScroll ? (
@@ -101,7 +89,7 @@ export const GraphNodeToNeigbourList: React.FC<
         ) : (
           <HiArrowDown className="w-4 h-4 ml-2 rotate-0 transition-transform ease-in" />
         )}
-      </button>
+      </Button>
     </div>
   );
 };
