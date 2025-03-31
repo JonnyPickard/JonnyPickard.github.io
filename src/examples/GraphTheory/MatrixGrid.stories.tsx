@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
+import { useWindowSize } from "usehooks-ts";
 
+import {
+  Drawer,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components";
 import { GraphKey, MatrixGrid } from ".";
 import {
   BG_PLAYER_PATH_COLOR,
@@ -16,48 +23,75 @@ const meta: Meta<typeof MatrixGrid> = {
     layout: "fullscreen",
   },
   decorators: [
-    (Story) => (
-      <div
-        className={clsx([
-          "h-screen",
-          "w-screen",
-          "bg-slate-900",
-          "gap-4",
-          "p-4",
-          "overflow-hidden",
-          "relative",
-        ])}
-      >
+    (Story) => {
+      const { width = 0 } = useWindowSize();
+
+      return (
         <div
           className={clsx([
+            "h-screen",
+            "w-screen",
+            "bg-slate-900",
             "flex",
-            "w-full",
-            "h-full",
-            "justify-center",
-            "items-center",
+            "gap-4",
+            "p-4",
+            "place-items-center",
+            "overflow-hidden",
+            "flex-col",
+            "md:flex-row",
           ])}
         >
           <Story />
+          <Drawer
+            direction={width >= 768 ? "right" : "bottom"}
+            showHandle={false}
+            customOpenIcon="radix-icons:arrow-up"
+            contentClassName={clsx([
+              "max-h-1/2",
+              "h-1/2",
+              "md:max-h-full",
+              "md:h-full",
+              "md:min-w-1/2",
+            ])}
+            openDrawerTooltip={"Show Key"}
+            closeDrawerTooltip={"Hide Key"}
+          >
+            <>
+              <DrawerHeader className={clsx(["p-4", "pb-0"])}>
+                <DrawerTitle>Graph Key</DrawerTitle>
+                <DrawerDescription>
+                  Key for understanding the graph visualization.
+                </DrawerDescription>
+              </DrawerHeader>
+              <div
+                className={clsx([
+                  "p-2",
+                  "max-h-full",
+                  "h-full",
+                  "overflow-auto",
+                ])}
+              >
+                <GraphKey
+                  keyTable={[
+                    {
+                      color: "border border-white",
+                      description: "traversable",
+                    },
+                    {
+                      color: BG_TERRAIN_COLOR,
+                      description: "terrain (impassable)",
+                    },
+                    { color: BG_PLAYER_START_COLOR, description: "start" },
+                    { color: BG_TARGET_COLOR, description: "target" },
+                    { color: BG_PLAYER_PATH_COLOR, description: "path" },
+                  ]}
+                />
+              </div>
+            </>
+          </Drawer>
         </div>
-        <div className={clsx(["absolute", "top-2", "right-2"])}>
-          <GraphKey
-            keyTable={[
-              {
-                color: "border border-white",
-                description: "traversable",
-              },
-              {
-                color: BG_TERRAIN_COLOR,
-                description: "terrain (impassable)",
-              },
-              { color: BG_PLAYER_START_COLOR, description: "start" },
-              { color: BG_TARGET_COLOR, description: "target" },
-              { color: BG_PLAYER_PATH_COLOR, description: "path" },
-            ]}
-          />
-        </div>
-      </div>
-    ),
+      );
+    },
   ],
 };
 

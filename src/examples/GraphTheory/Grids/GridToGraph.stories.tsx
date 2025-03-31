@@ -9,6 +9,7 @@ import clsx from "clsx";
 
 import { useEffect, useState } from "react";
 
+import { useWindowSize } from "usehooks-ts";
 import { Grid, generateTestMatrix, runGraphGeneration } from ".";
 import { GraphNodeToNeigbourList } from "../MarkdownComponents";
 import {
@@ -29,7 +30,8 @@ const meta: Meta<typeof Grid> = {
   },
   decorators: [
     (Story) => {
-      // TODO: button to generate new grid
+      const { width = 0 } = useWindowSize();
+
       const [testMatrix] = useState(generateTestMatrix({ placePlayer: false }));
       const [tileColorOverrides, setTileColorOverrides] = useState({
         currentAlgTile: { x: 0, y: 0, color: PROCESSING_TILE_COLOR },
@@ -75,7 +77,7 @@ const meta: Meta<typeof Grid> = {
             }}
           />
           <Drawer
-            direction={window.innerWidth >= 768 ? "right" : "bottom"}
+            direction={width >= 768 ? "right" : "bottom"}
             showHandle={false}
             customOpenIcon="radix-icons:arrow-up"
             contentClassName={clsx([
@@ -87,13 +89,17 @@ const meta: Meta<typeof Grid> = {
             ])}
             openDrawerTooltip={"Show Graph"}
             closeDrawerTooltip={"Hide Graph"}
-            initialIsOpen
           >
             <>
               <DrawerHeader className={clsx(["p-4", "pb-0"])}>
                 <DrawerTitle>Graph - Adjacency List Representation</DrawerTitle>
                 <DrawerDescription>
-                  The graph generated from the grid.
+                  This visualization demonstrates how a 2D grid can be converted
+                  into a graph representation using an adjacency list. Each cell
+                  in the grid is treated as a node, and edges are created
+                  between nodes based on their traversable neighbors. The
+                  adjacency list shows each node and its directly connected
+                  neighbors.
                 </DrawerDescription>
               </DrawerHeader>
               <div
