@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof Collapsible>;
 
 export const Default: Story = {
-  name: "Default Collapsible",
+  name: "Collapsible",
   args: {
     Title: "Click to Expand",
     children: <div className="p-2">This is the collapsible content.</div>,

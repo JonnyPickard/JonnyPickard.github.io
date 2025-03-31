@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import * as React from "react";
+import { useState } from "react";
 import {
   AccordionContent,
   AccordionItem,
@@ -17,7 +18,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   items,
   collapsible = true,
 }) => {
-  const [openValue, setOpenValue] = React.useState<string | undefined>();
+  const [openValue, setOpenValue] = useState<string | undefined>();
 
   return (
     <ShadcnAccordion

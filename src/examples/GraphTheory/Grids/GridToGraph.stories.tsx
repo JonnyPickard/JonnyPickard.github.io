@@ -1,3 +1,9 @@
+import {
+  Drawer,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components";
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
@@ -58,19 +64,40 @@ const meta: Meta<typeof Grid> = {
             "p-4",
             "place-items-center",
             "overflow-hidden",
+            "flex-col",
+            "md:flex-row",
           ])}
         >
-          <div className={clsx(["h-2/3", "flex", "w-full"])}>
-            <Story
-              args={{
-                matrix: testMatrix,
-                tileColorOverride: tileColorOverrides,
-              }}
-            />
-          </div>
-          <div className={clsx(["h-2/3", "w-full"])}>
-            <GraphNodeToNeigbourList graph={graph} />
-          </div>
+          <Story
+            args={{
+              matrix: testMatrix,
+              tileColorOverride: tileColorOverrides,
+            }}
+          />
+          <Drawer
+            direction={window.innerWidth >= 768 ? "right" : "bottom"}
+            showHandle={false}
+            customOpenIcon="radix-icons:arrow-up"
+            contentClassName={clsx([
+              "max-h-1/2",
+              "h-1/2",
+              "md:max-h-full",
+              "md:h-full",
+              "md:min-w-1/2",
+            ])}
+            openDrawerTooltip={"Show Graph"}
+            closeDrawerTooltip={"Hide Graph"}
+          >
+            <>
+              <DrawerHeader>
+                <DrawerTitle>Graph - Adjacency List Representation</DrawerTitle>
+                <DrawerDescription>
+                  The graph generated from the grid.
+                </DrawerDescription>
+              </DrawerHeader>
+              <GraphNodeToNeigbourList graph={graph} />
+            </>
+          </Drawer>
         </div>
       );
     },

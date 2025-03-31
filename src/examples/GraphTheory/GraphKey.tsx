@@ -8,18 +8,23 @@ interface GraphKeyProps {
   className?: string;
   drawerTriggerButton?: React.ReactNode;
   collapsibleTitle?: string | React.ReactNode;
+  initialOpen?: boolean;
 }
 
 export const GraphKey: React.FC<GraphKeyProps> = ({
   keyTable,
   className,
   collapsibleTitle = "Key",
+  initialOpen = false,
 }) => {
   return (
     <>
       {/* Mobile View: Drawer */}
       <div className="block md:hidden">
-        <Drawer TriggerButton={<Button>{collapsibleTitle}</Button>}>
+        <Drawer
+          initialIsOpen={initialOpen}
+          TriggerButton={<Button>{collapsibleTitle}</Button>}
+        >
           <table
             className={clsx(
               "text-white",
@@ -42,7 +47,7 @@ export const GraphKey: React.FC<GraphKeyProps> = ({
 
       {/* Desktop View: Collapsible */}
       <div className="hidden md:block">
-        <Collapsible Title={collapsibleTitle}>
+        <Collapsible Title={collapsibleTitle} initialOpen={initialOpen}>
           <table
             className={clsx(
               "text-white",
