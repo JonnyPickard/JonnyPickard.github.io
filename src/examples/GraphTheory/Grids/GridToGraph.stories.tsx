@@ -59,21 +59,20 @@ const meta: Meta<typeof Grid> = {
             "p-4",
             "place-items-center",
             "overflow-hidden",
+            "flex-col md:flex-row",
           ])}
         >
-          <div className={clsx(["h-2/3", "w-1/2", "flex", "w-full"])}>
-            <Story
-              args={{
-                matrix: testMatrix,
-                tileColorOverride: tileColorOverrides,
-              }}
-            />
-          </div>
+          <Story
+            args={{
+              matrix: testMatrix,
+              tileColorOverride: tileColorOverrides,
+            }}
+          />
           <Drawer
             initialIsOpen
-            direction="right"
+            direction={window.innerWidth >= 768 ? "right" : "bottom"}
             showHandle={false}
-            contentClassName={clsx(["min-w-1/2"])}
+            contentClassName={clsx(["min-w-1/3", "min-h-1/3", "h-full"])}
           >
             <GraphNodeToNeigbourList graph={graph} />
           </Drawer>
