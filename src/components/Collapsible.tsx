@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
+import { useState } from "react";
 import { Button } from "./Button";
 
 type CollapsibleProps = {
@@ -13,6 +14,7 @@ type CollapsibleProps = {
   children: React.ReactNode;
   titleClassName?: string;
   contentClassName?: string;
+  initialOpen?: boolean;
 };
 
 export const Collapsible: React.FC<CollapsibleProps> = ({
@@ -20,8 +22,9 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
   children,
   titleClassName,
   contentClassName,
+  initialOpen = false,
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(initialOpen);
 
   return (
     <CollapsibleRoot open={open} onOpenChange={setOpen}>

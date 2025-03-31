@@ -60,7 +60,7 @@ const meta: Meta<typeof Grid> = {
             "overflow-hidden",
           ])}
         >
-          <div className={clsx(["h-2/3", "flex", "w-full"])}>
+          <div className={clsx(["h-2/3", "w-1/2", "flex", "w-full"])}>
             <Story
               args={{
                 matrix: testMatrix,
@@ -68,7 +68,7 @@ const meta: Meta<typeof Grid> = {
               }}
             />
           </div>
-          <div className={clsx(["h-2/3", "w-full"])}>
+          <div className={clsx(["h-2/3", "w-1/2"])}>
             <GraphNodeToNeigbourList graph={graph} />
           </div>
         </div>

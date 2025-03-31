@@ -17,6 +17,7 @@ interface DrawerProps {
   triggerClassName?: string;
   contentClassName?: string;
   TriggerButton?: React.ReactNode;
+  initialIsOpen?: boolean;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -24,9 +25,10 @@ export const Drawer: React.FC<DrawerProps> = ({
   triggerClassName,
   contentClassName,
   TriggerButton,
+  initialIsOpen = false,
 }) => {
   return (
-    <ShadcnDrawer>
+    <ShadcnDrawer defaultOpen={initialIsOpen}>
       <DrawerTrigger>
         {TriggerButton ?? (
           <Button className={clsx(triggerClassName)}>Open</Button>
