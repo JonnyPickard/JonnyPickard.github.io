@@ -1,4 +1,9 @@
-import { Drawer } from "@/components";
+import {
+  Drawer,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components";
 import type { Meta, StoryObj } from "@storybook/react";
 import clsx from "clsx";
 
@@ -72,7 +77,7 @@ const meta: Meta<typeof Grid> = {
           <Drawer
             direction={window.innerWidth >= 768 ? "right" : "bottom"}
             showHandle={false}
-            customOpenIcon="radix-icons:arrow-left"
+            customOpenIcon="radix-icons:arrow-up"
             contentClassName={clsx([
               "max-h-1/2",
               "h-1/2",
@@ -83,7 +88,15 @@ const meta: Meta<typeof Grid> = {
             openDrawerTooltip={"Show Graph"}
             closeDrawerTooltip={"Hide Graph"}
           >
-            <GraphNodeToNeigbourList graph={graph} />
+            <>
+              <DrawerHeader>
+                <DrawerTitle>Graph - Adjacency List Representation</DrawerTitle>
+                <DrawerDescription>
+                  The graph generated from the grid.
+                </DrawerDescription>
+              </DrawerHeader>
+              <GraphNodeToNeigbourList graph={graph} />
+            </>
           </Drawer>
         </div>
       );

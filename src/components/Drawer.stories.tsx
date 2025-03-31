@@ -17,9 +17,6 @@ const meta: Meta<typeof Drawer> = {
   component: Drawer,
   parameters: {
     layout: "centered",
-    controls: {
-      disable: true,
-    },
   },
 };
 

@@ -8,7 +8,7 @@ interface ToggleButtonProps {
   isOpen: boolean;
   onClick: () => void;
   className?: string;
-  direction?: "horizontal" | "vertical";
+  direction?: "up" | "down" | "left" | "right";
   size?: "default" | "sm" | "lg";
   tooltipOpen?: string;
   tooltipClose?: string;
@@ -40,9 +40,16 @@ const sizeMap = {
 
 const AnimatedIcon: React.FC<AnimatedIconProps> = ({
   icon,
-  direction,
+  direction = "down",
   size = "default",
 }) => {
+  const rotationMap = {
+    up: "rotate-180",
+    down: "rotate-0",
+    left: "rotate-90",
+    right: "-rotate-90",
+  };
+
   return (
     <motion.div
       key={icon}
@@ -55,7 +62,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         "flex",
         "items-center",
         "justify-center",
-        direction === "vertical" ? "rotate-0" : "rotate-90",
+        rotationMap[direction],
         "size-full",
       ])}
     >
@@ -71,7 +78,7 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   isOpen,
   onClick,
   className,
-  direction = "vertical",
+  direction = "down",
   size = "default",
   tooltipOpen = "Open",
   tooltipClose = "Close",

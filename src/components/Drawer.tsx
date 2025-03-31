@@ -1,5 +1,6 @@
 import { ToggleButton } from "@/components";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import {
   DrawerClose,
@@ -9,7 +10,6 @@ import {
   DrawerHeader,
   DrawerTitle,
   Drawer as ShadcnDrawer,
-  DrawerProps as ShadcnDrawerProps,
 } from "./shadcn/drawer";
 
 interface DrawerProps {
@@ -19,7 +19,7 @@ interface DrawerProps {
   TriggerButton?: React.ReactNode;
   initialIsOpen?: boolean;
   showHandle?: boolean;
-  direction?: ShadcnDrawerProps["direction"];
+  direction?: "bottom" | "right";
   openDrawerTooltip?: string;
   closeDrawerTooltip?: string;
   customOpenIcon?: string;
@@ -33,7 +33,7 @@ export const Drawer: React.FC<DrawerProps> = ({
   TriggerButton,
   initialIsOpen = false,
   showHandle,
-  direction = "right",
+  direction = "bottom",
   openDrawerTooltip = "Open",
   closeDrawerTooltip = "Close",
   customOpenIcon,
@@ -44,19 +44,43 @@ export const Drawer: React.FC<DrawerProps> = ({
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
-  const renderToggleButton = (positionClass: string) => (
-    <ToggleButton
-      size="lg"
-      isOpen={isOpen}
-      onClick={handleToggle}
-      direction={customOpenIcon ? "vertical" : "horizontal"}
-      tooltipOpen={openDrawerTooltip}
-      tooltipClose={closeDrawerTooltip}
-      customOpenIcon={customOpenIcon}
-      customCloseIcon={customCloseIcon}
-      className={clsx([positionClass, triggerClassName])}
-    />
-  );
+  const renderToggleButton = (
+    positionClass: string,
+    isVisible: boolean = true,
+    duration: number = 0.2,
+    direction: "bottom" | "right" = "bottom",
+  ) => {
+    const directionMap = {
+      bottom: "up",
+      right: "right",
+    } as const;
+
+    return (
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            key={"toggle-button"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration }}
+          >
+            <ToggleButton
+              size="lg"
+              isOpen={isOpen}
+              onClick={handleToggle}
+              direction={directionMap[direction]}
+              tooltipOpen={openDrawerTooltip}
+              tooltipClose={closeDrawerTooltip}
+              customOpenIcon={customOpenIcon}
+              customCloseIcon={customCloseIcon}
+              className={clsx([positionClass, triggerClassName])}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  };
 
   return (
     <>
@@ -67,16 +91,24 @@ export const Drawer: React.FC<DrawerProps> = ({
         {...props}
       >
         {direction === "right"
-          ? renderToggleButton("absolute top-1/2 -translate-y-1/2 right-0 z-50")
+          ? renderToggleButton(
+              "absolute top-1/2 -translate-y-1/2 right-0 z-50",
+              // Fades in after closing the drawer
+              !isOpen,
+              1,
+              direction,
+            )
           : renderToggleButton("")}
 
         <DrawerContent
           showHandle={showHandle}
           className={clsx(["dark", contentClassName])}
         >
+          {/* Toggle button overlaying the drawer border */}
           {direction === "right" &&
             renderToggleButton(
               "absolute top-1/2 -translate-y-1/2 -left-5 z-50",
+              isOpen,
             )}
           {children}
         </DrawerContent>

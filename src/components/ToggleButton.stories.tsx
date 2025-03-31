@@ -52,7 +52,7 @@ export const Default: Story = {
     size: "lg",
     tooltipOpen: "Open",
     tooltipClose: "Close",
-    direction: "vertical",
+    direction: "up",
     isOpen: false,
   },
   render: (args) => {
