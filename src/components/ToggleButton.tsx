@@ -8,7 +8,7 @@ interface ToggleButtonProps {
   isOpen: boolean;
   onClick: () => void;
   className?: string;
-  direction: "horizontal" | "vertical";
+  direction?: "horizontal" | "vertical";
 }
 
 interface AnimatedIconProps {

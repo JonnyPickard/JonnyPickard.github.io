@@ -2,12 +2,11 @@ import {
   Collapsible as CollapsibleRoot,
   CollapsibleTrigger,
 } from "@/components/shadcn/collapsible";
-import { Icon } from "@iconify/react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { useState } from "react";
-import { Button } from "./Button";
+import { ToggleButton } from "./ToggleButton";
 
 type CollapsibleProps = {
   Title: string | React.ReactNode;
@@ -58,9 +57,11 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
           Title
         )}
         <CollapsibleTrigger asChild>
-          <Button
-            variant="rounded"
-            size="icon"
+          <ToggleButton
+            isOpen={open}
+            onClick={() => {
+              setOpen(!open);
+            }}
             className={clsx([
               "bg-gradient-to-r",
               "from-blue-500",
@@ -79,51 +80,7 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
               "transition-opacity",
               "duration-300",
             ])}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(() => !open);
-            }}
-          >
-            <AnimatePresence initial={false}>
-              {open ? (
-                <motion.div
-                  key="cross"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  className={clsx(["absolute", "flex", "place-items-center"])}
-                >
-                  <Icon
-                    className={clsx([
-                      "text-slate-100",
-                      "dark:text-slate-100",
-                      "size-[20px]",
-                    ])}
-                    icon={"radix-icons:cross-2"}
-                  />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="row-spacing"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  className={clsx(["absolute"])}
-                >
-                  <Icon
-                    className={clsx([
-                      "text-slate-100",
-                      "dark:text-slate-100",
-                      "size-[20px]",
-                    ])}
-                    icon={"radix-icons:row-spacing"}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </Button>
+          />
         </CollapsibleTrigger>
       </div>
 
