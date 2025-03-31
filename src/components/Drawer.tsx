@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React from "react";
+import { useState } from "react";
 import { Button } from "./Button";
 import {
   DrawerClose,
@@ -35,23 +35,42 @@ export const Drawer: React.FC<DrawerProps> = ({
   TriggerButton,
   initialIsOpen = false,
   showHandle,
+  direction = "right",
   ...props
 }) => {
   return (
-    <ShadcnDrawer defaultOpen={initialIsOpen} {...props}>
-      <DrawerTrigger>
-        {TriggerButton ?? (
-          <Button className={clsx(triggerClassName)}>Open</Button>
-        )}
-      </DrawerTrigger>
+    <>
+      <ShadcnDrawer direction={direction} {...props}>
+        <DrawerTrigger>
+          {TriggerButton ?? (
+            <Button className={clsx(triggerClassName)}>Open</Button>
+          )}
+        </DrawerTrigger>
 
-      <DrawerContent
-        showHandle={showHandle}
-        className={clsx(["dark", contentClassName])}
-      >
-        {children}
-      </DrawerContent>
-    </ShadcnDrawer>
+        <DrawerContent
+          showHandle={showHandle}
+          className={clsx(["dark", contentClassName])}
+        >
+          <DrawerTrigger
+            className={clsx([
+              "absolute",
+              "top-1/2",
+              "-translate-y-1/2",
+              direction === "right" ? "-left-12" : "-right-12",
+              "bg-blue-500",
+              "text-white",
+              "p-2",
+              "rounded",
+              "z-50",
+              triggerClassName,
+            ])}
+          >
+            Close
+          </DrawerTrigger>
+          {children}
+        </DrawerContent>
+      </ShadcnDrawer>
+    </>
   );
 };
 
