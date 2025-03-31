@@ -33,6 +33,7 @@ export const GraphNodeToNeigbourList: React.FC<
         "rounded-lg",
         "h-full",
         "w-full",
+        "max-h-full",
         "flex",
         "flex-col",
       ])}
@@ -81,7 +82,7 @@ export const GraphNodeToNeigbourList: React.FC<
       </ul>
       <Button
         onClick={() => setAutoScroll((prev) => !prev)}
-        className={clsx(["m-4", "self-center"])}
+        className={clsx(["mt-4", "self-center"])}
       >
         {autoScroll ? "Disable Auto-Scroll" : "Enable Auto-Scroll"}
         {autoScroll ? (

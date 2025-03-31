@@ -51,7 +51,7 @@ export const Drawer: React.FC<DrawerProps> = ({
     direction: "bottom" | "right" = "bottom",
   ) => {
     const directionMap = {
-      bottom: "up",
+      bottom: "down",
       right: "right",
     } as const;
 

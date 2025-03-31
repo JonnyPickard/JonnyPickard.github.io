@@ -87,15 +87,25 @@ const meta: Meta<typeof Grid> = {
             ])}
             openDrawerTooltip={"Show Graph"}
             closeDrawerTooltip={"Hide Graph"}
+            initialIsOpen
           >
             <>
-              <DrawerHeader>
+              <DrawerHeader className={clsx(["p-4", "pb-0"])}>
                 <DrawerTitle>Graph - Adjacency List Representation</DrawerTitle>
                 <DrawerDescription>
                   The graph generated from the grid.
                 </DrawerDescription>
               </DrawerHeader>
-              <GraphNodeToNeigbourList graph={graph} />
+              <div
+                className={clsx([
+                  "p-2",
+                  "max-h-full",
+                  "h-full",
+                  "overflow-auto",
+                ])}
+              >
+                <GraphNodeToNeigbourList graph={graph} />
+              </div>
             </>
           </Drawer>
         </div>
