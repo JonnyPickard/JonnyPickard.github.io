@@ -1,0 +1,71 @@
+import { Meta, Primary, Controls, Stories, Markdown } from "@storybook/blocks";
+
+import * as ParallaxStories from "./Parallax.stories";
+
+<Meta of={ParallaxStories} />
+
+# Parallax Component Documentation
+
+The `Parallax` component creates a visually engaging parallax effect by animating multiple layers at different speeds.
+While the current implementation uses animation keyframes, a more performant approach for larger applications involves leveraging scroll events to dynamically adjust layer positions based on the scroll position.
+This enhances performance and scalability.
+
+This component enriches user experience by adding depth and motion to web pages. It achieves this through two key subcomponents:
+
+- **`AutoParallaxLayer`**: Automatically animates layers based on specified speed and direction.
+- **`ParallaxContainer`**: Serves as a wrapper for `AutoParallaxLayer` components, creating a cohesive parallax effect.
+
+## Features
+
+- **Automatic Animation**: Layers animate seamlessly without user interaction.
+- **Customizable Speeds**: Assign unique speeds to each layer for dynamic effects.
+- **Direction Control**: Animate layers along the `x` or `y` axis.
+- **Distance Customization**: Define how far each layer moves in the specified direction.
+- **Reverse Animation**: Option to reverse the animation direction for individual layers.
+
+## Props
+
+<Controls />
+
+## Usage
+
+### Primary Example
+
+<Primary />
+
+### Basic Example
+
+```tsx
+import { Parallax } from "./components/Parallax";
+
+const App = () => (
+  <ParallaxContainer>
+    <AutoParallaxLayer speed={0.5} direction="y">
+      <div className="bg-blue-500 h-screen w-full" />
+    </AutoParallaxLayer>
+    <AutoParallaxLayer speed={1} direction="x" reverse={true}>
+      <div className="bg-green-500 h-screen w-full" />
+    </AutoParallaxLayer>
+  </ParallaxContainer>
+);
+
+export default App;
+```
+
+### Advanced Example
+
+```tsx
+<ParallaxContainer>
+  <AutoParallaxLayer speed={0.2} distance={200}>
+    <div className="bg-gradient-to-b from-purple-500 to-pink-500 h-screen w-full" />
+  </AutoParallaxLayer>
+  <AutoParallaxLayer speed={0.8} direction="x" distance={300}>
+    <div className="bg-yellow-500 h-screen w-full" />
+  </AutoParallaxLayer>
+</ParallaxContainer>
+```
+
+## Notes
+
+- Adjust the `speed` prop for each layer to achieve the desired parallax effect.
+- Use the `distance` and `reverse` props to fine-tune animation behavior.
