@@ -19,7 +19,7 @@ export const AutoParallaxLayer: React.FC<
   reverse = false,
 }) => {
   // Calculate duration based on speed (slower speed = longer duration)
-  const duration = 20 / speed;
+  const duration = 20 / (speed || 1);
 
   return (
     <motion.div
