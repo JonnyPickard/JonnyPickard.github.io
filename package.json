@@ -82,5 +82,8 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.0.2",
     "vitest-canvas-mock": "^0.3.3"
+  },
+  "overrides": {
+    "three-stdlib": "^2.36.0"
   }
 }
