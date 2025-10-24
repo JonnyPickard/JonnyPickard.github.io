@@ -32,7 +32,7 @@ export function Outline({
 }: JSX.IntrinsicElements["mesh"] & OutlineProps) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTilleHighlightOutline.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
 
   return (
     <mesh

@@ -34,7 +34,7 @@ export function Player(props: JSX.IntrinsicElements["group"]) {
   // NOTE: Loaders are cached so it should only run once
   const { nodes, materials, animations } = useGLTF(
     "/3d-models/hex-grid/Player.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
   useLayoutEffect(() => {

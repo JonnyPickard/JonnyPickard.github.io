@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
 export function Terrain(props: JSX.IntrinsicElements["group"]) {
   const { nodes, materials } = useGLTF(
     "/3d-models/hex-grid/Boulder.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
   return (
     <group {...props} dispose={null}>
       <mesh

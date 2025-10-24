@@ -14,7 +14,7 @@ type GLTFResult = GLTF & {
 export function HexTileGrass(props: JSX.IntrinsicElements["mesh"]) {
   const { nodes, materials } = useGLTF(
     "/3d-models/hex-grid/HexGrass.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
 
   return (
     <mesh

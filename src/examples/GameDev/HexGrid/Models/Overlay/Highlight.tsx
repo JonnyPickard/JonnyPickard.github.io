@@ -20,7 +20,7 @@ export function HighlightTile(
 ) {
   const { nodes } = useGLTF(
     "/3d-models/hex-grid/HexTileHighlight.glb",
-  ) as GLTFResult;
+  ) as unknown as GLTFResult;
   return (
     <mesh
       {...props}

@@ -25,7 +25,7 @@ interface GLTFAction extends THREE.AnimationClip {
 
 export function AvatarModel(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
-  const all = useGLTF("/3d-models/avatar/Paladin.glb") as GLTFResult;
+  const all = useGLTF("/3d-models/avatar/Paladin.glb") as unknown as GLTFResult;
   const { nodes, materials, animations } = all;
   const { actions } = useAnimations(animations, group);
   const [isPlaying, setIsPlaying] = useState(true);
