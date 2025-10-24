@@ -1,6 +1,6 @@
 import logo from "../src/assets/logo.svg";
 
-import { create } from "@storybook/theming/create";
+import { create } from "storybook/theming/create";
 
 // https://storybook.js.org/docs/react/configure/theming
 export default create({

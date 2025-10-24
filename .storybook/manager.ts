@@ -1,4 +1,4 @@
-import { addons } from "@storybook/manager-api";
+import { addons } from "storybook/manager-api";
 import favicon from "../src/assets/favicon.svg";
 import yourTheme from "./theme";
 
