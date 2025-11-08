@@ -32,6 +32,11 @@ export const COORDINATE_SYSTEM = "odd-row-offset" as const;
 export const DEFAULT_TICK_INTERVAL = 600;
 export const TICK_INTERPOLATION_DURATION = 600;
 
+// Tiles per tick (movement speed)
+export const TILES_PER_TICK_OPTIONS = [1, 2, 3] as const;
+export type TilesPerTick = (typeof TILES_PER_TICK_OPTIONS)[number];
+export const DEFAULT_TILES_PER_TICK: TilesPerTick = 1;
+
 // Visual constants
 export const OBSTACLE_HEIGHT = 0.4;
 export const OBSTACLE_RADIUS = 0.4;

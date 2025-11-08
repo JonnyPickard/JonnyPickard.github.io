@@ -6,8 +6,8 @@
  */
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { ChunkSize } from "./constants";
-import { DEFAULT_CHUNK_SIZE } from "./constants";
+import type { ChunkSize, TilesPerTick } from "./constants";
+import { DEFAULT_CHUNK_SIZE, DEFAULT_TILES_PER_TICK } from "./constants";
 import type { OffsetCoord } from "./types";
 import { astar } from "./utils/pathfinding/astar";
 
@@ -31,6 +31,7 @@ type GameState = {
   // Player state
   playerPosition: OffsetCoord;
   currentPath: OffsetCoord[] | null;
+  tilesPerTick: TilesPerTick;
 
   // Obstacles
   obstacles: Set<string>; // Set of "col,row" strings
@@ -55,6 +56,7 @@ type GameActions = {
 
   // Player actions
   setPlayerPosition: (position: OffsetCoord) => void;
+  setTilesPerTick: (tpt: TilesPerTick) => void;
   movePlayerAlongPath: () => boolean; // Returns true if move was successful
 
   // Pathfinding actions
@@ -90,6 +92,7 @@ export const useGameStore = create<GameStore>()(
       wireframeVisible: true,
       playerPosition: getCenterPosition(DEFAULT_CHUNK_SIZE),
       currentPath: null,
+      tilesPerTick: DEFAULT_TILES_PER_TICK,
       obstacles: new Set<string>(),
 
       // Grid configuration actions
@@ -146,8 +149,11 @@ export const useGameStore = create<GameStore>()(
       setPlayerPosition: (position) =>
         set({ playerPosition: position }, undefined, "game/setPlayerPosition"),
 
+      setTilesPerTick: (tpt) =>
+        set({ tilesPerTick: tpt }, undefined, "game/setTilesPerTick"),
+
       movePlayerAlongPath: () => {
-        const { currentPath } = get();
+        const { currentPath, tilesPerTick } = get();
         if (!currentPath || currentPath.length <= 1) {
           set(
             { currentPath: null },
@@ -157,9 +163,10 @@ export const useGameStore = create<GameStore>()(
           return false;
         }
 
-        // Move to next position in path
-        const nextPosition = currentPath[1]; // Skip current position (index 0)
-        const remainingPath = currentPath.slice(1);
+        // Move N tiles ahead (or to end of path if shorter)
+        const targetIndex = Math.min(tilesPerTick, currentPath.length - 1);
+        const nextPosition = currentPath[targetIndex];
+        const remainingPath = currentPath.slice(targetIndex);
 
         set(
           {

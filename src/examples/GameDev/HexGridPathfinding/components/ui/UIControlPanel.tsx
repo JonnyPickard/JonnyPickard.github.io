@@ -10,7 +10,7 @@
  * Local-only implementation (no server calls)
  */
 import { useGameStore } from "../../store";
-import { CHUNK_SIZE_OPTIONS } from "../../constants";
+import { CHUNK_SIZE_OPTIONS, TILES_PER_TICK_OPTIONS } from "../../constants";
 
 interface ToggleButtonProps {
   label: string;
@@ -86,10 +86,12 @@ export function UIControlPanel() {
   const wireframeVisible = useGameStore((state) => state.wireframeVisible);
   const obstacleCount = useGameStore((state) => state.obstacles.size);
   const chunkSize = useGameStore((state) => state.chunkSize);
+  const tilesPerTick = useGameStore((state) => state.tilesPerTick);
 
   const toggleUI = useGameStore((state) => state.toggleUI);
   const toggleWireframe = useGameStore((state) => state.toggleWireframe);
   const setChunkSize = useGameStore((state) => state.setChunkSize);
+  const setTilesPerTick = useGameStore((state) => state.setTilesPerTick);
   const generateRandomObstacles = useGameStore((state) => state.generateRandomObstacles);
   const clearObstacles = useGameStore((state) => state.clearObstacles);
 
@@ -142,6 +144,39 @@ export function UIControlPanel() {
             onClick={() => setChunkSize(size)}
             color={
               size === chunkSize ? "rgba(33, 150, 243, 0.7)" : "rgba(0, 0, 0, 0.7)"
+            }
+          />
+        ))}
+      </div>
+
+      {/* Movement speed selector */}
+      <div
+        style={{
+          marginTop: 8,
+          paddingTop: 8,
+          borderTop: "1px solid rgba(255, 255, 255, 0.2)",
+        }}
+      >
+        <div
+          style={{
+            color: "white",
+            fontFamily: "monospace",
+            fontSize: 10,
+            marginBottom: 4,
+            opacity: 0.7,
+          }}
+        >
+          Movement Speed: {tilesPerTick}x
+        </div>
+        {TILES_PER_TICK_OPTIONS.map((tpt) => (
+          <ActionButton
+            key={tpt}
+            label={`${tpt}x ${tpt === 1 ? "Walk" : tpt === 2 ? "Run" : "Sprint"}`}
+            onClick={() => setTilesPerTick(tpt)}
+            color={
+              tpt === tilesPerTick
+                ? "rgba(76, 175, 80, 0.7)"
+                : "rgba(0, 0, 0, 0.7)"
             }
           />
         ))}
